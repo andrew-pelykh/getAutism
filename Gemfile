@@ -8,6 +8,7 @@ end
 gem 'rails', '~> 5.0.2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
+gem 'bcrypt'
 
 group :development do
   gem 'spring'
