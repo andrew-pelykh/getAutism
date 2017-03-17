@@ -102,5 +102,10 @@ class UserTest < ActiveSupport::TestCase
     @user.password = "password2222"
     assert_not @user.save, "Saved user with invalid password confirmation"
   end
-  
+
+  test "users auth token should be generated with user creation" do
+    @user.save
+    assert @user.auth_token, "Saved user without auth_token"
+  end
+
 end
