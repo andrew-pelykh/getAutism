@@ -9,11 +9,7 @@ export const currentUser = () => ({
 
 export const currentUserSuccess = (user) => ({
   type: types.CURRENT_USER_SUCCESS,
-  user: {
-    id: user.id,
-    name: user.name,
-    isFetching: false
-  }
+  user
 })
 
 export const currentUserFailure = (errors) => ({

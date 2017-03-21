@@ -12,7 +12,7 @@ class SessionsControllerTest < ActionController::TestCase
                     }}
     assert_response 403
     jdata = JSON.parse response.body
-    login_errors =  { "login" => "Invalid email or password" }
+    login_errors =  { "login-form" => "Invalid email or password" }
     assert_equal login_errors, jdata["errors"]
   end
 
