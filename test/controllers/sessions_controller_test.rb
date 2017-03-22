@@ -30,8 +30,9 @@ class SessionsControllerTest < ActionController::TestCase
 
   test "should regenerate user auth token after logout" do
     user = User.create(name: "Naruto", email: "email@gmail.com", password: "password")
+    @request.headers["X-Api-Key"] = user.auth_token
     old_token = user.auth_token
-    delete :destroy, params: { id: user.id}
+    delete :destroy
     assert_response 204
     user = User.find(user.id)
     refute_equal old_token, user.auth_token

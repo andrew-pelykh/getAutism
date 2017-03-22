@@ -1,4 +1,5 @@
 class SessionsController < BaseController
+  before_action :authorizate_request!, only: [:destroy]
 
   def create
     user = User.find_by(email: params[:user][:email])
@@ -10,9 +11,8 @@ class SessionsController < BaseController
   end
 
   def destroy
-    user = User.find(params[:id])
-    if user
-      user.regenerate_auth_token
+    if @current_user
+      @current_user.regenerate_auth_token
     end
     head 204 and return
   end
