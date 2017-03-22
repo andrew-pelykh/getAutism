@@ -25,7 +25,7 @@ describe('async auth actions', () => {
     var response = { user: { name: "Naruto", id: "1", token: "token" }}
     var loginPayload = { user: { email: "email@gmail.com", password: "password" }}
     nock(host)
-      .post('/sessions')
+      .post('/log_in')
       .reply(200, response)
 
     const expectedActions = [
@@ -45,7 +45,7 @@ describe('async auth actions', () => {
     var response = { errors: {'login-form': 'error'}}
     var loginPayload = { user: { email: "email", password: "pass" }}
     nock(host)
-      .post('/sessions')
+      .post('/log_in')
       .reply(403, response)
 
     const expectedActions = [
@@ -59,4 +59,37 @@ describe('async auth actions', () => {
       expect(store.getActions()).to.include(expectedActions[1]);
     })
   });
+
+  it('creates LOGOUT_SUCCESS when logout has been done', () => {
+    nock(host)
+      .delete('/log_out')
+      .reply(204)
+    const expectedActions = [
+      actions.logout(),
+      actions.logoutSuccess()
+    ]
+    const store = mockStore()
+
+    store.dispatch(actions.logOut()).then(() => {
+      expect(store.getActions()).to.include(expectedActions[0]);
+      expect(store.getActions()).to.include(expectedActions[1]);
+    })
+  })
+
+    it('creates LOGOUT_FAILURE when logout has not been done', () => {
+      nock(host)
+        .delete('/log_out')
+        .replyWithError('Error')
+      const error = { 'login-form': "Something gone wrong"}
+      const expectedActions = [
+        actions.logout(),
+        actions.logoutFailure(error)
+      ]
+      const store = mockStore()
+
+      store.dispatch(actions.logOut()).then(() => {
+        expect(store.getActions()).to.include(expectedActions[0]);
+        expect(store.getActions()).to.include(expectedActions[1]);
+      })
+  })
 });
