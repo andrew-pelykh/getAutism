@@ -1,27 +1,32 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { getUser } from '../actions/users'
 
 
 export class User extends Component {
 
-  componentDidMount() {
-    if (this.props.user.get('id') != this.props.params.id){
-      this.props.getUser(this.props.params.id);
+  constructor(props) {
+    super(props)
+    const { params, getUser, user } = props
+    if (user.get('id') != params.id) {
+      getUser(params.id)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.params.id != nextProps.params.id ){
-      this.props.getUser(nextProps.params.id);
+    const { params, getUser } = this.props
+    const { id } = nextProps.params
+    if (params.id != id) {
+      getUser(id)
     }
   }
 
   render() {
+    const { user } = this.props
     return(
       <div>
         <p>User page</p>
-        <p>Name: {this.props.user.get('name')}</p>
+        <p>Name: {user.get('name')}</p>
       </div>
     )
   }
@@ -29,12 +34,12 @@ export class User extends Component {
 
 const mapStateToProps = state => ({
     user: state.user
-});
+})
 
 const mapDispatchToProps = dispatch => ({
   getUser: id => {
-    dispatch(getUser(id));
+    dispatch(getUser(id))
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default connect(mapStateToProps, mapDispatchToProps)(User)

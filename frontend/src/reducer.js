@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'
 import { Map } from 'immutable'
-import currentUser from './reducers/currentUser';
+import currentUser from './reducers/currentUser'
 import errors from './reducers/errors'
 import user from './reducers/user'
 
@@ -17,4 +17,4 @@ const reducer = (state = {}, action) => {
   return appReducer(state, action)
 }
 
-export default reducer;
+export default reducer

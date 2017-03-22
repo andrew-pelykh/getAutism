@@ -22,25 +22,25 @@ export function getCookie(cname) {
 
 export function setToken(token) {
   if (typeof(Storage) !== 'undefined') {
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', token)
   } else {
-    setCookie('token', token, 365);
+    setCookie('token', token, 365)
   }
 }
 
 export function getToken() {
   if (typeof(Storage) !== 'undefined') {
-    return localStorage.getItem('token');
+    return localStorage.getItem('token')
   } else {
-    return getCookie('token');
+    return getCookie('token')
   }
-  return '';
+  return ''
 }
 
 export function removeToken() {
   if (typeof(Storage) !== 'undefined') {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token')
   } else {
-    setCookie('token', '', 365);
+    setCookie('token', '', 365)
   }
 }

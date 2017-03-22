@@ -5,10 +5,11 @@ import { logIn } from '../actions/auth'
 export class Login extends Component {
 
   render() {
+    const { onSubmitLogin } = this.props
     return(
         <div>
           <h2>Log in</h2>
-          <form id="login-form" onSubmit={(e) => this.props.onSubmitLogin(e)}>
+          <form id="login-form" onSubmit={(e) => onSubmitLogin(e)}>
             <h2> Email</h2>
             <p><input type="text" name="user[email]" /></p>
             <h2> Password</h2>
@@ -27,7 +28,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps= dispatch =>  ({
     onSubmitLogin: (e) => {
       e.preventDefault()
-      var user = new FormData(document.getElementById('login-form'))
+      const form = document.getElementById('login-form')
+      const user = new FormData(form)
       dispatch(logIn(user))
     }
 })

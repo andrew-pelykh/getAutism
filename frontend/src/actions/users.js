@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 import { hashHistory } from 'react-router'
 import { getToken, removeToken } from '../helpers/token_helper'
 import * as types from '../constants/ActionTypes'
@@ -33,10 +33,10 @@ export const userFailure = (errors) => ({
 
 export function getCurrentUser() {
   return dispatch => {
-    dispatch(currentUser());
-    var config = {
+    dispatch(currentUser())
+    const config = {
       headers: {'X-Api-Key': getToken()}
-    };
+    }
     return axios.get('/current_user', config)
     .then(response => {
       dispatch(currentUserSuccess(response.data.user))
@@ -44,8 +44,8 @@ export function getCurrentUser() {
     .catch(error => {
       dispatch(currentUserFailure(error.response.data.errors))
       if (error.response.status == 403) {
-        removeToken();
-        hashHistory.push(`/`);
+        removeToken()
+        hashHistory.push(`/`)
       }
     })
   }
@@ -53,10 +53,10 @@ export function getCurrentUser() {
 
 export function getUser(id) {
   return dispatch => {
-    dispatch(user());
-    var config = {
+    dispatch(user())
+    const config = {
       headers: {'X-Api-Key': getToken()}
-    };
+    }
     return axios.get('/users/' + id, config)
     .then(response => {
       dispatch(userSuccess(response.data.user))
@@ -64,8 +64,8 @@ export function getUser(id) {
     .catch(error => {
       dispatch(userFailure(error.response.data.errors))
       if (error.response.status == 403) {
-        removeToken();
-        hashHistory.push(`/`);
+        removeToken()
+        hashHistory.push(`/`)
       }
     })
   }

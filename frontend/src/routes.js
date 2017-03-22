@@ -1,9 +1,9 @@
-import React from 'react';
-import { Route } from 'react-router';
-import NavBar from './containers/NavBar';
-import Login from './containers/Login';
+import React from 'react'
+import { Route } from 'react-router'
+import NavBar from './containers/NavBar'
+import Login from './containers/Login'
 import User from './containers/User'
-import { getToken } from './helpers/token_helper';
+import { getToken } from './helpers/token_helper'
 
 const routes = (
   <div>
@@ -14,20 +14,20 @@ const routes = (
     <Route path="login" component={Login} />
   </Route>
   </div>
-);
+)
 
 function checkLogin(nextState, replace) {
-  const token = getToken();
+  const token = getToken()
   if (!token) {
-    replace('/login');
+    replace('/login')
   }
 }
 
 function checkLogout(nextState, replace) {
-  const token = getToken();
+  const token = getToken()
   if (token) {
-    replace('/');
+    replace('/')
   }
 }
 
-export default routes;
+export default routes
