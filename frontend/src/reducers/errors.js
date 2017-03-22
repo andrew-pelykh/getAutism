@@ -1,15 +1,7 @@
-import * as types from '../constants/ActionTypes'
+import { Map } from 'immutable'
 
-export default function (state={}, action) {
-  switch(action.type) {
-    case types.CURRENT_USER_SUCCESS:
-      return {}
-    case types.CURRENT_USER_FAILURE:
-      return action.errors
-    case types.LOGIN_SUCCESS:
-      return {}
-    case types.LOGIN_FAILURE:
-      return action.errors
-  }
-  return state;
+export default function (state = Map(), action) {
+  if (action.errors)
+    return Map(action.errors)
+  return Map();
 }

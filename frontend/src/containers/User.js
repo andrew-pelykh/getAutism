@@ -6,7 +6,7 @@ import { getUser } from '../actions/users'
 export class User extends Component {
 
   componentDidMount() {
-    if (!this.props.user.name){
+    if (this.props.user.get('id') != this.props.params.id){
       this.props.getUser(this.props.params.id);
     }
   }
@@ -21,7 +21,7 @@ export class User extends Component {
     return(
       <div>
         <p>User page</p>
-        <p>Name: {this.props.user.name}</p>
+        <p>Name: {this.props.user.get('name')}</p>
       </div>
     )
   }

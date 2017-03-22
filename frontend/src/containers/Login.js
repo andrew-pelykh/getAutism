@@ -21,7 +21,6 @@ export class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-    user: state.currentUser,
     errors: state.errors
 })
 

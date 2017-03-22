@@ -1,5 +1,5 @@
 import chai from 'chai';
-
+import chaiImmutable from 'chai-immutable';
 var jsdom = require('jsdom').jsdom;
 var exposedProperties = ['window', 'navigator', 'document'];
 
@@ -40,3 +40,6 @@ class LocalStorageMock {
 
 global.localStorage = new LocalStorageMock;
 global.Storage = "Storage";
+
+
+chai.use(chaiImmutable);

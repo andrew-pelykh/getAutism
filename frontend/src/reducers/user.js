@@ -1,17 +1,15 @@
 import * as types from '../constants/ActionTypes'
+import { Map } from 'immutable'
 
-export default function (state={}, action) {
+export default function (state=Map(), action) {
   switch(action.type) {
     case types.USER:
-      return { isFetching: true };
+      return state.merge({ isFetching: true });
     case types.USER_SUCCESS:
-      return {
-        id: action.user.id,
-        name: action.user.name,
-        isFetching: false
-      };
+      var user = Map(action.user).merge({ isFetching: false })
+      return state.merge(user);
     case types.USER_FAILURE:
-      return { isFetching: false };
+      return state.merge({ isFetching: false });
   }
   return state;
 }
