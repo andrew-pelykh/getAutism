@@ -17,6 +17,20 @@ export const currentUserFailure = (errors) => ({
   errors
 })
 
+export const user = () => ({
+  type: types.USER
+})
+
+export const userSuccess = (user) => ({
+  type: types.USER_SUCCESS,
+  user
+})
+
+export const userFailure = (errors) => ({
+  type: types.USER_FAILURE,
+  errors
+})
+
 export function getCurrentUser() {
   return dispatch => {
     dispatch(currentUser());
@@ -29,6 +43,26 @@ export function getCurrentUser() {
     })
     .catch(error => {
       dispatch(currentUserFailure(error.response.data.errors))
+      if (error.response.status == 403) {
+        removeToken();
+        hashHistory.push(`/`);
+      }
+    })
+  }
+}
+
+export function getUser(id) {
+  return dispatch => {
+    dispatch(user());
+    var config = {
+      headers: {'X-Api-Key': getToken()}
+    };
+    return axios.get('/users/' + id, config)
+    .then(response => {
+      dispatch(userSuccess(response.data.user))
+    })
+    .catch(error => {
+      dispatch(userFailure(error.response.data.errors))
       if (error.response.status == 403) {
         removeToken();
         hashHistory.push(`/`);

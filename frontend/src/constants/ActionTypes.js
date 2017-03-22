@@ -2,6 +2,10 @@ export const CURRENT_USER = 'CURRENT_USER'
 export const CURRENT_USER_SUCCESS = 'CURRENT_USER_SUCCESS'
 export const CURRENT_USER_FAILURE = 'CURRENT_USER_FAILURE'
 
+export const USER = 'USER'
+export const USER_SUCCESS = 'USER_SUCCESS'
+export const USER_FAILURE = 'USER_FAILURE'
+
 export const LOGIN = 'LOGIN'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'

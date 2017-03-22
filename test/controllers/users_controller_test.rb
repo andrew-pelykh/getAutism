@@ -23,4 +23,29 @@ class UsersControllerTest < ActionController::TestCase
     jdata = JSON.parse response.body
     assert_equal "Naruto", jdata["user"]["name"]
   end
+
+  test "should return user data while requesting if autorizated" do
+    user = User.create(name: "Naruto", email: "email@gmail.com", password: "password")
+    @request.headers["X-Api-Key"] = user.auth_token
+    get :user, params: { id: user.id}
+    assert_response 200
+    jdata = JSON.parse response.body
+    assert_equal "Naruto", jdata["user"]["name"]
+  end
+
+  test "should return 403 while requesting if not autorizated" do
+    user = User.create(name: "Naruto", email: "email@gmail.com", password: "password")
+    get :user, params: { id: user.id}
+    assert_response 403
+  end
+
+  test "should return 404 while requesting with wrong user id" do
+    user = User.create(name: "Naruto", email: "email@gmail.com", password: "password")
+    @request.headers["X-Api-Key"] = user.auth_token
+    get :user, params: { id: "wrong id"}
+    assert_response 404
+    jdata = JSON.parse response.body
+    errors = {"errors-list" => "Wrong id provided"}
+    assert_equal errors, jdata["errors"]
+  end
 end
