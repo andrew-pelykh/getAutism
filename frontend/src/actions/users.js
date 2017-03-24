@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { hashHistory } from 'react-router'
-import { getToken, removeToken } from '../helpers/token_helper'
+import { getToken, removeToken, setToken } from '../helpers/token_helper'
 import * as types from '../constants/ActionTypes'
 
 export const currentUser = () => ({
@@ -31,6 +31,20 @@ export const userFailure = (errors) => ({
   errors
 })
 
+export const registration = () => ({
+  type: types.REGISTRAION
+})
+
+export const registrationSuccess = (user) => ({
+  type: types.REGISTRATION_SUCCESS,
+  user
+})
+
+export const registrationFailure = (errors) => ({
+  type: types.REGISTRAION_FAILURE,
+  errors
+})
+
 export function getCurrentUser() {
   return dispatch => {
     dispatch(currentUser())
@@ -47,6 +61,21 @@ export function getCurrentUser() {
         removeToken()
         hashHistory.push(`/`)
       }
+    })
+  }
+}
+
+export function register(user) {
+  return dispatch => {
+    dispatch(registration())
+    return axios.post('/users', user)
+    .then(response => {
+      setToken(response.data.user.token)
+      dispatch(registrationSuccess(response.data.user))
+      hashHistory.push('/')
+    })
+    .catch(error => {
+      dispatch(registrationFailure(error.response.data.errors))
     })
   }
 }

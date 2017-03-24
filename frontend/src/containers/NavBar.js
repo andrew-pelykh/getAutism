@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { getCurrentUser } from '../actions/users'
 import { setDrawer } from '../actions/pages'
 import { logOut } from '../actions/auth'
-import { Link } from 'react-router'
+import { hashHistory } from 'react-router'
 import Drawer from 'material-ui/Drawer'
 import Button from 'material-ui/Button'
 import AppBar from 'material-ui/AppBar';
@@ -26,6 +27,10 @@ export class NavBar extends Component {
       props.getCurrentUser()
     }
   }
+  goToPage(url) {
+    this.props.setDrawer(false)
+    hashHistory.push(url)
+  }
 
   render() {
     const { currentUser, logOut, children, setDrawer, pages } = this.props
@@ -45,12 +50,12 @@ export class NavBar extends Component {
           onRequestClose={(open) => setDrawer(false)}
         >
         <List>
-          <ListItem button>
-            <ListItemText primary={currentUser.get('name')} />
+          <ListItem button onClick={(e) => this.goToPage('users/' + currentUser.get('id'))}>
+            <ListItemText primary={currentUser.get('name')+ 'qwe'} />
           </ListItem>
           <Divider />
-          <ListItem button>
-            <ListItemText primary="Exit" onClick={() => logOut()} />
+          <ListItem button onClick={(e) => logOut(e)}>
+            <ListItemText primary="Exit"  />
           </ListItem>
         </List>
         </Drawer>

@@ -63,7 +63,7 @@ describe('async users actions', () => {
     })
   });
 
-  it('creates USER_SUCCESS when gettinguser has been done', () => {
+  it('creates USER_SUCCESS when getting user has been done', () => {
       localStorage.setItem('token', 'cg7q8w37gx8q7gd287G' )
     var response = { user: { name: "Naruto", id: "1" }}
     nock(host)
@@ -117,4 +117,44 @@ describe('async users actions', () => {
       expect(store.getActions()).to.include(expectedActions[1]);
     })
   });
+
+  it('creates REGISTRATION_SUCCESS and save token in browser when creating has been done', () => {
+    var response = { user: { name: "Naruto", id: "1", token: "token" }}
+    var user = { email: "email@gmail.com"}
+    nock(host)
+      .post('/users')
+      .reply(201, response)
+
+    const expectedActions = [
+      actions.registration(),
+      actions.registrationSuccess(response.user)
+    ]
+    const store = mockStore()
+
+    store.dispatch(actions.register(user)).then(() => {
+      expect(store.getActions()).to.include(expectedActions[0]);
+      expect(store.getActions()).to.include(expectedActions[1]);
+      expect(localStorage.getItem('token')).to.be.equal('token');
+    })
+  });
+
+  it('creates REGISTRATION_FAILURE when get 422 response', () => {
+    var response = { errors: "Error"}
+    var user = { email: "email@gmail.com"}
+    nock(host)
+      .post('/users')
+      .reply(422, response)
+
+    const expectedActions = [
+      actions.registration(),
+      actions.registrationFailure(response.errors)
+    ]
+    const store = mockStore()
+
+    store.dispatch(actions.register(user)).then(() => {
+      expect(store.getActions()).to.include(expectedActions[0]);
+      expect(store.getActions()).to.include(expectedActions[1]);
+    })
+  });
+
 });

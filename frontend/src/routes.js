@@ -3,6 +3,7 @@ import { Route } from 'react-router'
 import NavBar from './containers/NavBar'
 import Login from './containers/Login'
 import User from './containers/User'
+import Register from './containers/Register'
 import { getToken } from './helpers/token_helper'
 
 const routes = (
@@ -12,6 +13,7 @@ const routes = (
   </Route>
   <Route path="/" onEnter={checkLogout}>
     <Route path="login" component={Login} />
+    <Route path="register" component={Register}/>
   </Route>
   </div>
 )

@@ -48,4 +48,38 @@ class UsersControllerTest < ActionController::TestCase
     errors = {"errors-list" => "Wrong id provided"}
     assert_equal errors, jdata["errors"]
   end
+
+  test "should create user while requesting with valid data" do
+    @request.headers["Content-Type"] = "application/json"
+    users_count = User.all.count
+    post :create, params: {
+                   user: {
+                     name: "Gintoki",
+                     email: "lol@xd.ua",
+                     password: "password",
+                     password_confirmation: "password"
+                   }}
+    assert_response 201
+    assert_equal (users_count + 1), User.all.count
+    jdata = JSON.parse response.body
+    assert_equal "Gintoki", jdata["user"]["name"]
+  end
+
+  test "should return errors while requesting with invalid data" do
+    @request.headers["Content-Type"] = "application/json"
+    post :create, params: {
+                   user: {
+                     name: "",
+                     email: "lold@dasf.ua",
+                     password: "password",
+                     password_confirmation: "pasord"
+                   }}
+    assert_response 422
+    jdata = JSON.parse response.body
+    errors = {
+      "password_confirmation"=>["doesn't match Password"],
+      "name"=>["can't be blank", "is too short (minimum is 3 characters)"]
+    }
+    assert_equal errors, jdata["errors"]
+  end
 end

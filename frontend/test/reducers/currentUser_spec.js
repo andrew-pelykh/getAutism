@@ -39,4 +39,21 @@ describe('currentUser reducer', () => {
     var newState = reducer(Map(), authActions.loginFailure());
     expect(newState.get('isFetching')).to.equal(false);
   });
+
+  it('should change isFetching to true on REGISTRAION', () => {
+    var newState = reducer(Map(), usersActions.registration());
+    expect(newState.get('isFetching')).to.equal(true);
+  });
+
+  it('should change isFetching to false on REGISTRAION_FAILURE action', () => {
+    var newState = reducer(Map(), usersActions.registrationFailure());
+    expect(newState.get('isFetching')).to.equal(false);
+  });
+
+  it('should set current user and change isFetching to false on REGISTRAION_SUCCESS', () => {
+    var user = { name: 'Jojo', id: 1}
+    var newState = reducer(Map(), usersActions.registrationSuccess(user));
+    expect(newState.get('isFetching')).to.equal(false);
+    expect(newState.get('name')).to.equal('Jojo');
+  });
 });
