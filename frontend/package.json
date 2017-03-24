@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --debug --watch",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js \"test/**/*@(.js|.jsx)\"",
-    "webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
+    "frontend/webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
     "heroku-postbuild": "npm run webpack:deploy"
   },
   "engines": {
