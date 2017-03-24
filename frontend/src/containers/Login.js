@@ -1,22 +1,43 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logIn } from '../actions/auth'
+import Input from 'material-ui/Input'
+import InputLabel from 'material-ui/Input/InputLabel'
+import FormControl from 'material-ui/Form/FormControl'
+import Button from 'material-ui/Button'
+import Layout from 'material-ui/Layout'
 
 export class Login extends Component {
 
   render() {
     const { onSubmitLogin } = this.props
-    return(
-        <div>
-          <h2>Log in</h2>
+    return (
+      <Layout container
+      align="center"
+      justify="center"
+      gutter={24}
+      >
+        <Layout item
+           xs={8}
+           md={6}
+        >
           <form id="login-form" onSubmit={(e) => onSubmitLogin(e)}>
-            <h2> Email</h2>
-            <p><input type="text" name="user[email]" /></p>
-            <h2> Password</h2>
-            <p><input type="password"name="user[password]" /></p>
-            <p><button>Log in</button></p>
+            <FormControl>
+               <InputLabel htmlFor="Email">
+                 Email
+               </InputLabel>
+               <Input id="email" />
+            </FormControl>
+            <FormControl>
+               <InputLabel htmlFor="Password">
+                 Password
+               </InputLabel>
+               <Input type="password" id="password" />
+            </FormControl>
+          <Button type="submit" raised>Log in</Button>
           </form>
-        </div>
+        </Layout>
+      </Layout>
     )
   }
 }
@@ -25,11 +46,13 @@ const mapStateToProps = state => ({
     errors: state.errors
 })
 
-const mapDispatchToProps= dispatch =>  ({
+const mapDispatchToProps = dispatch =>  ({
     onSubmitLogin: (e) => {
       e.preventDefault()
-      const form = document.getElementById('login-form')
-      const user = new FormData(form)
+      const email = document.getElementById('email').value
+      const password = document.getElementById('password').value
+      const user = {user:{ email: email, password: password}}
+      console.log(user)
       dispatch(logIn(user))
     }
 })

@@ -1,10 +1,11 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import reducer from './reducer'
 import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
 
-const loggerMiddleware = createLogger()
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default function configureStore() {
-  return createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware))
+  return createStore(reducer, /* preloadedState, */ composeEnhancers(
+      applyMiddleware(thunkMiddleware)
+    ))
 }
