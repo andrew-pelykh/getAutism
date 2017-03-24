@@ -51,7 +51,7 @@ export class NavBar extends Component {
         >
         <List>
           <ListItem button onClick={(e) => this.goToPage('users/' + currentUser.get('id'))}>
-            <ListItemText primary={currentUser.get('name')+ 'qwe'} />
+            <ListItemText primary={currentUser.get('name')} />
           </ListItem>
           <Divider />
           <ListItem button onClick={(e) => logOut(e)}>

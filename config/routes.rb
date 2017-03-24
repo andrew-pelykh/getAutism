@@ -7,5 +7,5 @@ Rails.application.routes.draw do
 
   get "/current_user", to: "users#current_user"
   get "/users/:id", to: "users#user"
-  resources :users, only: [:create]
+  resources :users, only: [:create, :index]
 end

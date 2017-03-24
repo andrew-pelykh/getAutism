@@ -157,4 +157,42 @@ describe('async users actions', () => {
     })
   });
 
+  it('creates USER_SUCCESS when getting user has been done', () => {
+    localStorage.setItem('token', 'cg7q8w37gx8q7gd287G' )
+    var response = {users: [{ name: "Naruto", id: "1" }]}
+    nock(host)
+      .get('/users/')
+      .reply(200, response)
+
+    const expectedActions = [
+      actions.usersList(),
+      actions.usersListSuccess(response.users)
+    ]
+    const store = mockStore()
+
+    store.dispatch(actions.getUsersList()).then(() => {
+      expect(store.getActions()).to.include(expectedActions[0]);
+      expect(store.getActions()).to.include(expectedActions[1]);
+    })
+  });
+
+  it('creates USERS_LIST_FAILURE when get 403 response',() => {
+    localStorage.setItem('token', 'not token' )
+    nock(host)
+    .get('/users')
+    .reply(403)
+
+    const expectedActions = [
+      actions.usersList(),
+      actions.usersListFailure()
+    ]
+
+    const store = mockStore()
+
+    store.dispatch(actions.getUsersList()).then(() => {
+      expect(store.getActions()).to.include(expectedActions[0])
+      expect(store.getActions()).to.include(expectedActions[1])
+    })
+  })
+
 });

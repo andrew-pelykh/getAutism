@@ -1,6 +1,6 @@
 class UsersController < BaseController
 
-  before_action :authorizate_request!, only: [:current_user, :user]
+  before_action :authorizate_request!, only: [:current_user, :user, :index]
 
   def current_user
     render json: {
@@ -33,6 +33,14 @@ class UsersController < BaseController
     else
       render_errors(user.errors, 422)
     end
+  end
+
+  def index
+    users = []
+    User.all.map do |user|
+      users.push({ id: user.id, name: user.name})
+    end
+    render json: { users: users }
   end
 
   private

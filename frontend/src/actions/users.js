@@ -45,6 +45,19 @@ export const registrationFailure = (errors) => ({
   errors
 })
 
+export const usersList = () => ({
+  type: types.USERS_LIST
+})
+
+export const usersListSuccess = users => ({
+  type: types.USERS_LIST_SUCCESS,
+  users
+})
+
+export const usersListFailure = () => ({
+  type: types.USERS_LIST_FAILURE
+})
+
 export function getCurrentUser() {
   return dispatch => {
     dispatch(currentUser())
@@ -92,6 +105,27 @@ export function getUser(id) {
     })
     .catch(error => {
       dispatch(userFailure(error.response.data.errors))
+      if (error.response.status == 403) {
+        removeToken()
+        hashHistory.push(`/`)
+      }
+    })
+  }
+}
+
+export function getUsersList() {
+  return dispatch => {
+    dispatch(usersList())
+    const config = {
+      headers:  {'X-Api-Key': getToken()}
+    }
+    return axios.get('/users', config)
+    .then(response => {
+      dispatch(usersListSuccess(response.data.users))
+    })
+    .catch(error => {
+      console.log(error)
+      dispatch(usersListFailure())
       if (error.response.status == 403) {
         removeToken()
         hashHistory.push(`/`)

@@ -82,4 +82,13 @@ class UsersControllerTest < ActionController::TestCase
     }
     assert_equal errors, jdata["errors"]
   end
+
+  test "should return users list while authorizated" do
+    user = User.create(name: "Naruto", email: "email@gmail.com", password: "password")
+    @request.headers["X-Api-Key"] = user.auth_token
+    get :index
+    assert_response 200
+    jdata = JSON.parse response.body
+    assert_equal User.first.name, jdata["users"][0]["name"]
+  end
 end
