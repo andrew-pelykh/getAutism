@@ -9,6 +9,9 @@
     "webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
     "heroku-postbuild": "npm run webpack:deploy"
   },
+  "engines": {
+    "node": "7.6.0"
+  },
   "keywords": [],
   "author": "Andrew Pelykh",
   "license": "ISC",
