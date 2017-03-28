@@ -5,6 +5,7 @@ import errors from './reducers/errors'
 import user from './reducers/user'
 import pages from './reducers/pages'
 import usersList from './reducers/usersList'
+import postsList from './reducers/postsList'
 
 const appReducer = combineReducers({
   currentUser,
@@ -12,6 +13,7 @@ const appReducer = combineReducers({
   pages,
   errors,
   usersList,
+  postsList
 })
 
 const reducer = (state = {}, action) => {

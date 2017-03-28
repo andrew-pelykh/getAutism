@@ -5,6 +5,7 @@ import { render } from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import routes from './routes'
 import configureStore from './store'
+import './main.css'
 
 const store = configureStore()
 

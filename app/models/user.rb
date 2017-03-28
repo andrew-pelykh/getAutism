@@ -3,6 +3,7 @@ class User < ApplicationRecord
   before_create :set_email_to_lower_case!
   has_secure_password
   has_secure_token :auth_token
+  has_many :posts
 
   mount_uploader :avatar, AvatarUploader
 

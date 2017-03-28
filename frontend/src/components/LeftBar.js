@@ -31,6 +31,10 @@ export default class LeftBar extends Component {
               <ListItemText primary={user.get('name')} />
             </ListItem>
             <Divider />
+            <ListItem button onClick={(e) => this.goToPage('/')}>
+              <ListItemText primary="NewsFeed "/>
+            </ListItem>
+            <Divider />
             <ListItem button onClick={(e) => this.goToPage('users/')}>
               <ListItemText primary="Users"  />
             </ListItem>
