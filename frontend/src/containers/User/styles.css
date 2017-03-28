@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.avatar img {
+    max-width: 100%;
+  }
+
+.name {
+   text-align: center;
+}

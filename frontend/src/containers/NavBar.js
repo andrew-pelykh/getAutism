@@ -1,23 +1,15 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { getCurrentUser } from '../actions/users'
+import LeftBar from '../components/LeftBar'
 import { setDrawer } from '../actions/pages'
 import { logOut } from '../actions/auth'
-import { hashHistory } from 'react-router'
-import Drawer from 'material-ui/Drawer'
 import Button from 'material-ui/Button'
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Text from 'material-ui/Text';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui/svg-icons/menu';
-import {
-  List,
-  ListItem,
-  ListItemText,
-} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
+import AppBar from 'material-ui/AppBar'
+import Toolbar from 'material-ui/Toolbar'
+import IconButton from 'material-ui/IconButton'
+import MenuIcon from 'material-ui/svg-icons/menu'
+import Layout from 'material-ui/Layout'
 
 export class NavBar extends Component {
 
@@ -27,40 +19,25 @@ export class NavBar extends Component {
       props.getCurrentUser()
     }
   }
-  goToPage(url) {
-    this.props.setDrawer(false)
-    hashHistory.push(url)
-  }
 
   render() {
     const { currentUser, logOut, children, setDrawer, pages } = this.props
     return(
-      <div>
-        <AppBar>
-          <Toolbar>
-            <IconButton onClick={(e) => setDrawer(true)}>
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          docked={false}
-          width={400}
-          open={pages.get('drawer')}
-          onRequestClose={(open) => setDrawer(false)}
-        >
-        <List>
-          <ListItem button onClick={(e) => this.goToPage('users/' + currentUser.get('id'))}>
-            <ListItemText primary={currentUser.get('name')} />
-          </ListItem>
-          <Divider />
-          <ListItem button onClick={(e) => logOut(e)}>
-            <ListItemText primary="Exit"  />
-          </ListItem>
-        </List>
-        </Drawer>
-        {children}
-      </div>
+        <Layout container>
+          <LeftBar user={currentUser} drawer={pages.get('drawer')} setDrawer={setDrawer} logOut={logOut} />
+          <Layout item xs={12}>
+            <AppBar>
+              <Toolbar>
+                <IconButton onClick={(e) => setDrawer(true)}>
+                  <MenuIcon />
+                </IconButton>
+              </Toolbar>
+            </AppBar>
+          </Layout>
+          <Layout item xs={12}>
+            {children}
+          </Layout>
+        </Layout>
     )
   }
 }

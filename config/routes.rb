@@ -7,5 +7,6 @@ Rails.application.routes.draw do
 
   get "/current_user", to: "users#current_user"
   get "/users/:id", to: "users#user"
+  patch "/users/", to: "users#update"
   resources :users, only: [:create, :index]
 end

@@ -27,12 +27,24 @@ export default function (state = Map(), action) {
 
     case types.REGISTRAION:
       return state.merge({ isFetching: true })
+
     case types.REGISTRAION_FAILURE:
       return state.merge({ isFetching: false })
 
     case types.REGISTRATION_SUCCESS:
       user = Map(action.user).merge({ isFetching: false })
       return state.merge(user)
+
+    case types.USER_UPDATE:
+      return state.merge({ isFetching: true })
+
+    case types.USER_UPDATE_SUCCESS:
+      user = Map(action.user).merge({ isFetching: false })
+      return state.merge(user)
+
+    case types.USER_UPDATE_FAILURE:
+      return state.merge({ isFetching: false })
+
   }
   return state
 }

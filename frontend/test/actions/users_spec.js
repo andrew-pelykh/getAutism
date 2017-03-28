@@ -157,11 +157,11 @@ describe('async users actions', () => {
     })
   });
 
-  it('creates USER_SUCCESS when getting user has been done', () => {
+  it('creates USERS_LIST_SUCCESS when getting users has been done', () => {
     localStorage.setItem('token', 'cg7q8w37gx8q7gd287G' )
     var response = {users: [{ name: "Naruto", id: "1" }]}
     nock(host)
-      .get('/users/')
+      .get('/users')
       .reply(200, response)
 
     const expectedActions = [

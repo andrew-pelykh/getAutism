@@ -20,7 +20,7 @@ class SessionsController < BaseController
   private
 
   def render_user(user)
-    render json: { user: { id: user.id, name: user.name,
+    render json: { user: { id: user.id, name: user.name, avatar: user.avatar_url,
                      token: user.auth_token }}
   end
 

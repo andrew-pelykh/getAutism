@@ -1,12 +1,14 @@
 class UsersController < BaseController
 
-  before_action :authorizate_request!, only: [:current_user, :user, :index]
+  before_action :authorizate_request!
+  skip_before_action  :authorizate_request!, only: [:create]
 
   def current_user
     render json: {
       user: {
         id: @current_user.id,
-        name: @current_user.name
+        name: @current_user.name,
+        avatar: @current_user.avatar_url
       }
     }, status: 200
   end
@@ -20,7 +22,8 @@ class UsersController < BaseController
     render json: {
       user: {
         id: user.id,
-        name: user.name
+        name: user.name,
+        avatar: user.avatar_url
       }
     }, status: 200
   end
@@ -38,9 +41,21 @@ class UsersController < BaseController
   def index
     users = []
     User.all.map do |user|
-      users.push({ id: user.id, name: user.name})
+      users.push({ id: user.id, name: user.name, avatar: user.avatar_url})
     end
     render json: { users: users }
+  end
+
+  def update
+    avatar = params.require(:user).permit(:avatar)
+    if @current_user.update_attributes(avatar)
+      render json: {
+        user: {
+          avatar: @current_user.avatar_url
+        }}
+    else
+      render_errors(@current_user.errors, 422)
+    end
   end
 
   private

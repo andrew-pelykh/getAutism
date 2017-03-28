@@ -17,11 +17,10 @@ export class Login extends Component {
       <Layout container
       align="center"
       justify="center"
-      gutter={24}
       >
         <Layout item
            xs={8}
-           md={6}
+           md={2}
         >
           <form id="login-form" onSubmit={(e) => onSubmitLogin(e)}>
             <FormControl>
