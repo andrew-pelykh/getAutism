@@ -22,7 +22,6 @@ export class Users extends Component {
   render() {
     return(
       <div>
-        <p>Users</p>
         <UsersList users={this.props.usersList.get('users')} goToPage={this.goToPage} />
       </div>
     )

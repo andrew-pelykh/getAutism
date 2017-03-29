@@ -9,5 +9,5 @@ Rails.application.routes.draw do
   get "/users/:id", to: "users#user"
   patch "/users/", to: "users#update"
   resources :users, only: [:create, :index]
-  resources :posts, only: [:index]
+  resources :posts, only: [:create, :index]
 end

@@ -23,17 +23,16 @@ export class NavBar extends Component {
   render() {
     const { currentUser, logOut, children, setDrawer, pages } = this.props
     return(
-        <Layout container>
+
+        <Layout container className="root">
           <LeftBar user={currentUser} drawer={pages.get('drawer')} setDrawer={setDrawer} logOut={logOut} />
-          <Layout item xs={12}>
-            <AppBar>
-              <Toolbar>
-                <IconButton onClick={(e) => setDrawer(true)}>
-                  <MenuIcon />
-                </IconButton>
-              </Toolbar>
-            </AppBar>
-          </Layout>
+          <AppBar>
+            <Toolbar>
+              <IconButton onClick={(e) => setDrawer(true)}>
+                <MenuIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
           <Layout item xs={12}>
             {children}
           </Layout>

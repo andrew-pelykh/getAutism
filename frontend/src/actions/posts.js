@@ -35,3 +35,32 @@ export function getPostsList() {
     })
   }
 }
+
+export const postCreate = () => ({
+  type: types.POST_CREATE
+})
+
+export const postCreateSuccess = post => ({
+  type: types.POST_CREATE_SUCCESS,
+  post
+})
+
+export const postCreateFailure = errors => ({
+  type: types.POST_CREATE_FAILURE,
+  errors
+})
+
+export function createPost(post) {
+  return dispatch => {
+    dispatch(postCreate())
+    var instance = axios.create()
+    instance.defaults.headers.common['X-Api-Key'] = getToken()
+    return instance.post('/posts', post)
+    .then(response => {
+      dispatch(postCreateSuccess(response.data.post))
+    })
+    .catch(error => {
+      dispatch(postCreateFailure(error.response.data.errors))
+    })
+  }
+}

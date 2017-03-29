@@ -17,8 +17,9 @@ export default class PostsList extends Component {
           return (
             <div key={n}>
               <Card>
-                <CardHeader onClick={(e) => this.props.goToPage('users/' + post.getIn(['author', 'id']))}
-                  avatar={<Avatar className="author-avatar" src={post.getIn(['author', 'avatar'])} />}
+                <CardHeader
+                  avatar={<Avatar  onClick={(e) => this.props.goToPage('users/' + post.getIn(['author', 'id']))}
+                    className="author-avatar" src={post.getIn(['author', 'avatar'])} />}
                   title={post.getIn(['author', 'name'])}
                   subhead={post.get('createdAt')}
                 />
