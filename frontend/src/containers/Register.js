@@ -2,56 +2,38 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { register } from '../actions/users'
 import { Link } from 'react-router'
-import Input from 'material-ui/Input'
-import InputLabel from 'material-ui/Input/InputLabel'
-import FormControl from 'material-ui/Form/FormControl'
-import Button from 'material-ui/Button'
-import Layout from 'material-ui/Layout'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
 
 export class Register extends Component {
 
   render() {
     const { onSubmitRegister } = this.props
     return (
-      <Layout container
-      align="center"
-      justify="center"
-      gutter={24}
-      >
-        <Layout item
-           xs={8}
-           md={6}
-        >
+      <div>
           <form id="register-form" onSubmit={(e) => onSubmitRegister(e)}>
-          <FormControl>
-             <InputLabel htmlFor="Name">
-               Name
-             </InputLabel>
-             <Input id="name" />
-          </FormControl>
-            <FormControl>
-               <InputLabel htmlFor="Email">
-                 Email
-               </InputLabel>
-               <Input id="email" />
-            </FormControl>
-            <FormControl>
-               <InputLabel htmlFor="Password">
-                 Password
-               </InputLabel>
-               <Input type="password" id="password" />
-            </FormControl>
-            <FormControl>
-               <InputLabel htmlFor="Password confirmation">
-                 Password
-               </InputLabel>
-               <Input type="password" id="password_confirmation" />
-            </FormControl>
-          <Button type="submit" raised>Register</Button>
+            <TextField
+              id="name"
+              hintText="Name"
+            />
+            <TextField
+              id="email"
+              hintText="Email"
+            />
+            <TextField
+              hintText="Password"
+              type="password"
+              id="password"
+            />
+            <TextField
+              hintText="Password confirmation"
+              type="password"
+              id="password_confirmation"
+            />
+          <RaisedButton type="submit">Register</RaisedButton>
           </form>
           <Link to='/login'>Login</Link>
-        </Layout>    
-      </Layout>
+          </div>
     )
   }
 }

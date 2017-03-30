@@ -4,7 +4,6 @@ import { getPostsList, createPost } from '../../actions/posts'
 import { setPostDialog } from '../../actions/pages'
 import PostForm from '../../components/PostForm'
 import PostsList from '../../components/PostsList'
-import Layout from 'material-ui/Layout'
 import { hashHistory } from 'react-router'
 import './styles.css'
 
@@ -24,12 +23,11 @@ export class NewsFeed extends Component {
   render() {
     const { postsList, getPostsList, setPostDialog, pages, createPost } = this.props
     return(
-        <Layout container>
-          <Layout item xs={12}>
-            <PostsList posts={postsList.get('posts')} goToPage={this.goToPage} />
-            <PostForm setPostDialog={setPostDialog} open={pages.get('postDialog')} createPost={createPost} />
-          </Layout>
-        </Layout>
+      <div>
+      <PostForm setPostDialog={setPostDialog} open={pages.get('postDialog')} createPost={createPost} />
+      <PostsList posts={postsList.get('posts')} goToPage={this.goToPage} />
+      </div>
+
     )
   }
 }
@@ -45,7 +43,8 @@ const mapDispatchToProps = dispatch => ({
   setPostDialog: value => {
     dispatch(setPostDialog(value))
   },
-  createPost: () => {
+  createPost: (e) => {
+    e.preventDefault()
     const post = new FormData(document.getElementById('post-form'))
     dispatch(createPost(post))
   }

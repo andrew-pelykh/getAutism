@@ -56,4 +56,21 @@ describe('currentUser reducer', () => {
     expect(newState.get('isFetching')).to.equal(false);
     expect(newState.get('name')).to.equal('Jojo');
   });
+
+  it('should change isFetching to true on USER_UPDATE', () => {
+    var newState = reducer(Map(), usersActions.userUpdate());
+    expect(newState.get('isFetching')).to.equal(true);
+  });
+
+  it('should change isFetching to false on USER_UPDATE action', () => {
+    var newState = reducer(Map(), usersActions.userUpdateFailure());
+    expect(newState.get('isFetching')).to.equal(false);
+  });
+
+  it('should set current user and change isFetching to false on USER_UPDATE', () => {
+    var user = { name: 'Jojo', id: 1}
+    var newState = reducer(Map(), usersActions.userUpdateSuccess(user));
+    expect(newState.get('isFetching')).to.equal(false);
+    expect(newState.get('name')).to.equal('Jojo');
+  });
 });

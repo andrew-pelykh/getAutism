@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getUser, updateUser } from '../../actions/users'
-import Paper from 'material-ui/Paper'
-import Text from 'material-ui/Text'
-import Layout from 'material-ui/Layout'
 import './styles.css'
 
 export class User extends Component {
@@ -28,24 +25,15 @@ export class User extends Component {
 
     const { user, currentUser, updateUser } = this.props
     return(
-      <Layout container
-        align="center"
-        justify="center"
-      >
-          <Layout item xs={12} md={4} className="avatar">
-            <img src={user.get('avatar')}/>
-            <Text className="name" type="headline" component="h3">
-              {user.get('name')}
-            </Text>
-        </Layout>
+         <div>
+            <img className="avatar" src={user.get('avatar')}/>
+              <h3>{user.get('name')}</h3>
 
-        <Layout item xs={12}>
           <form id='edit-form' onSubmit={(e) => updateUser(e)}>
             <p><input type="file" name="user[avatar]"/></p>
             <button type="submit" >Upload avatar</button>
           </form>
-        </Layout>
-      </Layout>
+      </div>
     )
   }
 }

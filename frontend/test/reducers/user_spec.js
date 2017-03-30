@@ -25,4 +25,15 @@ describe('user reducer', () => {
     var newState = reducer(Map(), usersActions.userSuccess(user));
     expect(newState.get('name')).to.equal('Jojo');
   });
+
+  it('should return user on USER_UPDATE_SUCCESS action', () => {
+    var user = { name: 'Jojo', id: 1}
+    var newState = reducer(Map(), usersActions.userUpdateSuccess(user));
+    expect(newState.get('name')).to.equal('Jojo');
+  })
+
+  it('should toggle isFetching off on USER_UPDATE_FAILURE action', () => {
+    var newState = reducer(Map(), usersActions.userUpdateFailure());
+    expect(newState.get('isFetching')).to.equal(false);
+  });
 });

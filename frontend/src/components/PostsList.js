@@ -1,18 +1,12 @@
 import React, { Component } from 'react'
-import { List } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 import Avatar from 'material-ui/Avatar'
-import {
-  Card,
-  CardHeader,
-  CardContent,
-} from 'material-ui/Card'
-import Text from 'material-ui/Text'
+import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 export default class PostsList extends Component {
   render() {
     return(
-      <List>
+      <div>
         { this.props.posts.map((post,n) => {
           return (
             <div key={n}>
@@ -21,19 +15,17 @@ export default class PostsList extends Component {
                   avatar={<Avatar  onClick={(e) => this.props.goToPage('users/' + post.getIn(['author', 'id']))}
                     className="author-avatar" src={post.getIn(['author', 'avatar'])} />}
                   title={post.getIn(['author', 'name'])}
-                  subhead={post.get('createdAt')}
+                  subtitle={post.get('createdAt')}
                 />
-                <CardContent>
-                  <Text component="p">
+                <CardText>
                     {post.get('content')}
-                  </Text>
-                </CardContent>
+                </CardText>
               </Card>
             </div>
             )
           })
         }
-      </List>
+      </div>
     )
   }
 }
