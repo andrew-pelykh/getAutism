@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { logIn } from '../actions/auth'
+import { logIn } from '../../actions/auth'
 import { Link } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
+import { Grid, Row, Col } from 'react-flexbox-grid'
+import './styles.css'
 
 
 export class Login extends Component {
@@ -11,21 +13,29 @@ export class Login extends Component {
   render() {
     const { onSubmitLogin } = this.props
     return (
-      <div>
-          <form id="login-form" onSubmit={(e) => onSubmitLogin(e)}>
-            <TextField
-              id="email"
-              hintText="Email"
-            />
-            <TextField
-              hintText="Password"
-              type="password"
-              id="password"
-            />
+      <Grid fluid>
+         <Col lgOffset={4} md={4}>
+        <form id="login-form" onSubmit={(e) => onSubmitLogin(e)}>
+          <Row>
+          <TextField
+            id="email"
+            hintText="Email"
+          />
+          </Row>
+          <Row>
+          <TextField
+            hintText="Password"
+            type="password"
+            id="password"
+          />
+          </Row>
           <RaisedButton type="submit">Log in</RaisedButton>
-          </form>
+        </form>
+        <Row>
           <Link to='/register'>Register</Link>
-          </div>
+        </Row>
+        </Col>
+      </Grid>
     )
   }
 }

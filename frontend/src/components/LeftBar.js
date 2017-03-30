@@ -3,6 +3,7 @@ import { hashHistory } from 'react-router'
 import Drawer from 'material-ui/Drawer'
 import Avatar from 'material-ui/Avatar'
 import MenuItem from 'material-ui/MenuItem'
+import { isMobile } from '../helpers/application_helper'
 
 export default class LeftBar extends Component {
 
@@ -11,21 +12,12 @@ export default class LeftBar extends Component {
     hashHistory.push(url)
   }
 
-  handleToggle() {
-    const { drawer, setDrawer} = this.props
-    setDrawer(!drawer);
-  }
-
-  handleClose() {
-    const { drawer, setDrawer} = this.props
-    setDrawer(false);
-  }
-
   render() {
-    const { user, drawer, setDrawer, logOut} = this.props
+    const { user, drawer, setDrawer, logOut, docked } = this.props
     return(
       <Drawer
-        docked={false}
+        className="pc-drawer"
+        docked={docked}
         width={200}
         open={drawer}
         swipeAreaWidth={100}
@@ -47,6 +39,7 @@ export default class LeftBar extends Component {
         <MenuItem onTouchTap={(e) => logOut(e)}>
           Exit
         </MenuItem>
+        <p>{isMobile()? "It`s mobile version":"It`s pc version"}</p>
       </Drawer>
     )
   }

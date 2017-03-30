@@ -1,6 +1,11 @@
-.root {
+body {
+  margin: 0;
 }
+
 .app-bar {
-  position: relative !important;
-  display: block;
+  position: fixed !important;
+}
+
+.root {
+  padding-top: 65px;
 }
