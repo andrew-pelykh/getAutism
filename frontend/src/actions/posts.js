@@ -17,13 +17,13 @@ export const postsListFailure = () => ({
   type: types.POSTS_LIST_FAILURE
 })
 
-export function getPostsList() {
+export function getPostsList(page) {
   return dispatch => {
     dispatch(postsList())
-    const config = {
-      headers:  {'X-Api-Key': getToken()}
-    }
-    return axios.get('/posts', config)
+    var instance = axios.create()
+    instance.defaults.headers.common['X-Api-Key'] = getToken()
+    console.log(page)
+    return instance.get('/posts', { params: { page: page }})
     .then(response => {
       dispatch(postsListSuccess(response.data.posts))
     })

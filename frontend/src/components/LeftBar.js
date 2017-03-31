@@ -3,7 +3,6 @@ import { hashHistory } from 'react-router'
 import Drawer from 'material-ui/Drawer'
 import Avatar from 'material-ui/Avatar'
 import MenuItem from 'material-ui/MenuItem'
-import CircularProgress from 'material-ui/CircularProgress'
 import { isMobile } from '../helpers/application_helper'
 
 export default class LeftBar extends Component {
@@ -24,9 +23,11 @@ export default class LeftBar extends Component {
         swipeAreaWidth={100}
         onRequestChange={(open) => setDrawer(open)}
       >
-        <MenuItem onTouchTap={(e) => this.goToPage('users/' + user.get('id'))}>
-          { user.get('isFetching')? <CircularProgress/> : <Avatar src={user.get('avatar')} /> }
-          {user.get('name')}
+        <MenuItem
+        onTouchTap={(e) => this.goToPage('users/' + user.get('id'))}
+        >
+          <Avatar size={80} src={user.get('avatar')} />
+          <h4>{user.get('name')}</h4>
         </MenuItem>
 
         <MenuItem onTouchTap={(e) => this.goToPage('/')}>

@@ -4,7 +4,6 @@ import { getPostsList, createPost } from '../../actions/posts'
 import { setPostDialog } from '../../actions/pages'
 import PostForm from '../../components/PostForm'
 import PostsList from '../../components/PostsList'
-import CircularProgress from 'material-ui/CircularProgress'
 import { hashHistory } from 'react-router'
 import './styles.css'
 
@@ -26,10 +25,8 @@ export class NewsFeed extends Component {
     return(
       <div>
       <PostForm setPostDialog={setPostDialog} open={pages.get('postDialog')} createPost={createPost} />
-      <PostsList posts={postsList.get('posts')} goToPage={this.goToPage} />
-      { postsList.get('isFetching')? <CircularProgress size={60} thickness={5}/> : null }
+      <PostsList postsList={postsList} goToPage={this.goToPage} getPostsList={getPostsList} />
       </div>
-
     )
   }
 }
@@ -39,8 +36,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getPostsList: () => {
-    dispatch(getPostsList())
+  getPostsList: page => {
+    dispatch(getPostsList(page))
   },
   setPostDialog: value => {
     dispatch(setPostDialog(value))

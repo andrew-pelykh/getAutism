@@ -4,7 +4,7 @@ class PostsController < BaseController
 
   def index
     posts = []
-    Post.all.map do |post|
+    Post.order(created_at: :desc).page(params[:page]).per(20).map do |post|
       user = User.find(post.user_id)
       posts.push({
         id: post.id,

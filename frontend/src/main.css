@@ -9,3 +9,8 @@ body {
 .root {
   padding-top: 65px;
 }
+
+.loader {
+  width: 100%;
+  text-align: center;
+}

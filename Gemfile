@@ -10,6 +10,7 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'bcrypt'
 gem 'carrierwave', '~> 1.0'
+gem 'kaminari'
 
 group :development do
   gem 'spring'
