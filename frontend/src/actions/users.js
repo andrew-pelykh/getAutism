@@ -2,6 +2,7 @@ import axios from 'axios'
 import { hashHistory } from 'react-router'
 import { getToken, removeToken, setToken } from '../helpers/token_helper'
 import * as types from '../constants/ActionTypes'
+import { logOutIfUnauthorized } from '../helpers/application_helper'
 
 export const currentUser = () => ({
   type: types.CURRENT_USER
@@ -29,10 +30,7 @@ export function getCurrentUser() {
     })
     .catch(error => {
       dispatch(currentUserFailure(error.response.data.errors))
-      if (error.response.status == 403) {
-        removeToken()
-        hashHistory.push(`/`)
-      }
+      dispatch(logOutIfUnauthorized(error.response.status))
     })
   }
 }
@@ -63,10 +61,7 @@ export function getUser(id) {
     })
     .catch(error => {
       dispatch(userFailure(error.response.data.errors))
-      if (error.response.status == 403) {
-        removeToken()
-        hashHistory.push(`/`)
-      }
+      dispatch(logOutIfUnauthorized(error.response.status))
     })
   }
 }
@@ -126,10 +121,7 @@ export function getUsersList() {
     })
     .catch(error => {
       dispatch(usersListFailure())
-      if (error.response.status == 403) {
-        removeToken()
-        hashHistory.push(`/`)
-      }
+      dispatch(logOutIfUnauthorized(error.response.status))
     })
   }
 }
@@ -159,10 +151,7 @@ export function updateUser(user) {
     })
     .catch(error => {
       dispatch(userUpdateFailure())
-      if (error.response.status == 403) {
-        removeToken()
-        hashHistory.push(`/`)
-      }
+      dispatch(logOutIfUnauthorized(error.response.status))
     })
   }
 }

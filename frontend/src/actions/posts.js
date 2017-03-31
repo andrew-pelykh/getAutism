@@ -2,6 +2,7 @@ import axios from 'axios'
 import { hashHistory } from 'react-router'
 import * as types from '../constants/ActionTypes'
 import { getToken, removeToken } from '../helpers/token_helper'
+import { logOutIfUnauthorized } from '../helpers/application_helper'
 
 export const postsList = () => ({
   type: types.POSTS_LIST
@@ -28,10 +29,7 @@ export function getPostsList() {
     })
     .catch(error => {
       dispatch(postsListFailure())
-      if (error.response.status == 403) {
-        removeToken()
-        hashHistory.push(`/`)
-      }
+      dispatch(logOutIfUnauthorized(error.response.status))
     })
   }
 }
@@ -61,6 +59,7 @@ export function createPost(post) {
     })
     .catch(error => {
       dispatch(postCreateFailure(error.response.data.errors))
+      dispatch(logOutIfUnauthorized(error.response.status))
     })
   }
 }
