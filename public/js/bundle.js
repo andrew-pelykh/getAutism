@@ -50704,6 +50704,10 @@
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
+	var _CircularProgress = __webpack_require__(569);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
 	var _reactFlexboxGrid = __webpack_require__(529);
 
 	__webpack_require__(556);
@@ -50732,7 +50736,10 @@
 	    value: function render() {
 	      var _React$createElement;
 
-	      var onSubmitLogin = this.props.onSubmitLogin;
+	      var _props = this.props,
+	          onSubmitLogin = _props.onSubmitLogin,
+	          errors = _props.errors,
+	          user = _props.user;
 
 	      return _react2.default.createElement(
 	        _reactFlexboxGrid.Grid,
@@ -50757,7 +50764,7 @@
 	              _react2.default.createElement(_TextField2.default, {
 	                id: 'email',
 	                floatingLabelText: 'Email',
-	                errorText: this.props.errors.get('login-form')
+	                errorText: errors.get('login-form')
 	              })
 	            ),
 	            _react2.default.createElement(
@@ -50767,14 +50774,20 @@
 	                floatingLabelText: 'Password',
 	                type: 'password',
 	                id: 'password'
+
 	              })
 	            ),
 	            _react2.default.createElement(
 	              _reactFlexboxGrid.Row,
 	              null,
+	              user.get('isFetching') ? _react2.default.createElement(
+	                'div',
+	                { className: 'loader' },
+	                _react2.default.createElement(_CircularProgress2.default, { className: 'loader', size: 40, thickness: 5 })
+	              ) : null,
 	              _react2.default.createElement(
 	                _RaisedButton2.default,
-	                { className: 'submit-button', type: 'submit' },
+	                { className: 'submit-button', type: 'submit', disabled: user.get('isFetching') },
 	                'Log in'
 	              )
 	            )
@@ -50802,6 +50815,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
+	    user: state.currentUser,
 	    errors: state.errors
 	  };
 	};

@@ -4,6 +4,7 @@ import { logIn } from '../../actions/auth'
 import { Link } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
+import CircularProgress from 'material-ui/CircularProgress'
 import { Grid, Row, Col } from 'react-flexbox-grid'
 import './styles.css'
 
@@ -11,7 +12,7 @@ import './styles.css'
 export class Login extends Component {
 
   render() {
-    const { onSubmitLogin } = this.props
+    const { onSubmitLogin, errors, user } = this.props
     return (
       <Grid fluid className="login-grid">
          <Col
@@ -26,7 +27,7 @@ export class Login extends Component {
           <TextField
             id="email"
             floatingLabelText="Email"
-            errorText={this.props.errors.get('login-form')}
+            errorText={errors.get('login-form')}
           />
           </Row>
           <Row>
@@ -34,10 +35,12 @@ export class Login extends Component {
             floatingLabelText="Password"
             type="password"
             id="password"
+
           />
           </Row>
           <Row>
-            <RaisedButton className="submit-button" type="submit">Log in</RaisedButton>
+            {user.get('isFetching')?  <div className="loader"><CircularProgress className="loader" size={40} thickness={5}/></div>:null}
+            <RaisedButton className="submit-button" type="submit" disabled={user.get('isFetching')}>Log in</RaisedButton>
           </Row>
         </form>
         <Row>
@@ -53,6 +56,7 @@ export class Login extends Component {
 }
 
 const mapStateToProps = state => ({
+    user: state.currentUser,
     errors: state.errors
 })
 

@@ -1,24 +1,34 @@
-# README
+# React-redux app backed by rails json api
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Social network that using react and redux for frontend and rails for
+backend.
 
-Things you may want to cover:
+Here demo on heroku: https://rails-redux-app.herokuapp.com/#/
 
-* Ruby version
+## Frontend
+React is used to build SPA UI with redux to control state tree.
+Webpack packs all frontend into bundle.js in public/js directory.
+Also I using Material-ui to dezign UI.
 
-* System dependencies
+## Backend
+Rails server will give html file if you don\`t have it. It will upload
+bundle.js with all frontend. After that it\`s gonna work like JSON api server to work with flow of data.
 
-* Configuration
+## Deploing
+Firstly run ```bundle install``` in root directory to upload gems.
 
-* Database creation
+This app uses postgresql. Make sure you have configurated your
+```database.yml``` file to work with it.
 
-* Database initialization
+To create database run ```rake db:setup``` in root directory.
+If you want, you can use seed.rb to populate your db. To do it,
+run ```rake db:seed``` in root directory.
 
-* How to run the test suite
+To run server use ```rails s``` command.
 
-* Services (job queues, cache servers, search engines, etc.)
+I have already generated bundle.js(I need it to make deploying on heroku easy), but if you want to do it, you need:
 
-* Deployment instructions
+1. Run ```npm install``` in frontend directory to load all npm packages.
+2. Run ```npm run build``` in frontend directory to generate bundle.js.
 
-* ...
+Make sure you have the newest version of nodejs.
