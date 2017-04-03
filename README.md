@@ -1,21 +1,27 @@
 # React-redux app backed by rails json api
 
-Social network that using react and redux for frontend and rails for
+Social network that using react and redux for frontend, and rails for
 backend.
 
-Here demo on heroku: https://rails-redux-app.herokuapp.com/#/
+Here is demo on heroku: https://rails-redux-app.herokuapp.com/#/
 
 ## Frontend
 React is used to build SPA UI with redux to control state tree.
 Webpack packs all frontend into bundle.js in public/js directory.
 Also I using Material-ui to dezign UI.
 
+PC and mobile version have some differences in dezign. If you use Chrome
+you can check it in your browser.
+
+I use enzyme, chai and mocha to test react components and redux.
+To test redux thunks i use nock to mock requests.
+
 ## Backend
-Rails server will give html file if you don\`t have it. It will upload
+Rails server will give html file, if you don\`t have it. It will upload
 bundle.js with all frontend. After that it\`s gonna work like JSON api server to work with flow of data.
 
 ## Deploing
-Firstly run ```bundle install``` in root directory to upload gems.
+Firstly, run ```bundle install``` in root directory to upload gems.
 
 This app uses postgresql. Make sure you have configurated your
 ```database.yml``` file to work with it.
