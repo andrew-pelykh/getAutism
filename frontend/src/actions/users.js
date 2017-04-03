@@ -109,6 +109,10 @@ export const usersListFailure = () => ({
   type: types.USERS_LIST_FAILURE
 })
 
+export const usersListEnd = () => ({
+  type: types.USERS_LIST_END
+})
+
 export function getUsersList(page) {
   return dispatch => {
     dispatch(usersList())
@@ -116,6 +120,8 @@ export function getUsersList(page) {
     instance.defaults.headers.common['X-Api-Key'] = getToken()
     return instance.get('/users', { params: { page: page }})
     .then(response => {
+      if(response.data.users < 20)
+        dispatch(usersListEnd())
       dispatch(usersListSuccess(response.data.users))
     })
     .catch(error => {

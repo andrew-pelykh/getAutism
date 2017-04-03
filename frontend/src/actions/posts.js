@@ -17,6 +17,10 @@ export const postsListFailure = () => ({
   type: types.POSTS_LIST_FAILURE
 })
 
+export const postsListEnd = () => ({
+  type: types.POSTS_LIST_END
+})
+
 export function getPostsList(page) {
   return dispatch => {
     dispatch(postsList())
@@ -24,6 +28,8 @@ export function getPostsList(page) {
     instance.defaults.headers.common['X-Api-Key'] = getToken()
     return instance.get('/posts', { params: { page: page }})
     .then(response => {
+      if (response.data.posts.length < 20)
+        dispatch(postsListEnd())
       dispatch(postsListSuccess(response.data.posts))
     })
     .catch(error => {

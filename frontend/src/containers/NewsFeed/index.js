@@ -25,7 +25,7 @@ export class NewsFeed extends Component {
     return(
       <div>
       <PostForm setPostDialog={setPostDialog} open={pages.get('postDialog')} createPost={createPost} />
-      <PostsList postsList={postsList} goToPage={this.goToPage} getPostsList={getPostsList} />
+      <PostsList postsList={postsList} goToPage={this.goToPage} getPostsList={getPostsList} listEnd={pages.get('postsListEnd')} />
       </div>
     )
   }

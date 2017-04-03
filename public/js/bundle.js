@@ -36153,11 +36153,11 @@
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _User = __webpack_require__(558);
+	var _User = __webpack_require__(560);
 
 	var _User2 = _interopRequireDefault(_User);
 
-	var _Users = __webpack_require__(562);
+	var _Users = __webpack_require__(564);
 
 	var _Users2 = _interopRequireDefault(_Users);
 
@@ -36366,7 +36366,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.userUpdateFailure = exports.userUpdateSuccess = exports.userUpdate = exports.usersListFailure = exports.usersListSuccess = exports.usersList = exports.registrationFailure = exports.registrationSuccess = exports.registration = exports.userFailure = exports.userSuccess = exports.user = exports.currentUserFailure = exports.currentUserSuccess = exports.currentUser = undefined;
+	exports.userUpdateFailure = exports.userUpdateSuccess = exports.userUpdate = exports.usersListEnd = exports.usersListFailure = exports.usersListSuccess = exports.usersList = exports.registrationFailure = exports.registrationSuccess = exports.registration = exports.userFailure = exports.userSuccess = exports.user = exports.currentUserFailure = exports.currentUserSuccess = exports.currentUser = undefined;
 	exports.getCurrentUser = getCurrentUser;
 	exports.getUser = getUser;
 	exports.register = register;
@@ -36513,12 +36513,19 @@
 	  };
 	};
 
+	var usersListEnd = exports.usersListEnd = function usersListEnd() {
+	  return {
+	    type: types.USERS_LIST_END
+	  };
+	};
+
 	function getUsersList(page) {
 	  return function (dispatch) {
 	    dispatch(usersList());
 	    var instance = _axios2.default.create();
 	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
 	    return instance.get('/users', { params: { page: page } }).then(function (response) {
+	      if (response.data.users < 20) dispatch(usersListEnd());
 	      dispatch(usersListSuccess(response.data.users));
 	    }).catch(function (error) {
 	      dispatch(usersListFailure());
@@ -38138,6 +38145,8 @@
 
 	var SET_DRAWER = exports.SET_DRAWER = 'SET_DRAWER';
 	var SET_POST_DIALOG = exports.SET_POST_DIALOG = ' SET_POST_DIALOG';
+	var USERS_LIST_END = exports.USERS_LIST_END = 'USERS_LIST_END';
+	var POSTS_LIST_END = exports.POSTS_LIST_END = 'POSTS_LIST_END';
 
 	var REGISTRAION = exports.REGISTRAION = 'REGISTRAION';
 	var REGISTRATION_SUCCESS = exports.REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
@@ -50704,13 +50713,13 @@
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
-	var _CircularProgress = __webpack_require__(569);
+	var _CircularProgress = __webpack_require__(556);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
 	var _reactFlexboxGrid = __webpack_require__(529);
 
-	__webpack_require__(556);
+	__webpack_require__(558);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52542,10 +52551,302 @@
 /* 556 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = undefined;
+
+	var _CircularProgress = __webpack_require__(557);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _CircularProgress2.default;
+
+/***/ },
+/* 557 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends2 = __webpack_require__(467);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _objectWithoutProperties2 = __webpack_require__(454);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _getPrototypeOf = __webpack_require__(272);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(298);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(299);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(303);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(350);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _simpleAssign = __webpack_require__(452);
+
+	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _autoPrefix = __webpack_require__(464);
+
+	var _autoPrefix2 = _interopRequireDefault(_autoPrefix);
+
+	var _transitions = __webpack_require__(465);
+
+	var _transitions2 = _interopRequireDefault(_transitions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function getRelativeValue(value, min, max) {
+	  var clampedValue = Math.min(Math.max(min, value), max);
+	  return clampedValue / (max - min);
+	}
+
+	function getArcLength(fraction, props) {
+	  return fraction * Math.PI * (props.size - props.thickness);
+	}
+
+	function getStyles(props, context) {
+	  var max = props.max,
+	      min = props.min,
+	      size = props.size,
+	      value = props.value;
+	  var palette = context.muiTheme.baseTheme.palette;
+
+
+	  var styles = {
+	    root: {
+	      position: 'relative',
+	      display: 'inline-block',
+	      width: size,
+	      height: size
+	    },
+	    wrapper: {
+	      width: size,
+	      height: size,
+	      display: 'inline-block',
+	      transition: _transitions2.default.create('transform', '20s', null, 'linear'),
+	      transitionTimingFunction: 'linear'
+	    },
+	    svg: {
+	      width: size,
+	      height: size,
+	      position: 'relative'
+	    },
+	    path: {
+	      stroke: props.color || palette.primary1Color,
+	      strokeLinecap: 'round',
+	      transition: _transitions2.default.create('all', '1.5s', null, 'ease-in-out')
+	    }
+	  };
+
+	  if (props.mode === 'determinate') {
+	    var relVal = getRelativeValue(value, min, max);
+	    styles.path.transition = _transitions2.default.create('all', '0.3s', null, 'linear');
+	    styles.path.strokeDasharray = getArcLength(relVal, props) + ', ' + getArcLength(1, props);
+	  }
+
+	  return styles;
+	}
+
+	var CircularProgress = function (_Component) {
+	  (0, _inherits3.default)(CircularProgress, _Component);
+
+	  function CircularProgress() {
+	    (0, _classCallCheck3.default)(this, CircularProgress);
+	    return (0, _possibleConstructorReturn3.default)(this, (CircularProgress.__proto__ || (0, _getPrototypeOf2.default)(CircularProgress)).apply(this, arguments));
+	  }
+
+	  (0, _createClass3.default)(CircularProgress, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.scalePath(this.refs.path);
+	      this.rotateWrapper(this.refs.wrapper);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      clearTimeout(this.scalePathTimer);
+	      clearTimeout(this.rotateWrapperTimer);
+	    }
+	  }, {
+	    key: 'scalePath',
+	    value: function scalePath(path) {
+	      var _this2 = this;
+
+	      var step = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+	      if (this.props.mode !== 'indeterminate') return;
+
+	      step %= 3;
+
+	      if (step === 0) {
+	        path.style.strokeDasharray = getArcLength(0, this.props) + ', ' + getArcLength(1, this.props);
+	        path.style.strokeDashoffset = 0;
+	        path.style.transitionDuration = '0ms';
+	      } else if (step === 1) {
+	        path.style.strokeDasharray = getArcLength(0.7, this.props) + ', ' + getArcLength(1, this.props);
+	        path.style.strokeDashoffset = getArcLength(-0.3, this.props);
+	        path.style.transitionDuration = '750ms';
+	      } else {
+	        path.style.strokeDasharray = getArcLength(0.7, this.props) + ', ' + getArcLength(1, this.props);
+	        path.style.strokeDashoffset = getArcLength(-1, this.props);
+	        path.style.transitionDuration = '850ms';
+	      }
+
+	      this.scalePathTimer = setTimeout(function () {
+	        return _this2.scalePath(path, step + 1);
+	      }, step ? 750 : 250);
+	    }
+	  }, {
+	    key: 'rotateWrapper',
+	    value: function rotateWrapper(wrapper) {
+	      var _this3 = this;
+
+	      if (this.props.mode !== 'indeterminate') return;
+
+	      _autoPrefix2.default.set(wrapper.style, 'transform', 'rotate(0deg)');
+	      _autoPrefix2.default.set(wrapper.style, 'transitionDuration', '0ms');
+
+	      setTimeout(function () {
+	        _autoPrefix2.default.set(wrapper.style, 'transform', 'rotate(1800deg)');
+	        _autoPrefix2.default.set(wrapper.style, 'transitionDuration', '10s');
+	        _autoPrefix2.default.set(wrapper.style, 'transitionTimingFunction', 'linear');
+	      }, 50);
+
+	      this.rotateWrapperTimer = setTimeout(function () {
+	        return _this3.rotateWrapper(wrapper);
+	      }, 10050);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          style = _props.style,
+	          innerStyle = _props.innerStyle,
+	          size = _props.size,
+	          thickness = _props.thickness,
+	          other = (0, _objectWithoutProperties3.default)(_props, ['style', 'innerStyle', 'size', 'thickness']);
+	      var prepareStyles = this.context.muiTheme.prepareStyles;
+
+	      var styles = getStyles(this.props, this.context);
+
+	      return _react2.default.createElement(
+	        'div',
+	        (0, _extends3.default)({}, other, { style: prepareStyles((0, _simpleAssign2.default)(styles.root, style)) }),
+	        _react2.default.createElement(
+	          'div',
+	          { ref: 'wrapper', style: prepareStyles((0, _simpleAssign2.default)(styles.wrapper, innerStyle)) },
+	          _react2.default.createElement(
+	            'svg',
+	            {
+	              viewBox: '0 0 ' + size + ' ' + size,
+	              style: prepareStyles(styles.svg)
+	            },
+	            _react2.default.createElement('circle', {
+	              ref: 'path',
+	              style: prepareStyles(styles.path),
+	              cx: size / 2,
+	              cy: size / 2,
+	              r: (size - thickness) / 2,
+	              fill: 'none',
+	              strokeWidth: thickness,
+	              strokeMiterlimit: '20'
+	            })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	  return CircularProgress;
+	}(_react.Component);
+
+	CircularProgress.defaultProps = {
+	  mode: 'indeterminate',
+	  value: 0,
+	  min: 0,
+	  max: 100,
+	  size: 40,
+	  thickness: 3.5
+	};
+	CircularProgress.contextTypes = {
+	  muiTheme: _react.PropTypes.object.isRequired
+	};
+	process.env.NODE_ENV !== "production" ? CircularProgress.propTypes = {
+	  /**
+	   * Override the progress's color.
+	   */
+	  color: _react.PropTypes.string,
+	  /**
+	   * Style for inner wrapper div.
+	   */
+	  innerStyle: _react.PropTypes.object,
+	  /**
+	   * The max value of progress, only works in determinate mode.
+	   */
+	  max: _react.PropTypes.number,
+	  /**
+	   * The min value of progress, only works in determinate mode.
+	   */
+	  min: _react.PropTypes.number,
+	  /**
+	   * The mode of show your progress, indeterminate
+	   * for when there is no value for progress.
+	   */
+	  mode: _react.PropTypes.oneOf(['determinate', 'indeterminate']),
+	  /**
+	   * The diameter of the progress in pixels.
+	   */
+	  size: _react.PropTypes.number,
+	  /**
+	   * Override the inline-styles of the root element.
+	   */
+	  style: _react.PropTypes.object,
+	  /**
+	   * Stroke width in pixels.
+	   */
+	  thickness: _react.PropTypes.number,
+	  /**
+	   * The value of progress, only works in determinate mode.
+	   */
+	  value: _react.PropTypes.number
+	} : void 0;
+	exports.default = CircularProgress;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 558 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(557);
+	var content = __webpack_require__(559);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(539)(content, {});
@@ -52565,7 +52866,7 @@
 	}
 
 /***/ },
-/* 557 */
+/* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(534)(undefined);
@@ -52579,7 +52880,7 @@
 
 
 /***/ },
-/* 558 */
+/* 560 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52601,11 +52902,11 @@
 
 	var _reactFlexboxGrid = __webpack_require__(529);
 
-	var _reactDropzone = __webpack_require__(559);
+	var _reactDropzone = __webpack_require__(561);
 
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 
-	__webpack_require__(560);
+	__webpack_require__(562);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52712,7 +53013,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(User);
 
 /***/ },
-/* 559 */
+/* 561 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -53279,13 +53580,13 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 560 */
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(561);
+	var content = __webpack_require__(563);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(539)(content, {});
@@ -53305,7 +53606,7 @@
 	}
 
 /***/ },
-/* 561 */
+/* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(534)(undefined);
@@ -53319,7 +53620,7 @@
 
 
 /***/ },
-/* 562 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53341,7 +53642,7 @@
 
 	var _reactRouter = __webpack_require__(71);
 
-	var _UsersList = __webpack_require__(563);
+	var _UsersList = __webpack_require__(565);
 
 	var _UsersList2 = _interopRequireDefault(_UsersList);
 
@@ -53372,9 +53673,10 @@
 	    value: function render() {
 	      var _props = this.props,
 	          usersList = _props.usersList,
-	          getUsersList = _props.getUsersList;
+	          getUsersList = _props.getUsersList,
+	          pages = _props.pages;
 
-	      return _react2.default.createElement(_UsersList2.default, { usersList: usersList, goToPage: this.goToPage, getUsersList: getUsersList });
+	      return _react2.default.createElement(_UsersList2.default, { usersList: usersList, goToPage: this.goToPage, getUsersList: getUsersList, listEnd: pages.get('usersListEnd') });
 	    }
 	  }]);
 
@@ -53383,7 +53685,8 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    usersList: state.usersList
+	    usersList: state.usersList,
+	    pages: state.pages
 	  };
 	};
 
@@ -53398,7 +53701,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Users);
 
 /***/ },
-/* 563 */
+/* 565 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53413,9 +53716,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _List = __webpack_require__(564);
+	var _List = __webpack_require__(566);
 
-	var _Divider = __webpack_require__(566);
+	var _Divider = __webpack_require__(568);
 
 	var _Divider2 = _interopRequireDefault(_Divider);
 
@@ -53423,11 +53726,11 @@
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
-	var _reactInfiniteScroller = __webpack_require__(568);
+	var _reactInfiniteScroller = __webpack_require__(570);
 
 	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
 
-	var _CircularProgress = __webpack_require__(569);
+	var _CircularProgress = __webpack_require__(556);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
@@ -53455,7 +53758,8 @@
 
 	      var _props = this.props,
 	          usersList = _props.usersList,
-	          getUsersList = _props.getUsersList;
+	          getUsersList = _props.getUsersList,
+	          listEnd = _props.listEnd;
 
 	      return _react2.default.createElement(
 	        _List.List,
@@ -53467,7 +53771,7 @@
 	            loadMore: function loadMore(page) {
 	              return getUsersList(page);
 	            },
-	            hasMore: !usersList.get('isFetching'),
+	            hasMore: !listEnd && !usersList.get('isFetching'),
 	            threshold: 100
 	          },
 	          usersList.get('users').map(function (user, n) {
@@ -53500,7 +53804,7 @@
 	exports.default = UsersList;
 
 /***/ },
-/* 564 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53518,7 +53822,7 @@
 
 	var _ListItem3 = _interopRequireDefault(_ListItem2);
 
-	var _makeSelectable2 = __webpack_require__(565);
+	var _makeSelectable2 = __webpack_require__(567);
 
 	var _makeSelectable3 = _interopRequireDefault(_makeSelectable2);
 
@@ -53530,7 +53834,7 @@
 	exports.default = _List3.default;
 
 /***/ },
-/* 565 */
+/* 567 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53703,7 +54007,7 @@
 	exports.default = makeSelectable;
 
 /***/ },
-/* 566 */
+/* 568 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53713,7 +54017,7 @@
 	});
 	exports.default = undefined;
 
-	var _Divider = __webpack_require__(567);
+	var _Divider = __webpack_require__(569);
 
 	var _Divider2 = _interopRequireDefault(_Divider);
 
@@ -53722,7 +54026,7 @@
 	exports.default = _Divider2.default;
 
 /***/ },
-/* 567 */
+/* 569 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -53797,7 +54101,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 568 */
+/* 570 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53975,298 +54279,6 @@
 
 
 /***/ },
-/* 569 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = undefined;
-
-	var _CircularProgress = __webpack_require__(570);
-
-	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _CircularProgress2.default;
-
-/***/ },
-/* 570 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends2 = __webpack_require__(467);
-
-	var _extends3 = _interopRequireDefault(_extends2);
-
-	var _objectWithoutProperties2 = __webpack_require__(454);
-
-	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-	var _getPrototypeOf = __webpack_require__(272);
-
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-	var _classCallCheck2 = __webpack_require__(298);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _createClass2 = __webpack_require__(299);
-
-	var _createClass3 = _interopRequireDefault(_createClass2);
-
-	var _possibleConstructorReturn2 = __webpack_require__(303);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(350);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
-	var _simpleAssign = __webpack_require__(452);
-
-	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _autoPrefix = __webpack_require__(464);
-
-	var _autoPrefix2 = _interopRequireDefault(_autoPrefix);
-
-	var _transitions = __webpack_require__(465);
-
-	var _transitions2 = _interopRequireDefault(_transitions);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function getRelativeValue(value, min, max) {
-	  var clampedValue = Math.min(Math.max(min, value), max);
-	  return clampedValue / (max - min);
-	}
-
-	function getArcLength(fraction, props) {
-	  return fraction * Math.PI * (props.size - props.thickness);
-	}
-
-	function getStyles(props, context) {
-	  var max = props.max,
-	      min = props.min,
-	      size = props.size,
-	      value = props.value;
-	  var palette = context.muiTheme.baseTheme.palette;
-
-
-	  var styles = {
-	    root: {
-	      position: 'relative',
-	      display: 'inline-block',
-	      width: size,
-	      height: size
-	    },
-	    wrapper: {
-	      width: size,
-	      height: size,
-	      display: 'inline-block',
-	      transition: _transitions2.default.create('transform', '20s', null, 'linear'),
-	      transitionTimingFunction: 'linear'
-	    },
-	    svg: {
-	      width: size,
-	      height: size,
-	      position: 'relative'
-	    },
-	    path: {
-	      stroke: props.color || palette.primary1Color,
-	      strokeLinecap: 'round',
-	      transition: _transitions2.default.create('all', '1.5s', null, 'ease-in-out')
-	    }
-	  };
-
-	  if (props.mode === 'determinate') {
-	    var relVal = getRelativeValue(value, min, max);
-	    styles.path.transition = _transitions2.default.create('all', '0.3s', null, 'linear');
-	    styles.path.strokeDasharray = getArcLength(relVal, props) + ', ' + getArcLength(1, props);
-	  }
-
-	  return styles;
-	}
-
-	var CircularProgress = function (_Component) {
-	  (0, _inherits3.default)(CircularProgress, _Component);
-
-	  function CircularProgress() {
-	    (0, _classCallCheck3.default)(this, CircularProgress);
-	    return (0, _possibleConstructorReturn3.default)(this, (CircularProgress.__proto__ || (0, _getPrototypeOf2.default)(CircularProgress)).apply(this, arguments));
-	  }
-
-	  (0, _createClass3.default)(CircularProgress, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.scalePath(this.refs.path);
-	      this.rotateWrapper(this.refs.wrapper);
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      clearTimeout(this.scalePathTimer);
-	      clearTimeout(this.rotateWrapperTimer);
-	    }
-	  }, {
-	    key: 'scalePath',
-	    value: function scalePath(path) {
-	      var _this2 = this;
-
-	      var step = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-	      if (this.props.mode !== 'indeterminate') return;
-
-	      step %= 3;
-
-	      if (step === 0) {
-	        path.style.strokeDasharray = getArcLength(0, this.props) + ', ' + getArcLength(1, this.props);
-	        path.style.strokeDashoffset = 0;
-	        path.style.transitionDuration = '0ms';
-	      } else if (step === 1) {
-	        path.style.strokeDasharray = getArcLength(0.7, this.props) + ', ' + getArcLength(1, this.props);
-	        path.style.strokeDashoffset = getArcLength(-0.3, this.props);
-	        path.style.transitionDuration = '750ms';
-	      } else {
-	        path.style.strokeDasharray = getArcLength(0.7, this.props) + ', ' + getArcLength(1, this.props);
-	        path.style.strokeDashoffset = getArcLength(-1, this.props);
-	        path.style.transitionDuration = '850ms';
-	      }
-
-	      this.scalePathTimer = setTimeout(function () {
-	        return _this2.scalePath(path, step + 1);
-	      }, step ? 750 : 250);
-	    }
-	  }, {
-	    key: 'rotateWrapper',
-	    value: function rotateWrapper(wrapper) {
-	      var _this3 = this;
-
-	      if (this.props.mode !== 'indeterminate') return;
-
-	      _autoPrefix2.default.set(wrapper.style, 'transform', 'rotate(0deg)');
-	      _autoPrefix2.default.set(wrapper.style, 'transitionDuration', '0ms');
-
-	      setTimeout(function () {
-	        _autoPrefix2.default.set(wrapper.style, 'transform', 'rotate(1800deg)');
-	        _autoPrefix2.default.set(wrapper.style, 'transitionDuration', '10s');
-	        _autoPrefix2.default.set(wrapper.style, 'transitionTimingFunction', 'linear');
-	      }, 50);
-
-	      this.rotateWrapperTimer = setTimeout(function () {
-	        return _this3.rotateWrapper(wrapper);
-	      }, 10050);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props,
-	          style = _props.style,
-	          innerStyle = _props.innerStyle,
-	          size = _props.size,
-	          thickness = _props.thickness,
-	          other = (0, _objectWithoutProperties3.default)(_props, ['style', 'innerStyle', 'size', 'thickness']);
-	      var prepareStyles = this.context.muiTheme.prepareStyles;
-
-	      var styles = getStyles(this.props, this.context);
-
-	      return _react2.default.createElement(
-	        'div',
-	        (0, _extends3.default)({}, other, { style: prepareStyles((0, _simpleAssign2.default)(styles.root, style)) }),
-	        _react2.default.createElement(
-	          'div',
-	          { ref: 'wrapper', style: prepareStyles((0, _simpleAssign2.default)(styles.wrapper, innerStyle)) },
-	          _react2.default.createElement(
-	            'svg',
-	            {
-	              viewBox: '0 0 ' + size + ' ' + size,
-	              style: prepareStyles(styles.svg)
-	            },
-	            _react2.default.createElement('circle', {
-	              ref: 'path',
-	              style: prepareStyles(styles.path),
-	              cx: size / 2,
-	              cy: size / 2,
-	              r: (size - thickness) / 2,
-	              fill: 'none',
-	              strokeWidth: thickness,
-	              strokeMiterlimit: '20'
-	            })
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	  return CircularProgress;
-	}(_react.Component);
-
-	CircularProgress.defaultProps = {
-	  mode: 'indeterminate',
-	  value: 0,
-	  min: 0,
-	  max: 100,
-	  size: 40,
-	  thickness: 3.5
-	};
-	CircularProgress.contextTypes = {
-	  muiTheme: _react.PropTypes.object.isRequired
-	};
-	process.env.NODE_ENV !== "production" ? CircularProgress.propTypes = {
-	  /**
-	   * Override the progress's color.
-	   */
-	  color: _react.PropTypes.string,
-	  /**
-	   * Style for inner wrapper div.
-	   */
-	  innerStyle: _react.PropTypes.object,
-	  /**
-	   * The max value of progress, only works in determinate mode.
-	   */
-	  max: _react.PropTypes.number,
-	  /**
-	   * The min value of progress, only works in determinate mode.
-	   */
-	  min: _react.PropTypes.number,
-	  /**
-	   * The mode of show your progress, indeterminate
-	   * for when there is no value for progress.
-	   */
-	  mode: _react.PropTypes.oneOf(['determinate', 'indeterminate']),
-	  /**
-	   * The diameter of the progress in pixels.
-	   */
-	  size: _react.PropTypes.number,
-	  /**
-	   * Override the inline-styles of the root element.
-	   */
-	  style: _react.PropTypes.object,
-	  /**
-	   * Stroke width in pixels.
-	   */
-	  thickness: _react.PropTypes.number,
-	  /**
-	   * The value of progress, only works in determinate mode.
-	   */
-	  value: _react.PropTypes.number
-	} : void 0;
-	exports.default = CircularProgress;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
 /* 571 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -54342,7 +54354,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_PostForm2.default, { setPostDialog: setPostDialog, open: pages.get('postDialog'), createPost: createPost }),
-	        _react2.default.createElement(_PostsList2.default, { postsList: postsList, goToPage: this.goToPage, getPostsList: getPostsList })
+	        _react2.default.createElement(_PostsList2.default, { postsList: postsList, goToPage: this.goToPage, getPostsList: getPostsList, listEnd: pages.get('postsListEnd') })
 	      );
 	    }
 	  }]);
@@ -54384,7 +54396,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.postCreateFailure = exports.postCreateSuccess = exports.postCreate = exports.postsListFailure = exports.postsListSuccess = exports.postsList = undefined;
+	exports.postCreateFailure = exports.postCreateSuccess = exports.postCreate = exports.postsListEnd = exports.postsListFailure = exports.postsListSuccess = exports.postsList = undefined;
 	exports.getPostsList = getPostsList;
 	exports.createPost = createPost;
 
@@ -54425,12 +54437,19 @@
 	  };
 	};
 
+	var postsListEnd = exports.postsListEnd = function postsListEnd() {
+	  return {
+	    type: types.POSTS_LIST_END
+	  };
+	};
+
 	function getPostsList(page) {
 	  return function (dispatch) {
 	    dispatch(postsList());
 	    var instance = _axios2.default.create();
 	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
 	    return instance.get('/posts', { params: { page: page } }).then(function (response) {
+	      if (response.data.posts.length < 20) dispatch(postsListEnd());
 	      dispatch(postsListSuccess(response.data.posts));
 	    }).catch(function (error) {
 	      dispatch(postsListFailure());
@@ -54560,7 +54579,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Divider = __webpack_require__(566);
+	var _Divider = __webpack_require__(568);
 
 	var _Divider2 = _interopRequireDefault(_Divider);
 
@@ -54568,11 +54587,11 @@
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
-	var _reactInfiniteScroller = __webpack_require__(568);
+	var _reactInfiniteScroller = __webpack_require__(570);
 
 	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
 
-	var _CircularProgress = __webpack_require__(569);
+	var _CircularProgress = __webpack_require__(556);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
@@ -54601,7 +54620,8 @@
 	      var _props = this.props,
 	          postsList = _props.postsList,
 	          getPostsList = _props.getPostsList,
-	          goToPage = _props.goToPage;
+	          goToPage = _props.goToPage,
+	          listEnd = _props.listEnd;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -54613,7 +54633,7 @@
 	            loadMore: function loadMore(page) {
 	              return getPostsList(page);
 	            },
-	            hasMore: !postsList.get('isFetching'),
+	            hasMore: !listEnd && !postsList.get('isFetching'),
 	            threshold: 100
 	          },
 	          postsList.get('posts').map(function (post, n) {
@@ -61417,6 +61437,10 @@
 	      return state.merge({ postDialog: action.value });
 	    case types.POST_CREATE_SUCCESS:
 	      return state.merge({ postDialog: false });
+	    case types.USERS_LIST_END:
+	      return state.merge({ usersListEnd: true });
+	    case types.POSTS_LIST_END:
+	      return state.merge({ postsListEnd: true });
 	  }
 	  return state;
 	};

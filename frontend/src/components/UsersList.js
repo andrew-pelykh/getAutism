@@ -10,13 +10,13 @@ import CircularProgress from 'material-ui/CircularProgress'
 
 export default class UsersList extends Component {
   render() {
-    const { usersList, getUsersList } = this.props
+    const { usersList, getUsersList, listEnd } = this.props
     return(
       <List>
         <InfiniteScroll
           pageStart={usersList.get('users').count()/20}
           loadMore={page => getUsersList(page)}
-          hasMore={!usersList.get('isFetching')}
+          hasMore={!listEnd && !usersList.get('isFetching')}
           threshold={100}
         >
           { usersList.get('users').map((user,n) => {

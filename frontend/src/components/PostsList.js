@@ -8,13 +8,13 @@ import {Card, CardHeader, CardText} from 'material-ui/Card'
 export default class PostsList extends Component {
 
   render() {
-    const { postsList, getPostsList, goToPage } = this.props
+    const { postsList, getPostsList, goToPage, listEnd } = this.props
     return(
       <div>
         <InfiniteScroll
           pageStart={postsList.get('posts').count()/20}
           loadMore={page => getPostsList(page)}
-          hasMore={!postsList.get('isFetching')}
+          hasMore={!listEnd  && !postsList.get('isFetching')}
           threshold={100}
         >
           { postsList.get('posts').map((post,n) => {

@@ -12,15 +12,16 @@ export class Users extends Component {
   }
 
   render() {
-    const { usersList, getUsersList } = this.props
+    const { usersList, getUsersList, pages } = this.props
     return(
-        <UsersList usersList={usersList} goToPage={this.goToPage} getUsersList={getUsersList} />
+        <UsersList usersList={usersList} goToPage={this.goToPage} getUsersList={getUsersList} listEnd={pages.get('usersListEnd')} />
     )
   }
 }
 
 const mapStateToProps = state => ({
-    usersList: state.usersList
+    usersList: state.usersList,
+    pages: state.pages
 })
 
 const mapDispatchToProps = dispatch => ({
