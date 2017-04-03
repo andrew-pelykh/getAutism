@@ -18,7 +18,10 @@ const appReducer = combineReducers({
 
 const reducer = (state = {}, action) => {
   if (action.type === 'LOGOUT') {
-    return {}
+    return {
+      currentUser: Map(),
+      errors: Map()
+    }
   }
   return appReducer(state, action)
 }

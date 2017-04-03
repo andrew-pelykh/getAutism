@@ -25,7 +25,7 @@ class SessionsController < BaseController
   end
 
   def render_login_errors
-    login_errors = { "login-form" => "Invalid email or password"}
+    login_errors = { "login-form" => ["Invalid email or password"]}
     render_errors(login_errors, 403)
   end
 end

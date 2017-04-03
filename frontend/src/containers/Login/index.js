@@ -13,26 +13,38 @@ export class Login extends Component {
   render() {
     const { onSubmitLogin } = this.props
     return (
-      <Grid fluid>
-         <Col lgOffset={4} md={4}>
+      <Grid fluid className="login-grid">
+         <Col
+           xsOffset={1} xs={10} xsOffset={1}
+           smOffset={2} sm={8} smOffset={2}
+           mdOffset={3} md={6} mdOffset={3}
+           lgOffset={4} lg={4} lgOffset={4}
+         >
+         <h1>Login</h1>
         <form id="login-form" onSubmit={(e) => onSubmitLogin(e)}>
           <Row>
           <TextField
             id="email"
-            hintText="Email"
+            floatingLabelText="Email"
+            errorText={this.props.errors.get('login-form')}
           />
           </Row>
           <Row>
           <TextField
-            hintText="Password"
+            floatingLabelText="Password"
             type="password"
             id="password"
           />
           </Row>
-          <RaisedButton type="submit">Log in</RaisedButton>
+          <Row>
+            <RaisedButton className="submit-button" type="submit">Log in</RaisedButton>
+          </Row>
         </form>
         <Row>
-          <Link to='/register'>Register</Link>
+          <p>
+            <Link to='/register'>Registation</Link>
+          </p>
+
         </Row>
         </Col>
       </Grid>
