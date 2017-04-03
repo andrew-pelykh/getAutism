@@ -1,0 +1,28 @@
+.app-bar {
+  position: fixed !important;
+}
+
+.root {
+  padding-top: 65px;
+}
+
+.current-user {
+  text-align: center;
+}
+
+.current-user img {
+  margin-top: 10px !important;
+}
+
+.current-user h4 {
+  margin-top: 0;
+}
+
+.version-info {
+  position: absolute;
+  bottom: 10px;
+  margin: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #A9A9A9;
+}

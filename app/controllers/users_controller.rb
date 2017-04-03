@@ -40,7 +40,7 @@ class UsersController < BaseController
 
   def index
     users = []
-    User.all.map do |user|
+    User.order(:name).page(params[:page]).per(20).map do |user|
       users.push({ id: user.id, name: user.name, avatar: user.avatar_url})
     end
     render json: { users: users }

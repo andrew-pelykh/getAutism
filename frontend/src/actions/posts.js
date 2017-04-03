@@ -22,7 +22,6 @@ export function getPostsList(page) {
     dispatch(postsList())
     var instance = axios.create()
     instance.defaults.headers.common['X-Api-Key'] = getToken()
-    console.log(page)
     return instance.get('/posts', { params: { page: page }})
     .then(response => {
       dispatch(postsListSuccess(response.data.posts))

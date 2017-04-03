@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getCurrentUser } from '../actions/users'
-import LeftBar from '../components/LeftBar'
-import { setDrawer } from '../actions/pages'
-import { logOut } from '../actions/auth'
+import { getCurrentUser } from '../../actions/users'
+import LeftBar from '../../components/LeftBar'
+import { setDrawer } from '../../actions/pages'
+import { logOut } from '../../actions/auth'
 import AppBar from 'material-ui/AppBar'
 import { Grid, Col } from 'react-flexbox-grid'
-import { isMobile } from '../helpers/application_helper'
+import { isMobile } from '../../helpers/application_helper'
+import './styles.css'
 
 export class NavBar extends Component {
 
@@ -39,7 +40,7 @@ export class NavBar extends Component {
     } else {
       return(
         <div>
-          <LeftBar 
+          <LeftBar
            docked={true}
            drawer={true}
            setDrawer={setDrawer}

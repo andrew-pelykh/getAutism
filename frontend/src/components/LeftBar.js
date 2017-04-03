@@ -24,6 +24,7 @@ export default class LeftBar extends Component {
         onRequestChange={(open) => setDrawer(open)}
       >
         <MenuItem
+        className="current-user"
         onTouchTap={(e) => this.goToPage('users/' + user.get('id'))}
         >
           <Avatar size={80} src={user.get('avatar')} />
@@ -41,7 +42,7 @@ export default class LeftBar extends Component {
         <MenuItem onTouchTap={(e) => logOut(e)}>
           Exit
         </MenuItem>
-        <p>{isMobile()? "It`s mobile version":"It`s pc version"}</p>
+        <p className="version-info ">{isMobile()? "It`s mobile version":"It`s pc version"}</p>
       </Drawer>
     )
   }

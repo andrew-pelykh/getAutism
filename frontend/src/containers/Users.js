@@ -7,21 +7,14 @@ import UsersList from '../components/UsersList'
 
 export class Users extends Component {
 
-  constructor(props) {
-    super(props)
-    const { usersList, getUsersList } = props
-    if (usersList.get('users').isEmpty()) {
-      getUsersList()
-    }
-  }
-
   goToPage(url) {
     hashHistory.push(url)
   }
 
   render() {
+    const { usersList, getUsersList } = this.props
     return(
-        <UsersList users={this.props.usersList.get('users')} goToPage={this.goToPage} />
+        <UsersList usersList={usersList} goToPage={this.goToPage} getUsersList={getUsersList} />
     )
   }
 }
@@ -31,8 +24,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getUsersList: () => {
-    dispatch(getUsersList())
+  getUsersList: page => {
+    dispatch(getUsersList(page))
   }
 })
 

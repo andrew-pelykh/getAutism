@@ -2,6 +2,23 @@
     max-width: 100%;
   }
 
-.name {
-   text-align: center;
+.user-profile {
+  text-align: center;
+}
+
+#avatar-dropzone {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+}
+
+#avatar-dropzone div {
+  display: none;
+}
+
+#avatar-dropzone:hover div {
+  position: absolute;
+  opacity: 0.2;
+  background-color: #000000;
+  display: inline;
 }

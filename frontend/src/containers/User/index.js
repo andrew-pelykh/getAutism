@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getUser, updateUser } from '../../actions/users'
+import { Col } from 'react-flexbox-grid'
+import Dropzone from 'react-dropzone'
 import './styles.css'
 
 export class User extends Component {
@@ -25,15 +27,27 @@ export class User extends Component {
 
     const { user, currentUser, updateUser } = this.props
     return(
-         <div>
-            <img className="avatar" src={user.get('avatar')}/>
-              <h3>{user.get('name')}</h3>
-
-          <form id='edit-form' onSubmit={(e) => updateUser(e)}>
-            <p><input type="file" name="user[avatar]"/></p>
-            <button type="submit" >Upload avatar</button>
+      <Col
+        className="user-profile"
+        xs={12}
+        smOffset={1} sm={10}
+        mdOffset={1} md={8}
+        lgOffset={2} lg={6}
+      >
+        { (user.get('id')== currentUser.get('id'))?
+          <form id='edit-form'>
+            <Dropzone id="avatar-dropzone" name="user[avatar]" onDrop={() => updateUser()}>
+              <div>
+                Upload your photo
+              </div>
+              <img className="avatar" src={user.get('avatar')}/>
+            </Dropzone>
           </form>
-      </div>
+          :
+          <img className="avatar" src={user.get('avatar')}/>
+        }
+        <h3>{user.get('name')}</h3>
+      </Col>
     )
   }
 }
@@ -47,8 +61,7 @@ const mapDispatchToProps = dispatch => ({
   getUser: id => {
     dispatch(getUser(id))
   },
-  updateUser: (e) => {
-    e.preventDefault()
+  updateUser: () => {
     const user = new FormData(document.getElementById('edit-form'))
     dispatch(updateUser(user))
   }

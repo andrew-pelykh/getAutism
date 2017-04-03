@@ -109,13 +109,12 @@ export const usersListFailure = () => ({
   type: types.USERS_LIST_FAILURE
 })
 
-export function getUsersList() {
+export function getUsersList(page) {
   return dispatch => {
     dispatch(usersList())
-    const config = {
-      headers:  {'X-Api-Key': getToken()}
-    }
-    return axios.get('/users', config)
+    var instance = axios.create()
+    instance.defaults.headers.common['X-Api-Key'] = getToken()
+    return instance.get('/users', { params: { page: page }})
     .then(response => {
       dispatch(usersListSuccess(response.data.users))
     })

@@ -12,7 +12,7 @@ export default class PostsList extends Component {
     return(
       <div>
         <InfiniteScroll
-          pageStart={1}
+          pageStart={postsList.get('posts').count()/20}
           loadMore={page => getPostsList(page)}
           hasMore={!postsList.get('isFetching')}
           threshold={100}
