@@ -6,7 +6,6 @@
 
 # Ignore bundler config.
 /.bundle
-/public/js/bundle.js
 /public/uploads
 /frontend/node_modules
 # Ignore all logfiles and tempfiles.
