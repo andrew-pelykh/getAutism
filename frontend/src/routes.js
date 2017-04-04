@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import NavBar from './containers/NavBar'
+import ApplicationLayout from './components/ApplicationLayout'
 import Login from './containers/Login'
 import User from './containers/User'
 import Users from './containers/Users'
@@ -10,7 +10,7 @@ import { getToken } from './helpers/token_helper'
 
 const routes = (
   <div>
-  <Route path="/" component={NavBar} onEnter={checkLogin}>
+  <Route path="/" component={ApplicationLayout} onEnter={checkLogin}>
     <IndexRoute component={NewsFeed}/>
     <Route path="users/:id" component={User} />
     <Route path="/users" component={Users} />
