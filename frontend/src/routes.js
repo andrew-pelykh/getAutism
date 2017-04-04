@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import ApplicationLayout from './components/ApplicationLayout'
+import AuthorizationLayout from './components/AuthorizationLayout'
 import Login from './containers/Login'
 import User from './containers/User'
 import Users from './containers/Users'
@@ -15,7 +16,7 @@ const routes = (
     <Route path="users/:id" component={User} />
     <Route path="/users" component={Users} />
   </Route>
-  <Route path="/" onEnter={checkLogout}>
+  <Route path="/" component={AuthorizationLayout} onEnter={checkLogout}>
     <Route path="login" component={Login} />
     <Route path="register" component={Register}/>
   </Route>

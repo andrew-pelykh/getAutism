@@ -7,6 +7,7 @@ import { isMobile, goToPage } from '../../helpers/application_helper'
 import Drawer from 'material-ui/Drawer'
 import Avatar from 'material-ui/Avatar'
 import MenuItem from 'material-ui/MenuItem'
+import './style.css'
 
 export class LeftBar extends Component {
 
@@ -17,6 +18,7 @@ export class LeftBar extends Component {
     const { user, setDrawer, logOut, goToPage, drawer } = this.props
     return(
       <Drawer
+        className = 'left-bar'
         docked={!isMobile()}
         width={200}
         open={drawer}
@@ -31,7 +33,9 @@ export class LeftBar extends Component {
           <h4>{user.get('name')}</h4>
         </MenuItem>
 
-        <MenuItem onTouchTap={(e) => goToPage('/')}>
+        <MenuItem
+        onTouchTap={(e) => goToPage('/')}>
+
           News
         </MenuItem>
 

@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getUsersList } from '../actions/users'
-import { hashHistory } from 'react-router'
+import { goToPage } from '../helpers/application_helper'
 import UsersList from '../components/UsersList'
-
 
 export class Users extends Component {
 
-  goToPage(url) {
-    hashHistory.push(url)
-  }
-
   render() {
-    const { usersList, getUsersList, pages } = this.props
+    const { usersList, getUsersList, pages, goToPage } = this.props
     return(
-        <UsersList usersList={usersList} goToPage={this.goToPage} getUsersList={getUsersList} listEnd={pages.get('usersListEnd')} />
+        <UsersList
+          usersList={usersList}
+          goToPage={goToPage}
+          getUsersList={getUsersList}
+          listEnd={pages.get('usersListEnd')}
+        />
     )
   }
 }
@@ -25,9 +25,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getUsersList: page => {
-    dispatch(getUsersList(page))
-  }
+  getUsersList: page => dispatch(getUsersList(page)),
+  goToPage: url => dispatch(goToPage(url))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users)

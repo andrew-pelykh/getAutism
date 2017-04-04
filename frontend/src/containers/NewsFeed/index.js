@@ -4,28 +4,17 @@ import { getPostsList, createPost } from '../../actions/posts'
 import { setPostDialog } from '../../actions/pages'
 import PostForm from '../../components/PostForm'
 import PostsList from '../../components/PostsList'
-import { hashHistory } from 'react-router'
+import { goToPage } from '../../helpers/application_helper'
 import './styles.css'
 
 export class NewsFeed extends Component {
-
-  constructor(props) {
-    super(props)
-    if (props.postsList.get('posts').isEmpty()) {
-      props.getPostsList()
-    }
-  }
-
-  goToPage(url) {
-    hashHistory.push(url)
-  }
 
   render() {
     const { postsList, getPostsList, setPostDialog, pages, createPost } = this.props
     return(
       <div>
       <PostForm setPostDialog={setPostDialog} open={pages.get('postDialog')} createPost={createPost} />
-      <PostsList postsList={postsList} goToPage={this.goToPage} getPostsList={getPostsList} listEnd={pages.get('postsListEnd')} />
+      <PostsList postsList={postsList} goToPage={goToPage} getPostsList={getPostsList} listEnd={pages.get('postsListEnd')} />
       </div>
     )
   }
@@ -36,12 +25,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getPostsList: page => {
-    dispatch(getPostsList(page))
-  },
-  setPostDialog: value => {
-    dispatch(setPostDialog(value))
-  },
+  getPostsList: page => dispatch(getPostsList(page)),
+  setPostDialog: value => dispatch(setPostDialog(value)),
+  goToPage: url => dispatch(goToPage(url)),
   createPost: (e) => {
     e.preventDefault()
     const post = new FormData(document.getElementById('post-form'))

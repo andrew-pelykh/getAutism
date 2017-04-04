@@ -7,12 +7,9 @@ import './styles.css'
 
 export class User extends Component {
 
-  constructor(props) {
-    super(props)
-    const { params, getUser, user } = props
-    if (user.get('id') != params.id) {
-      getUser(params.id)
-    }
+  componentDidMount() {
+    const { params, getUser } = this.props
+    getUser(params.id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,9 +55,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getUser: id => {
-    dispatch(getUser(id))
-  },
+  getUser: id => dispatch(getUser(id)),
   updateUser: () => {
     const user = new FormData(document.getElementById('edit-form'))
     dispatch(updateUser(user))

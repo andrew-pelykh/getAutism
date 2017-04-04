@@ -69,17 +69,21 @@
 
 	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
 
+	var _getMuiTheme = __webpack_require__(358);
+
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+
 	var _routes = __webpack_require__(417);
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(588);
+	var _store = __webpack_require__(591);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	__webpack_require__(598);
+	__webpack_require__(601);
 
-	var _reactTapEventPlugin = __webpack_require__(600);
+	var _reactTapEventPlugin = __webpack_require__(603);
 
 	var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
@@ -89,9 +93,15 @@
 
 	var store = (0, _store2.default)();
 
+	var muiTheme = (0, _getMuiTheme2.default)({
+	  palette: {
+	    primary1Color: _colors.blueGrey800
+	  }
+	});
+
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _MuiThemeProvider2.default,
-	  null,
+	  { muiTheme: muiTheme },
 	  _react2.default.createElement(
 	    _reactRedux.Provider,
 	    { store: store },
@@ -36149,23 +36159,27 @@
 
 	var _ApplicationLayout2 = _interopRequireDefault(_ApplicationLayout);
 
-	var _Login = __webpack_require__(547);
+	var _AuthorizationLayout = __webpack_require__(549);
+
+	var _AuthorizationLayout2 = _interopRequireDefault(_AuthorizationLayout);
+
+	var _Login = __webpack_require__(550);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _User = __webpack_require__(560);
+	var _User = __webpack_require__(563);
 
 	var _User2 = _interopRequireDefault(_User);
 
-	var _Users = __webpack_require__(564);
+	var _Users = __webpack_require__(567);
 
 	var _Users2 = _interopRequireDefault(_Users);
 
-	var _NewsFeed = __webpack_require__(571);
+	var _NewsFeed = __webpack_require__(574);
 
 	var _NewsFeed2 = _interopRequireDefault(_NewsFeed);
 
-	var _Register = __webpack_require__(587);
+	var _Register = __webpack_require__(590);
 
 	var _Register2 = _interopRequireDefault(_Register);
 
@@ -36185,7 +36199,7 @@
 	  ),
 	  _react2.default.createElement(
 	    _reactRouter.Route,
-	    { path: '/', onEnter: checkLogout },
+	    { path: '/', component: _AuthorizationLayout2.default, onEnter: checkLogout },
 	    _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _Login2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'register', component: _Register2.default })
 	  )
@@ -36227,11 +36241,11 @@
 
 	var _Children2 = _interopRequireDefault(_Children);
 
-	var _LeftBar = __webpack_require__(465);
+	var _LeftBar = __webpack_require__(466);
 
 	var _LeftBar2 = _interopRequireDefault(_LeftBar);
 
-	var _NavBar = __webpack_require__(543);
+	var _NavBar = __webpack_require__(545);
 
 	var _NavBar2 = _interopRequireDefault(_NavBar);
 
@@ -39192,7 +39206,7 @@
 
 	var _auth = __webpack_require__(438);
 
-	var _pages = __webpack_require__(467);
+	var _pages = __webpack_require__(465);
 
 	function isMobile() {
 	  return (/Mobi/.test(navigator.userAgent) ? true : false
@@ -40924,6 +40938,32 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.setDrawer = setDrawer;
+	exports.setPostDialog = setPostDialog;
+
+	var _ActionTypes = __webpack_require__(464);
+
+	function setDrawer(value) {
+	  return function (dispatch) {
+	    return dispatch({ type: _ActionTypes.SET_DRAWER, value: value });
+	  };
+	}
+
+	function setPostDialog(value) {
+	  return function (dispatch) {
+	    return dispatch({ type: _ActionTypes.SET_POST_DIALOG, value: value });
+	  };
+	}
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.LeftBar = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -40934,9 +40974,9 @@
 
 	var _reactRedux = __webpack_require__(33);
 
-	var _users = __webpack_require__(466);
+	var _users = __webpack_require__(467);
 
-	var _pages = __webpack_require__(467);
+	var _pages = __webpack_require__(465);
 
 	var _auth = __webpack_require__(438);
 
@@ -40953,6 +40993,8 @@
 	var _MenuItem = __webpack_require__(492);
 
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+	__webpack_require__(543);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40989,6 +41031,7 @@
 	      return _react2.default.createElement(
 	        _Drawer2.default,
 	        {
+	          className: 'left-bar',
 	          docked: !(0, _application_helper.isMobile)(),
 	          width: 200,
 	          open: drawer,
@@ -41014,7 +41057,8 @@
 	        ),
 	        _react2.default.createElement(
 	          _MenuItem2.default,
-	          { onTouchTap: function onTouchTap(e) {
+	          {
+	            onTouchTap: function onTouchTap(e) {
 	              return goToPage('/');
 	            } },
 	          'News'
@@ -41072,7 +41116,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LeftBar);
 
 /***/ },
-/* 466 */
+/* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41279,32 +41323,6 @@
 	      dispatch(userUpdateFailure());
 	      dispatch((0, _application_helper.logOutIfUnauthorized)(error.response.status));
 	    });
-	  };
-	}
-
-/***/ },
-/* 467 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.setDrawer = setDrawer;
-	exports.setPostDialog = setPostDialog;
-
-	var _ActionTypes = __webpack_require__(464);
-
-	function setDrawer(value) {
-	  return function (dispatch) {
-	    return dispatch({ type: _ActionTypes.SET_DRAWER, value: value });
-	  };
-	}
-
-	function setPostDialog(value) {
-	  return function (dispatch) {
-	    return dispatch({ type: _ActionTypes.SET_POST_DIALOG, value: value });
 	  };
 	}
 
@@ -50228,6 +50246,46 @@
 /* 543 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(544);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(430)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!./style.css", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!./style.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 544 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(425)(undefined);
+	// imports
+
+
+	// module
+	exports.push([module.id, ".left-bar {\n  text-align: center;\n}\n\n.current-user img {\n  margin-top: 10px !important;\n}\n\n.current-user h4 {\n  margin-top: 0;\n}\n\n.version-info {\n  position: absolute;\n  bottom: 10px;\n  margin: 0;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  color: #A9A9A9;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 545 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -50245,9 +50303,9 @@
 
 	var _application_helper = __webpack_require__(436);
 
-	var _pages = __webpack_require__(467);
+	var _pages = __webpack_require__(465);
 
-	var _AppBar = __webpack_require__(544);
+	var _AppBar = __webpack_require__(546);
 
 	var _AppBar2 = _interopRequireDefault(_AppBar);
 
@@ -50304,7 +50362,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NavBar);
 
 /***/ },
-/* 544 */
+/* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50314,7 +50372,7 @@
 	});
 	exports.default = undefined;
 
-	var _AppBar = __webpack_require__(545);
+	var _AppBar = __webpack_require__(547);
 
 	var _AppBar2 = _interopRequireDefault(_AppBar);
 
@@ -50323,7 +50381,7 @@
 	exports.default = _AppBar2.default;
 
 /***/ },
-/* 545 */
+/* 547 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -50378,7 +50436,7 @@
 
 	var _IconButton2 = _interopRequireDefault(_IconButton);
 
-	var _menu = __webpack_require__(546);
+	var _menu = __webpack_require__(548);
 
 	var _menu2 = _interopRequireDefault(_menu);
 
@@ -50709,7 +50767,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 546 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50746,7 +50804,67 @@
 	exports.default = NavigationMenu;
 
 /***/ },
-/* 547 */
+/* 549 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactFlexboxGrid = __webpack_require__(420);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AuthorizationLayout = function (_Component) {
+	  _inherits(AuthorizationLayout, _Component);
+
+	  function AuthorizationLayout() {
+	    _classCallCheck(this, AuthorizationLayout);
+
+	    return _possibleConstructorReturn(this, (AuthorizationLayout.__proto__ || Object.getPrototypeOf(AuthorizationLayout)).apply(this, arguments));
+	  }
+
+	  _createClass(AuthorizationLayout, [{
+	    key: 'render',
+	    value: function render() {
+	      var _React$createElement;
+
+	      return _react2.default.createElement(
+	        _reactFlexboxGrid.Grid,
+	        { fluid: true, className: 'login-grid' },
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Col,
+	          (_React$createElement = {
+	            xsOffset: 1, xs: 10 }, _defineProperty(_React$createElement, 'xsOffset', 1), _defineProperty(_React$createElement, 'smOffset', 2), _defineProperty(_React$createElement, 'sm', 8), _defineProperty(_React$createElement, 'smOffset', 2), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'md', 6), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'lgOffset', 4), _defineProperty(_React$createElement, 'lg', 4), _defineProperty(_React$createElement, 'lgOffset', 4), _React$createElement),
+	          this.props.children
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AuthorizationLayout;
+	}(_react.Component);
+
+	exports.default = AuthorizationLayout;
+
+/***/ },
+/* 550 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50768,25 +50886,23 @@
 
 	var _reactRouter = __webpack_require__(71);
 
-	var _RaisedButton = __webpack_require__(548);
+	var _RaisedButton = __webpack_require__(551);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
-	var _TextField = __webpack_require__(550);
+	var _TextField = __webpack_require__(553);
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
-	var _CircularProgress = __webpack_require__(556);
+	var _CircularProgress = __webpack_require__(559);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
 	var _reactFlexboxGrid = __webpack_require__(420);
 
-	__webpack_require__(558);
+	__webpack_require__(561);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -50806,75 +50922,63 @@
 	  _createClass(Login, [{
 	    key: 'render',
 	    value: function render() {
-	      var _React$createElement;
-
 	      var _props = this.props,
 	          onSubmitLogin = _props.onSubmitLogin,
 	          errors = _props.errors,
 	          user = _props.user;
 
 	      return _react2.default.createElement(
-	        _reactFlexboxGrid.Grid,
-	        { fluid: true, className: 'login-grid' },
+	        'div',
+	        null,
 	        _react2.default.createElement(
-	          _reactFlexboxGrid.Col,
-	          (_React$createElement = {
-	            xsOffset: 1, xs: 10 }, _defineProperty(_React$createElement, 'xsOffset', 1), _defineProperty(_React$createElement, 'smOffset', 2), _defineProperty(_React$createElement, 'sm', 8), _defineProperty(_React$createElement, 'smOffset', 2), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'md', 6), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'lgOffset', 4), _defineProperty(_React$createElement, 'lg', 4), _defineProperty(_React$createElement, 'lgOffset', 4), _React$createElement),
+	          'h1',
+	          null,
+	          'Login'
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { id: 'login-form', onSubmit: function onSubmit(e) {
+	              return onSubmitLogin(e);
+	            } },
 	          _react2.default.createElement(
-	            'h1',
+	            _reactFlexboxGrid.Row,
 	            null,
-	            'Login'
-	          ),
-	          _react2.default.createElement(
-	            'form',
-	            { id: 'login-form', onSubmit: function onSubmit(e) {
-	                return onSubmitLogin(e);
-	              } },
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              _react2.default.createElement(_TextField2.default, {
-	                id: 'email',
-	                floatingLabelText: 'Email',
-	                errorText: errors.get('login-form')
-	              })
-	            ),
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              _react2.default.createElement(_TextField2.default, {
-	                floatingLabelText: 'Password',
-	                type: 'password',
-	                id: 'password'
-
-	              })
-	            ),
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              user.get('isFetching') ? _react2.default.createElement(
-	                'div',
-	                { className: 'loader' },
-	                _react2.default.createElement(_CircularProgress2.default, { className: 'loader', size: 40, thickness: 5 })
-	              ) : null,
-	              _react2.default.createElement(
-	                _RaisedButton2.default,
-	                { className: 'submit-button', type: 'submit', disabled: user.get('isFetching') },
-	                'Log in'
-	              )
-	            )
+	            _react2.default.createElement(_TextField2.default, {
+	              name: 'user[email]',
+	              floatingLabelText: 'Email',
+	              errorText: errors.get('login-form')
+	            })
 	          ),
 	          _react2.default.createElement(
 	            _reactFlexboxGrid.Row,
 	            null,
+	            _react2.default.createElement(_TextField2.default, {
+	              type: 'password',
+	              name: 'user[password]',
+	              floatingLabelText: 'Password'
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _reactFlexboxGrid.Row,
+	            null,
+	            _react2.default.createElement(_RaisedButton2.default, {
+	              className: 'submit-button',
+	              type: 'submit',
+	              disabled: user.get('isFetching'),
+	              label: 'Log in'
+	            })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Row,
+	          null,
+	          _react2.default.createElement(
+	            'p',
+	            null,
 	            _react2.default.createElement(
-	              'p',
-	              null,
-	              _react2.default.createElement(
-	                _reactRouter.Link,
-	                { to: '/register' },
-	                'Registation'
-	              )
+	              _reactRouter.Link,
+	              { to: '/register' },
+	              'Registation'
 	            )
 	          )
 	        )
@@ -50896,9 +51000,7 @@
 	  return {
 	    onSubmitLogin: function onSubmitLogin(e) {
 	      e.preventDefault();
-	      var email = document.getElementById('email').value;
-	      var password = document.getElementById('password').value;
-	      var user = { user: { email: email, password: password } };
+	      var user = new FormData(document.getElementById('login-form'));
 	      dispatch((0, _auth.logIn)(user));
 	    }
 	  };
@@ -50907,7 +51009,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Login);
 
 /***/ },
-/* 548 */
+/* 551 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50917,7 +51019,7 @@
 	});
 	exports.default = undefined;
 
-	var _RaisedButton = __webpack_require__(549);
+	var _RaisedButton = __webpack_require__(552);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
@@ -50926,7 +51028,7 @@
 	exports.default = _RaisedButton2.default;
 
 /***/ },
-/* 549 */
+/* 552 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -51424,7 +51526,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 550 */
+/* 553 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51434,7 +51536,7 @@
 	});
 	exports.default = undefined;
 
-	var _TextField = __webpack_require__(551);
+	var _TextField = __webpack_require__(554);
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
@@ -51443,7 +51545,7 @@
 	exports.default = _TextField2.default;
 
 /***/ },
-/* 551 */
+/* 554 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -51500,19 +51602,19 @@
 
 	var _transitions2 = _interopRequireDefault(_transitions);
 
-	var _EnhancedTextarea = __webpack_require__(552);
+	var _EnhancedTextarea = __webpack_require__(555);
 
 	var _EnhancedTextarea2 = _interopRequireDefault(_EnhancedTextarea);
 
-	var _TextFieldHint = __webpack_require__(553);
+	var _TextFieldHint = __webpack_require__(556);
 
 	var _TextFieldHint2 = _interopRequireDefault(_TextFieldHint);
 
-	var _TextFieldLabel = __webpack_require__(554);
+	var _TextFieldLabel = __webpack_require__(557);
 
 	var _TextFieldLabel2 = _interopRequireDefault(_TextFieldLabel);
 
-	var _TextFieldUnderline = __webpack_require__(555);
+	var _TextFieldUnderline = __webpack_require__(558);
 
 	var _TextFieldUnderline2 = _interopRequireDefault(_TextFieldUnderline);
 
@@ -52024,7 +52126,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 552 */
+/* 555 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -52272,7 +52374,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 553 */
+/* 556 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -52354,7 +52456,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 554 */
+/* 557 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -52473,7 +52575,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 555 */
+/* 558 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -52611,7 +52713,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 556 */
+/* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52621,7 +52723,7 @@
 	});
 	exports.default = undefined;
 
-	var _CircularProgress = __webpack_require__(557);
+	var _CircularProgress = __webpack_require__(560);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
@@ -52630,7 +52732,7 @@
 	exports.default = _CircularProgress2.default;
 
 /***/ },
-/* 557 */
+/* 560 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -52903,13 +53005,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 558 */
+/* 561 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(559);
+	var content = __webpack_require__(562);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -52929,7 +53031,7 @@
 	}
 
 /***/ },
-/* 559 */
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -52943,7 +53045,7 @@
 
 
 /***/ },
-/* 560 */
+/* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52961,15 +53063,15 @@
 
 	var _reactRedux = __webpack_require__(33);
 
-	var _users = __webpack_require__(466);
+	var _users = __webpack_require__(467);
 
 	var _reactFlexboxGrid = __webpack_require__(420);
 
-	var _reactDropzone = __webpack_require__(561);
+	var _reactDropzone = __webpack_require__(564);
 
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 
-	__webpack_require__(562);
+	__webpack_require__(565);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52982,27 +53084,27 @@
 	var User = exports.User = function (_Component) {
 	  _inherits(User, _Component);
 
-	  function User(props) {
+	  function User() {
 	    _classCallCheck(this, User);
 
-	    var _this = _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
-
-	    var params = props.params,
-	        getUser = props.getUser,
-	        user = props.user;
-
-	    if (user.get('id') != params.id) {
-	      getUser(params.id);
-	    }
-	    return _this;
+	    return _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).apply(this, arguments));
 	  }
 
 	  _createClass(User, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
 	      var _props = this.props,
 	          params = _props.params,
 	          getUser = _props.getUser;
+
+	      getUser(params.id);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var _props2 = this.props,
+	          params = _props2.params,
+	          getUser = _props2.getUser;
 	      var id = nextProps.params.id;
 
 	      if (params.id != id) {
@@ -53012,10 +53114,10 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _props2 = this.props,
-	          user = _props2.user,
-	          currentUser = _props2.currentUser,
-	          updateUser = _props2.updateUser;
+	      var _props3 = this.props,
+	          user = _props3.user,
+	          currentUser = _props3.currentUser,
+	          updateUser = _props3.updateUser;
 
 	      return _react2.default.createElement(
 	        _reactFlexboxGrid.Col,
@@ -53064,7 +53166,7 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
 	    getUser: function getUser(id) {
-	      dispatch((0, _users.getUser)(id));
+	      return dispatch((0, _users.getUser)(id));
 	    },
 	    updateUser: function updateUser() {
 	      var user = new FormData(document.getElementById('edit-form'));
@@ -53076,7 +53178,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(User);
 
 /***/ },
-/* 561 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -53643,13 +53745,13 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 562 */
+/* 565 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(563);
+	var content = __webpack_require__(566);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -53669,7 +53771,7 @@
 	}
 
 /***/ },
-/* 563 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -53683,7 +53785,7 @@
 
 
 /***/ },
-/* 564 */
+/* 567 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53701,11 +53803,11 @@
 
 	var _reactRedux = __webpack_require__(33);
 
-	var _users = __webpack_require__(466);
+	var _users = __webpack_require__(467);
 
-	var _reactRouter = __webpack_require__(71);
+	var _application_helper = __webpack_require__(436);
 
-	var _UsersList = __webpack_require__(565);
+	var _UsersList = __webpack_require__(568);
 
 	var _UsersList2 = _interopRequireDefault(_UsersList);
 
@@ -53727,19 +53829,20 @@
 	  }
 
 	  _createClass(Users, [{
-	    key: 'goToPage',
-	    value: function goToPage(url) {
-	      _reactRouter.hashHistory.push(url);
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
 	          usersList = _props.usersList,
 	          getUsersList = _props.getUsersList,
-	          pages = _props.pages;
+	          pages = _props.pages,
+	          goToPage = _props.goToPage;
 
-	      return _react2.default.createElement(_UsersList2.default, { usersList: usersList, goToPage: this.goToPage, getUsersList: getUsersList, listEnd: pages.get('usersListEnd') });
+	      return _react2.default.createElement(_UsersList2.default, {
+	        usersList: usersList,
+	        goToPage: goToPage,
+	        getUsersList: getUsersList,
+	        listEnd: pages.get('usersListEnd')
+	      });
 	    }
 	  }]);
 
@@ -53756,7 +53859,10 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
 	    getUsersList: function getUsersList(page) {
-	      dispatch((0, _users.getUsersList)(page));
+	      return dispatch((0, _users.getUsersList)(page));
+	    },
+	    goToPage: function goToPage(url) {
+	      return dispatch((0, _application_helper.goToPage)(url));
 	    }
 	  };
 	};
@@ -53764,7 +53870,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Users);
 
 /***/ },
-/* 565 */
+/* 568 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53779,9 +53885,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _List = __webpack_require__(566);
+	var _List = __webpack_require__(569);
 
-	var _Divider = __webpack_require__(568);
+	var _Divider = __webpack_require__(571);
 
 	var _Divider2 = _interopRequireDefault(_Divider);
 
@@ -53789,11 +53895,11 @@
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
-	var _reactInfiniteScroller = __webpack_require__(570);
+	var _reactInfiniteScroller = __webpack_require__(573);
 
 	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
 
-	var _CircularProgress = __webpack_require__(556);
+	var _CircularProgress = __webpack_require__(559);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
@@ -53817,12 +53923,11 @@
 	  _createClass(UsersList, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-
 	      var _props = this.props,
 	          usersList = _props.usersList,
 	          getUsersList = _props.getUsersList,
-	          listEnd = _props.listEnd;
+	          listEnd = _props.listEnd,
+	          goToPage = _props.goToPage;
 
 	      return _react2.default.createElement(
 	        _List.List,
@@ -53843,7 +53948,7 @@
 	              { key: n },
 	              _react2.default.createElement(_List.ListItem, {
 	                onClick: function onClick(e) {
-	                  return _this2.props.goToPage('users/' + user.get('id'));
+	                  return goToPage('users/' + user.get('id'));
 	                },
 	                primaryText: user.get('name'),
 	                leftAvatar: _react2.default.createElement(_Avatar2.default, { src: user.get('avatar') })
@@ -53855,7 +53960,11 @@
 	        usersList.get('isFetching') ? _react2.default.createElement(
 	          'div',
 	          { className: 'loader' },
-	          _react2.default.createElement(_CircularProgress2.default, { className: 'loader', size: 60, thickness: 5 })
+	          _react2.default.createElement(_CircularProgress2.default, {
+	            className: 'loader',
+	            size: 60,
+	            thickness: 5
+	          })
 	        ) : null
 	      );
 	    }
@@ -53867,7 +53976,7 @@
 	exports.default = UsersList;
 
 /***/ },
-/* 566 */
+/* 569 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53885,7 +53994,7 @@
 
 	var _ListItem3 = _interopRequireDefault(_ListItem2);
 
-	var _makeSelectable2 = __webpack_require__(567);
+	var _makeSelectable2 = __webpack_require__(570);
 
 	var _makeSelectable3 = _interopRequireDefault(_makeSelectable2);
 
@@ -53897,7 +54006,7 @@
 	exports.default = _List3.default;
 
 /***/ },
-/* 567 */
+/* 570 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54070,7 +54179,7 @@
 	exports.default = makeSelectable;
 
 /***/ },
-/* 568 */
+/* 571 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54080,7 +54189,7 @@
 	});
 	exports.default = undefined;
 
-	var _Divider = __webpack_require__(569);
+	var _Divider = __webpack_require__(572);
 
 	var _Divider2 = _interopRequireDefault(_Divider);
 
@@ -54089,7 +54198,7 @@
 	exports.default = _Divider2.default;
 
 /***/ },
-/* 569 */
+/* 572 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -54164,7 +54273,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 570 */
+/* 573 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54342,7 +54451,7 @@
 
 
 /***/ },
-/* 571 */
+/* 574 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54360,21 +54469,21 @@
 
 	var _reactRedux = __webpack_require__(33);
 
-	var _posts = __webpack_require__(572);
+	var _posts = __webpack_require__(575);
 
-	var _pages = __webpack_require__(467);
+	var _pages = __webpack_require__(465);
 
-	var _PostForm = __webpack_require__(573);
+	var _PostForm = __webpack_require__(576);
 
 	var _PostForm2 = _interopRequireDefault(_PostForm);
 
-	var _PostsList = __webpack_require__(574);
+	var _PostsList = __webpack_require__(577);
 
 	var _PostsList2 = _interopRequireDefault(_PostsList);
 
-	var _reactRouter = __webpack_require__(71);
+	var _application_helper = __webpack_require__(436);
 
-	__webpack_require__(585);
+	__webpack_require__(588);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54387,23 +54496,13 @@
 	var NewsFeed = exports.NewsFeed = function (_Component) {
 	  _inherits(NewsFeed, _Component);
 
-	  function NewsFeed(props) {
+	  function NewsFeed() {
 	    _classCallCheck(this, NewsFeed);
 
-	    var _this = _possibleConstructorReturn(this, (NewsFeed.__proto__ || Object.getPrototypeOf(NewsFeed)).call(this, props));
-
-	    if (props.postsList.get('posts').isEmpty()) {
-	      props.getPostsList();
-	    }
-	    return _this;
+	    return _possibleConstructorReturn(this, (NewsFeed.__proto__ || Object.getPrototypeOf(NewsFeed)).apply(this, arguments));
 	  }
 
 	  _createClass(NewsFeed, [{
-	    key: 'goToPage',
-	    value: function goToPage(url) {
-	      _reactRouter.hashHistory.push(url);
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
@@ -54417,7 +54516,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_PostForm2.default, { setPostDialog: setPostDialog, open: pages.get('postDialog'), createPost: createPost }),
-	        _react2.default.createElement(_PostsList2.default, { postsList: postsList, goToPage: this.goToPage, getPostsList: getPostsList, listEnd: pages.get('postsListEnd') })
+	        _react2.default.createElement(_PostsList2.default, { postsList: postsList, goToPage: _application_helper.goToPage, getPostsList: getPostsList, listEnd: pages.get('postsListEnd') })
 	      );
 	    }
 	  }]);
@@ -54435,10 +54534,13 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
 	    getPostsList: function getPostsList(page) {
-	      dispatch((0, _posts.getPostsList)(page));
+	      return dispatch((0, _posts.getPostsList)(page));
 	    },
 	    setPostDialog: function setPostDialog(value) {
-	      dispatch((0, _pages.setPostDialog)(value));
+	      return dispatch((0, _pages.setPostDialog)(value));
+	    },
+	    goToPage: function goToPage(url) {
+	      return dispatch((0, _application_helper.goToPage)(url));
 	    },
 	    createPost: function createPost(e) {
 	      e.preventDefault();
@@ -54451,7 +54553,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewsFeed);
 
 /***/ },
-/* 572 */
+/* 575 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54556,7 +54658,7 @@
 	}
 
 /***/ },
-/* 573 */
+/* 576 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54571,11 +54673,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _RaisedButton = __webpack_require__(548);
+	var _RaisedButton = __webpack_require__(551);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
-	var _TextField = __webpack_require__(550);
+	var _TextField = __webpack_require__(553);
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
@@ -54627,7 +54729,7 @@
 	exports.default = PostForm;
 
 /***/ },
-/* 574 */
+/* 577 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54642,23 +54744,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Divider = __webpack_require__(568);
-
-	var _Divider2 = _interopRequireDefault(_Divider);
-
 	var _Avatar = __webpack_require__(490);
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
-	var _reactInfiniteScroller = __webpack_require__(570);
+	var _reactInfiniteScroller = __webpack_require__(573);
 
 	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
 
-	var _CircularProgress = __webpack_require__(556);
+	var _CircularProgress = __webpack_require__(559);
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
-	var _Card = __webpack_require__(575);
+	var _Card = __webpack_require__(578);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54700,6 +54798,7 @@
 	            threshold: 100
 	          },
 	          postsList.get('posts').map(function (post, n) {
+	            var author = post.get('author');
 	            return _react2.default.createElement(
 	              'div',
 	              { key: n },
@@ -54707,11 +54806,14 @@
 	                _Card.Card,
 	                null,
 	                _react2.default.createElement(_Card.CardHeader, {
-	                  avatar: _react2.default.createElement(_Avatar2.default, { onClick: function onClick(e) {
-	                      return goToPage('users/' + post.getIn(['author', 'id']));
+	                  avatar: _react2.default.createElement(_Avatar2.default, {
+	                    onClick: function onClick(e) {
+	                      return goToPage('users/' + author.get('id'));
 	                    },
-	                    className: 'author-avatar', src: post.getIn(['author', 'avatar']) }),
-	                  title: post.getIn(['author', 'name']),
+	                    className: 'author-avatar',
+	                    src: author.get('avatar')
+	                  }),
+	                  title: author.get('name'),
 	                  subtitle: post.get('createdAt')
 	                }),
 	                _react2.default.createElement(
@@ -54726,7 +54828,11 @@
 	        postsList.get('isFetching') ? _react2.default.createElement(
 	          'div',
 	          { className: 'loader' },
-	          _react2.default.createElement(_CircularProgress2.default, { className: 'loader', size: 60, thickness: 5 })
+	          _react2.default.createElement(_CircularProgress2.default, {
+	            className: 'loader',
+	            size: 60,
+	            thickness: 5
+	          })
 	        ) : null
 	      );
 	    }
@@ -54738,7 +54844,7 @@
 	exports.default = PostsList;
 
 /***/ },
-/* 575 */
+/* 578 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54748,31 +54854,31 @@
 	});
 	exports.default = exports.CardExpandable = exports.CardActions = exports.CardText = exports.CardMedia = exports.CardTitle = exports.CardHeader = exports.Card = undefined;
 
-	var _Card2 = __webpack_require__(576);
+	var _Card2 = __webpack_require__(579);
 
 	var _Card3 = _interopRequireDefault(_Card2);
 
-	var _CardHeader2 = __webpack_require__(580);
+	var _CardHeader2 = __webpack_require__(583);
 
 	var _CardHeader3 = _interopRequireDefault(_CardHeader2);
 
-	var _CardTitle2 = __webpack_require__(581);
+	var _CardTitle2 = __webpack_require__(584);
 
 	var _CardTitle3 = _interopRequireDefault(_CardTitle2);
 
-	var _CardMedia2 = __webpack_require__(582);
+	var _CardMedia2 = __webpack_require__(585);
 
 	var _CardMedia3 = _interopRequireDefault(_CardMedia2);
 
-	var _CardText2 = __webpack_require__(583);
+	var _CardText2 = __webpack_require__(586);
 
 	var _CardText3 = _interopRequireDefault(_CardText2);
 
-	var _CardActions2 = __webpack_require__(584);
+	var _CardActions2 = __webpack_require__(587);
 
 	var _CardActions3 = _interopRequireDefault(_CardActions2);
 
-	var _CardExpandable2 = __webpack_require__(577);
+	var _CardExpandable2 = __webpack_require__(580);
 
 	var _CardExpandable3 = _interopRequireDefault(_CardExpandable2);
 
@@ -54788,7 +54894,7 @@
 	exports.default = _Card3.default;
 
 /***/ },
-/* 576 */
+/* 579 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -54837,7 +54943,7 @@
 
 	var _Paper2 = _interopRequireDefault(_Paper);
 
-	var _CardExpandable = __webpack_require__(577);
+	var _CardExpandable = __webpack_require__(580);
 
 	var _CardExpandable2 = _interopRequireDefault(_CardExpandable);
 
@@ -55008,7 +55114,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 577 */
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55045,11 +55151,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _keyboardArrowUp = __webpack_require__(578);
+	var _keyboardArrowUp = __webpack_require__(581);
 
 	var _keyboardArrowUp2 = _interopRequireDefault(_keyboardArrowUp);
 
-	var _keyboardArrowDown = __webpack_require__(579);
+	var _keyboardArrowDown = __webpack_require__(582);
 
 	var _keyboardArrowDown2 = _interopRequireDefault(_keyboardArrowDown);
 
@@ -55115,7 +55221,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 578 */
+/* 581 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55152,7 +55258,7 @@
 	exports.default = HardwareKeyboardArrowUp;
 
 /***/ },
-/* 579 */
+/* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55189,7 +55295,7 @@
 	exports.default = HardwareKeyboardArrowDown;
 
 /***/ },
-/* 580 */
+/* 583 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55416,7 +55522,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 581 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55591,7 +55697,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 582 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55802,7 +55908,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 583 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55925,7 +56031,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 584 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -56052,13 +56158,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 585 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(586);
+	var content = __webpack_require__(589);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -56078,7 +56184,7 @@
 	}
 
 /***/ },
-/* 586 */
+/* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -56092,7 +56198,7 @@
 
 
 /***/ },
-/* 587 */
+/* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56110,23 +56216,21 @@
 
 	var _reactRedux = __webpack_require__(33);
 
-	var _users = __webpack_require__(466);
+	var _users = __webpack_require__(467);
 
 	var _reactRouter = __webpack_require__(71);
 
-	var _RaisedButton = __webpack_require__(548);
+	var _RaisedButton = __webpack_require__(551);
 
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
-	var _TextField = __webpack_require__(550);
+	var _TextField = __webpack_require__(553);
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
 	var _reactFlexboxGrid = __webpack_require__(420);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -56146,88 +56250,83 @@
 	  _createClass(Register, [{
 	    key: 'render',
 	    value: function render() {
-	      var _React$createElement;
-
 	      var _props = this.props,
 	          onSubmitRegister = _props.onSubmitRegister,
-	          errors = _props.errors;
+	          errors = _props.errors,
+	          user = _props.user;
 
 	      return _react2.default.createElement(
-	        _reactFlexboxGrid.Grid,
-	        { fluid: true, className: 'login-grid' },
+	        'div',
+	        null,
 	        _react2.default.createElement(
-	          _reactFlexboxGrid.Col,
-	          (_React$createElement = {
-	            xsOffset: 1, xs: 10 }, _defineProperty(_React$createElement, 'xsOffset', 1), _defineProperty(_React$createElement, 'smOffset', 2), _defineProperty(_React$createElement, 'sm', 8), _defineProperty(_React$createElement, 'smOffset', 2), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'md', 6), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'lgOffset', 4), _defineProperty(_React$createElement, 'lg', 4), _defineProperty(_React$createElement, 'lgOffset', 4), _React$createElement),
+	          'h1',
+	          null,
+	          'Registration'
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { id: 'register-form', onSubmit: function onSubmit(e) {
+	              return onSubmitRegister(e);
+	            } },
 	          _react2.default.createElement(
-	            'h1',
+	            _reactFlexboxGrid.Row,
 	            null,
-	            'Registration'
-	          ),
-	          _react2.default.createElement(
-	            'form',
-	            { id: 'register-form', onSubmit: function onSubmit(e) {
-	                return onSubmitRegister(e);
-	              } },
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              _react2.default.createElement(_TextField2.default, {
-	                id: 'name',
-	                floatingLabelText: 'Name',
-	                errorText: errors.get('name')
-	              })
-	            ),
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              _react2.default.createElement(_TextField2.default, {
-	                id: 'email',
-	                floatingLabelText: 'Email',
-	                errorText: errors.get('email')
-	              })
-	            ),
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              _react2.default.createElement(_TextField2.default, {
-	                floatingLabelText: 'Password',
-	                type: 'password',
-	                id: 'password',
-	                errorText: errors.get('password')
-	              })
-	            ),
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              _react2.default.createElement(_TextField2.default, {
-	                floatingLabelText: 'Password confirmation',
-	                type: 'password',
-	                id: 'password_confirmation',
-	                errorText: errors.get('password_confirmation')
-	              })
-	            ),
-	            _react2.default.createElement(
-	              _reactFlexboxGrid.Row,
-	              null,
-	              _react2.default.createElement(
-	                _RaisedButton2.default,
-	                { className: 'submit-button', type: 'submit' },
-	                'Register'
-	              )
-	            )
+	            _react2.default.createElement(_TextField2.default, {
+	              name: 'user[name]',
+	              floatingLabelText: 'Name',
+	              errorText: errors.get('name')
+	            })
 	          ),
 	          _react2.default.createElement(
 	            _reactFlexboxGrid.Row,
 	            null,
+	            _react2.default.createElement(_TextField2.default, {
+	              name: 'user[email]',
+	              floatingLabelText: 'Email',
+	              errorText: errors.get('email')
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _reactFlexboxGrid.Row,
+	            null,
+	            _react2.default.createElement(_TextField2.default, {
+	              type: 'password',
+	              name: 'user[password]',
+	              floatingLabelText: 'Password',
+	              errorText: errors.get('password')
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _reactFlexboxGrid.Row,
+	            null,
+	            _react2.default.createElement(_TextField2.default, {
+	              type: 'password',
+	              name: 'user[password_confirmation]',
+	              floatingLabelText: 'Password confirmation',
+	              errorText: errors.get('password_confirmation')
+	            })
+	          ),
+	          _react2.default.createElement(
+	            _reactFlexboxGrid.Row,
+	            null,
+	            _react2.default.createElement(_RaisedButton2.default, {
+	              className: 'submit-button',
+	              type: 'submit',
+	              disabled: user.get('isFetching'),
+	              label: 'Sign up'
+	            })
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Row,
+	          null,
+	          _react2.default.createElement(
+	            'p',
+	            null,
 	            _react2.default.createElement(
-	              'p',
-	              null,
-	              _react2.default.createElement(
-	                _reactRouter.Link,
-	                { to: '/login' },
-	                'Login'
-	              )
+	              _reactRouter.Link,
+	              { to: '/login' },
+	              'Login'
 	            )
 	          )
 	        )
@@ -56240,7 +56339,8 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    errors: state.errors
+	    errors: state.errors,
+	    user: state.currentUser
 	  };
 	};
 
@@ -56248,14 +56348,7 @@
 	  return {
 	    onSubmitRegister: function onSubmitRegister(e) {
 	      e.preventDefault();
-	      var name = document.getElementById('name').value;
-	      var email = document.getElementById('email').value;
-	      var password = document.getElementById('password').value;
-	      var password_confirmation = document.getElementById('password_confirmation').value;
-	      var user = { user: { name: name,
-	          email: email,
-	          password: password,
-	          password_confirmation: password_confirmation } };
+	      var user = new FormData(document.getElementById('register-form'));
 	      dispatch((0, _users.register)(user));
 	    }
 	  };
@@ -56264,7 +56357,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Register);
 
 /***/ },
-/* 588 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56276,11 +56369,11 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _reducer = __webpack_require__(589);
+	var _reducer = __webpack_require__(592);
 
 	var _reducer2 = _interopRequireDefault(_reducer);
 
-	var _reduxThunk = __webpack_require__(597);
+	var _reduxThunk = __webpack_require__(600);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -56293,7 +56386,7 @@
 	}
 
 /***/ },
-/* 589 */
+/* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56304,29 +56397,29 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _immutable = __webpack_require__(590);
+	var _immutable = __webpack_require__(593);
 
-	var _currentUser = __webpack_require__(591);
+	var _currentUser = __webpack_require__(594);
 
 	var _currentUser2 = _interopRequireDefault(_currentUser);
 
-	var _errors = __webpack_require__(592);
+	var _errors = __webpack_require__(595);
 
 	var _errors2 = _interopRequireDefault(_errors);
 
-	var _user = __webpack_require__(593);
+	var _user = __webpack_require__(596);
 
 	var _user2 = _interopRequireDefault(_user);
 
-	var _pages = __webpack_require__(594);
+	var _pages = __webpack_require__(597);
 
 	var _pages2 = _interopRequireDefault(_pages);
 
-	var _usersList = __webpack_require__(595);
+	var _usersList = __webpack_require__(598);
 
 	var _usersList2 = _interopRequireDefault(_usersList);
 
-	var _postsList = __webpack_require__(596);
+	var _postsList = __webpack_require__(599);
 
 	var _postsList2 = _interopRequireDefault(_postsList);
 
@@ -56357,7 +56450,7 @@
 	exports.default = reducer;
 
 /***/ },
-/* 590 */
+/* 593 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -61341,7 +61434,7 @@
 	}));
 
 /***/ },
-/* 591 */
+/* 594 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61401,7 +61494,7 @@
 	  return state;
 	};
 
-	var _immutable = __webpack_require__(590);
+	var _immutable = __webpack_require__(593);
 
 	var _ActionTypes = __webpack_require__(464);
 
@@ -61410,7 +61503,7 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 592 */
+/* 595 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61432,10 +61525,10 @@
 	  return (0, _immutable.Map)();
 	};
 
-	var _immutable = __webpack_require__(590);
+	var _immutable = __webpack_require__(593);
 
 /***/ },
-/* 593 */
+/* 596 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61475,12 +61568,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(590);
+	var _immutable = __webpack_require__(593);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 594 */
+/* 597 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61512,12 +61605,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(590);
+	var _immutable = __webpack_require__(593);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 595 */
+/* 598 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61548,12 +61641,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(590);
+	var _immutable = __webpack_require__(593);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 596 */
+/* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61584,12 +61677,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(590);
+	var _immutable = __webpack_require__(593);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 597 */
+/* 600 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -61617,13 +61710,13 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 598 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(599);
+	var content = __webpack_require__(602);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -61643,7 +61736,7 @@
 	}
 
 /***/ },
-/* 599 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -61651,17 +61744,17 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  margin: 0;\n}\n\n.loader {\n  width: 100%;\n  text-align: center;\n  margin-top: 10px;\n}\n\ninput:-webkit-autofill {\n    -webkit-box-shadow: 0 0 0px 1000px white inset;\n}\n\n.app-bar {\n  position: fixed !important;\n}\n\n.root {\n  padding-top: 65px;\n}\n\n.current-user {\n  text-align: center;\n}\n\n.current-user img {\n  margin-top: 10px !important;\n}\n\n.current-user h4 {\n  margin-top: 0;\n}\n\n.version-info {\n  position: absolute;\n  bottom: 10px;\n  margin: 0;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  color: #A9A9A9;\n}\n", ""]);
+	exports.push([module.id, "body {\n  margin: 0;\n}\n\n.loader {\n  width: 100%;\n  text-align: center;\n  margin-top: 10px;\n}\n\ninput:-webkit-autofill {\n    -webkit-box-shadow: 0 0 0px 1000px white inset;\n}\n\n.app-bar {\n  position: fixed !important;\n}\n\n.root {\n  padding-top: 65px;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 600 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(9);
-	var defaultClickRejectionStrategy = __webpack_require__(601);
+	var defaultClickRejectionStrategy = __webpack_require__(604);
 
 	var alreadyInjected = false;
 
@@ -61683,14 +61776,14 @@
 	  alreadyInjected = true;
 
 	  __webpack_require__(134).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(602)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(605)(shouldRejectClick)
 	  });
 	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 601 */
+/* 604 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -61701,7 +61794,7 @@
 
 
 /***/ },
-/* 602 */
+/* 605 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -61725,14 +61818,14 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(603);
+	var EventConstants = __webpack_require__(606);
 	var EventPluginUtils = __webpack_require__(136);
 	var EventPropagators = __webpack_require__(133);
 	var SyntheticUIEvent = __webpack_require__(167);
-	var TouchEventUtils = __webpack_require__(604);
+	var TouchEventUtils = __webpack_require__(607);
 	var ViewportMetrics = __webpack_require__(168);
 
-	var keyOf = __webpack_require__(605);
+	var keyOf = __webpack_require__(608);
 	var topLevelTypes = EventConstants.topLevelTypes;
 
 	var isStartish = EventPluginUtils.isStartish;
@@ -61878,7 +61971,7 @@
 
 
 /***/ },
-/* 603 */
+/* 606 */
 /***/ function(module, exports) {
 
 	/**
@@ -61974,7 +62067,7 @@
 	module.exports = EventConstants;
 
 /***/ },
-/* 604 */
+/* 607 */
 /***/ function(module, exports) {
 
 	/**
@@ -62022,7 +62115,7 @@
 
 
 /***/ },
-/* 605 */
+/* 608 */
 /***/ function(module, exports) {
 
 	"use strict";

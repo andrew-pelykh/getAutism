@@ -14,33 +14,30 @@ export class Login extends Component {
   render() {
     const { onSubmitLogin, errors, user } = this.props
     return (
-      <Grid fluid className="login-grid">
-         <Col
-           xsOffset={1} xs={10} xsOffset={1}
-           smOffset={2} sm={8} smOffset={2}
-           mdOffset={3} md={6} mdOffset={3}
-           lgOffset={4} lg={4} lgOffset={4}
-         >
-         <h1>Login</h1>
+      <div>
+        <h1>Login</h1>
         <form id="login-form" onSubmit={(e) => onSubmitLogin(e)}>
           <Row>
-          <TextField
-            id="email"
-            floatingLabelText="Email"
-            errorText={errors.get('login-form')}
-          />
+            <TextField
+              name="user[email]"
+              floatingLabelText="Email"
+              errorText={errors.get('login-form')}
+            />
           </Row>
           <Row>
-          <TextField
-            floatingLabelText="Password"
-            type="password"
-            id="password"
-
-          />
+            <TextField
+              type="password"
+              name="user[password]"
+              floatingLabelText="Password"
+            />
           </Row>
           <Row>
-            {user.get('isFetching')?  <div className="loader"><CircularProgress className="loader" size={40} thickness={5}/></div>:null}
-            <RaisedButton className="submit-button" type="submit" disabled={user.get('isFetching')}>Log in</RaisedButton>
+            <RaisedButton
+              className="submit-button"
+              type="submit"
+              disabled={user.get('isFetching')}
+              label="Log in"
+            />
           </Row>
         </form>
         <Row>
@@ -49,8 +46,7 @@ export class Login extends Component {
           </p>
 
         </Row>
-        </Col>
-      </Grid>
+</div>
     )
   }
 }
@@ -63,9 +59,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>  ({
     onSubmitLogin: (e) => {
       e.preventDefault()
-      const email = document.getElementById('email').value
-      const password = document.getElementById('password').value
-      const user = {user:{ email: email, password: password}}
+      const user = new FormData(document.getElementById('login-form'))
       dispatch(logIn(user))
     }
 })
