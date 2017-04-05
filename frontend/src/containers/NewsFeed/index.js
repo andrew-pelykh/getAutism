@@ -10,11 +10,20 @@ import './styles.css'
 export class NewsFeed extends Component {
 
   render() {
-    const { postsList, getPostsList, setPostDialog, pages, createPost } = this.props
+    const { postsList, getPostsList, setPostDialog, pages, createPost, goToPage } = this.props
     return(
       <div>
-      <PostForm setPostDialog={setPostDialog} open={pages.get('postDialog')} createPost={createPost} />
-      <PostsList postsList={postsList} goToPage={goToPage} getPostsList={getPostsList} listEnd={pages.get('postsListEnd')} />
+      <PostForm
+        setPostDialog={setPostDialog}
+        open={pages.get('postDialog')}
+        createPost={createPost}
+      />
+      <PostsList
+        postsList={postsList}
+        goToPage={goToPage}
+        getPostsList={getPostsList}
+        listEnd={pages.get('postsListEnd')}
+       />
       </div>
     )
   }

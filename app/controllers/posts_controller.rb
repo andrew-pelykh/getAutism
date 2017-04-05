@@ -6,9 +6,12 @@ class PostsController < BaseController
     posts = []
     Post.order(created_at: :desc).page(params[:page]).per(20).map do |post|
       user = User.find(post.user_id)
+      images = post.images.map{ |image| image.image_url }
+      p images
       posts.push({
         id: post.id,
         content: post.content,
+        images: images,
         createdAt: post.created_at.strftime("%B %d, %Y"),
         author:{
             name: user.name,
@@ -22,8 +25,12 @@ class PostsController < BaseController
   def create
     post = @current_user.posts.new(post_params)
     user = @current_user
+    images = params[:images]
     if post.save
-      render json: {post: {
+       images.each do |image|
+         post.images.create(user_id: user.id, image: image)
+       end
+       render json: {post: {
         id: post.id,
         content: post.content,
         createdAt: post.created_at.strftime("%B %d, %Y"),
@@ -40,6 +47,6 @@ class PostsController < BaseController
   private
 
   def post_params
-    params.require(:post).permit(:content)
+    params.require(:post).permit(:content, :images)
   end
 end

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField';
-
+import Dropzone from 'react-dropzone'
 export default class PostForm extends Component {
 
   render() {
@@ -11,6 +11,9 @@ export default class PostForm extends Component {
           <TextField
             name="post[content]"
           />
+          <Dropzone name="images[]">
+              Upload your photos
+          </Dropzone>
             <RaisedButton type="submit">Post</RaisedButton>
           </form>
     );

@@ -18,6 +18,7 @@ export function logOutIfUnauthorized(status) {
 }
 
 export function goToPage(nextUrl) {
+
   return dispatch => {
     if (isMobile())
       dispatch(setDrawer(false))

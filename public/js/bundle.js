@@ -39224,6 +39224,7 @@
 	}
 
 	function goToPage(nextUrl) {
+
 	  return function (dispatch) {
 	    if (isMobile()) dispatch((0, _pages.setDrawer)(false));
 	    var currentUrl = _reactRouter.hashHistory.getCurrentLocation().pathname;
@@ -54510,13 +54511,23 @@
 	          getPostsList = _props.getPostsList,
 	          setPostDialog = _props.setPostDialog,
 	          pages = _props.pages,
-	          createPost = _props.createPost;
+	          createPost = _props.createPost,
+	          goToPage = _props.goToPage;
 
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_PostForm2.default, { setPostDialog: setPostDialog, open: pages.get('postDialog'), createPost: createPost }),
-	        _react2.default.createElement(_PostsList2.default, { postsList: postsList, goToPage: _application_helper.goToPage, getPostsList: getPostsList, listEnd: pages.get('postsListEnd') })
+	        _react2.default.createElement(_PostForm2.default, {
+	          setPostDialog: setPostDialog,
+	          open: pages.get('postDialog'),
+	          createPost: createPost
+	        }),
+	        _react2.default.createElement(_PostsList2.default, {
+	          postsList: postsList,
+	          goToPage: goToPage,
+	          getPostsList: getPostsList,
+	          listEnd: pages.get('postsListEnd')
+	        })
 	      );
 	    }
 	  }]);
@@ -54681,6 +54692,10 @@
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
+	var _reactDropzone = __webpack_require__(564);
+
+	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54714,6 +54729,11 @@
 	        _react2.default.createElement(_TextField2.default, {
 	          name: 'post[content]'
 	        }),
+	        _react2.default.createElement(
+	          _reactDropzone2.default,
+	          { name: 'images[]' },
+	          'Upload your photos'
+	        ),
 	        _react2.default.createElement(
 	          _RaisedButton2.default,
 	          { type: 'submit' },
@@ -54797,17 +54817,17 @@
 	            hasMore: !listEnd && !postsList.get('isFetching'),
 	            threshold: 100
 	          },
-	          postsList.get('posts').map(function (post, n) {
+	          postsList.get('posts').map(function (post) {
 	            var author = post.get('author');
 	            return _react2.default.createElement(
 	              'div',
-	              { key: n },
+	              { key: post.get('id') },
 	              _react2.default.createElement(
 	                _Card.Card,
 	                null,
 	                _react2.default.createElement(_Card.CardHeader, {
 	                  avatar: _react2.default.createElement(_Avatar2.default, {
-	                    onClick: function onClick(e) {
+	                    onTouchTap: function onTouchTap(e) {
 	                      return goToPage('users/' + author.get('id'));
 	                    },
 	                    className: 'author-avatar',
@@ -54816,6 +54836,17 @@
 	                  title: author.get('name'),
 	                  subtitle: post.get('createdAt')
 	                }),
+	                _react2.default.createElement(
+	                  _Card.CardMedia,
+	                  null,
+	                  post.get('images').map(function (image, k) {
+	                    return _react2.default.createElement(
+	                      'div',
+	                      { key: k },
+	                      _react2.default.createElement('img', { src: image })
+	                    );
+	                  })
+	                ),
 	                _react2.default.createElement(
 	                  _Card.CardText,
 	                  null,
