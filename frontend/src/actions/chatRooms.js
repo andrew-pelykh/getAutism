@@ -1,5 +1,6 @@
 import * as types from '../constants/ActionTypes'
 import axios from 'axios'
+import { hashHistory } from 'react-router'
 import { getToken } from '../helpers/token_helper'
 import { logOutIfUnauthorized } from '../helpers/application_helper'
 
@@ -36,5 +37,63 @@ export function getChatRoomsList(page) {
         dispatch(chatRoomsListFailure(error.response.data.errors))
         dispatch(logOutIfUnauthorized(error.response.status))
       })
+  }
+}
+
+export const chatRoom = () => ({
+  type: types.CHAT_ROOM
+})
+
+export const chatRoomSuccess = chatRoom => ({
+  type: types.CHAT_ROOM_SUCCESS,
+  chatRoom
+})
+
+export const chatRoomFailure = errors => ({
+  type: types.CHAT_ROOM_FAILURE,
+  errors
+})
+
+export function getChatRoom(id) {
+  return dispatch => {
+    dispatch(chatRoom())
+    var instance = axios.create()
+    instance.defaults.headers.common['X-Api-Key'] = getToken()
+    return instance.get('/chat_rooms/'+ id)
+      .then(response => {
+        dispatch(chatRoomSuccess(response.data.chatRoom))
+      })
+      .catch(error => {
+        dispatch(chatRoomFailure(error.response.data.errors))
+        dispatch(logOutIfUnauthorized(error.response.status))
+      })
+  }
+}
+
+export const createChatRoom = () => ({
+  type: types.CREATE_CHAT_ROOM
+})
+
+export const createChatRoomSuccess = chatRoom => ({
+  type: types.CREATE_CHAT_ROOM_SUCCESS,
+  chatRoom
+})
+
+export const createChatRoomFailure = errors => ({
+  type: types.CREATE_CHAT_ROOM_FAILURE,
+  errors
+})
+
+export function createChat(chat) {
+  return dispatch => {
+    dispatch(createChatRoom())
+    var instance = axios.create()
+    instance.defaults.headers.common['X-Api-Key'] = getToken()
+    return instance.post('/chat_rooms', chat)
+      .then(response => {
+        dispatch(createChatRoomSuccess(response.data.chatRoom))
+        hashHistory.push('/chatrooms/'+ response.data.chatRoom.id)
+      })
+
   }
 }

@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import Dropzone from 'react-dropzone'
 import ImageAddAPhoto from 'material-ui/svg-icons/image/add-a-photo'
 import { Row, Col } from 'react-flexbox-grid'
+import ContentRemoveCircle from 'material-ui/svg-icons/content/remove-circle'
 
 export default class PostForm extends Component {
 
@@ -23,7 +24,10 @@ export default class PostForm extends Component {
             {  photos.map((photo,n) => {
               return(
                 <Col xs={2} key={n}>
-                  <img onClick={() => deletePreview(n)} src={photo.preview} />
+                  <div onClick={() => deletePreview(n)} className="preview-photo">
+                    <ContentRemoveCircle />
+                    <img src={photo.preview} />
+                  </div>
                 </Col>)})
             }
             </Row>

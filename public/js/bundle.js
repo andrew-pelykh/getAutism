@@ -77,13 +77,13 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(592);
+	var _store = __webpack_require__(596);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	__webpack_require__(602);
+	__webpack_require__(608);
 
-	var _reactTapEventPlugin = __webpack_require__(604);
+	var _reactTapEventPlugin = __webpack_require__(610);
 
 	var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
@@ -36179,13 +36179,17 @@
 
 	var _NewsFeed2 = _interopRequireDefault(_NewsFeed);
 
-	var _Register = __webpack_require__(591);
+	var _Register = __webpack_require__(592);
 
 	var _Register2 = _interopRequireDefault(_Register);
 
-	var _ChatRooms = __webpack_require__(612);
+	var _ChatRooms = __webpack_require__(593);
 
 	var _ChatRooms2 = _interopRequireDefault(_ChatRooms);
+
+	var _ChatRoom = __webpack_require__(595);
+
+	var _ChatRoom2 = _interopRequireDefault(_ChatRoom);
 
 	var _token_helper = __webpack_require__(437);
 
@@ -36200,7 +36204,8 @@
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _NewsFeed2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'users/:id', component: _User2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/users', component: _Users2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'chatrooms', component: _ChatRooms2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: 'chatrooms', component: _ChatRooms2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'chatrooms/:id', component: _ChatRoom2.default })
 	  ),
 	  _react2.default.createElement(
 	    _reactRouter.Route,
@@ -40941,6 +40946,14 @@
 	var CHAT_ROOMS_LIST = exports.CHAT_ROOMS_LIST = 'CHAT_ROOMS_LIST';
 	var CHAT_ROOMS_LIST_SUCCESS = exports.CHAT_ROOMS_LIST_SUCCESS = 'CHAT_ROOMS_LIST_SUCCESS';
 	var CHAT_ROOMS_LIST_FAILURE = exports.CHAT_ROOMS_LIST_FAILURE = 'CHAT_ROOMS_LIST_FAILURE';
+
+	var CHAT_ROOM = exports.CHAT_ROOM = 'CHAT_ROOM';
+	var CHAT_ROOM_SUCCESS = exports.CHAT_ROOM_SUCCESS = 'CHAT_ROOM_SUCCESS';
+	var CHAT_ROOM_FAILURE = exports.CHAT_ROOM_FAILURE = 'CHAT_ROOM_FAILURE';
+
+	var CREATE_CHAT_ROOM = exports.CREATE_CHAT_ROOM = 'CREATE_CHAT_ROOM';
+	var CREATE_CHAT_ROOM_SUCCESS = exports.CREATE_CHAT_ROOM_SUCCESS = 'CREATE_CHAT_ROOM_SUCCESS';
+	var CREATE_CHAT_ROOM_FAILURE = exports.CREATE_CHAT_ROOM_FAILURE = 'CREATE_CHAT_ROOM_FAILURE';
 
 /***/ },
 /* 465 */
@@ -54511,7 +54524,7 @@
 
 	var _PostForm2 = _interopRequireDefault(_PostForm);
 
-	var _PostsList = __webpack_require__(578);
+	var _PostsList = __webpack_require__(579);
 
 	var _PostsList2 = _interopRequireDefault(_PostsList);
 
@@ -54519,7 +54532,7 @@
 
 	var _reactFlexboxGrid = __webpack_require__(420);
 
-	__webpack_require__(589);
+	__webpack_require__(590);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54765,6 +54778,10 @@
 
 	var _reactFlexboxGrid = __webpack_require__(420);
 
+	var _removeCircle = __webpack_require__(578);
+
+	var _removeCircle2 = _interopRequireDefault(_removeCircle);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54816,9 +54833,14 @@
 	            return _react2.default.createElement(
 	              _reactFlexboxGrid.Col,
 	              { xs: 2, key: n },
-	              _react2.default.createElement('img', { onClick: function onClick() {
-	                  return deletePreview(n);
-	                }, src: photo.preview })
+	              _react2.default.createElement(
+	                'div',
+	                { onClick: function onClick() {
+	                    return deletePreview(n);
+	                  }, className: 'preview-photo' },
+	                _react2.default.createElement(_removeCircle2.default, null),
+	                _react2.default.createElement('img', { src: photo.preview })
+	              )
 	            );
 	          })
 	        ),
@@ -54905,6 +54927,43 @@
 	  value: true
 	});
 
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _pure = __webpack_require__(502);
+
+	var _pure2 = _interopRequireDefault(_pure);
+
+	var _SvgIcon = __webpack_require__(511);
+
+	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ContentRemoveCircle = function ContentRemoveCircle(props) {
+	  return _react2.default.createElement(
+	    _SvgIcon2.default,
+	    props,
+	    _react2.default.createElement('path', { d: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z' })
+	  );
+	};
+	ContentRemoveCircle = (0, _pure2.default)(ContentRemoveCircle);
+	ContentRemoveCircle.displayName = 'ContentRemoveCircle';
+	ContentRemoveCircle.muiName = 'SvgIcon';
+
+	exports.default = ContentRemoveCircle;
+
+/***/ },
+/* 579 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
@@ -54923,7 +54982,7 @@
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
-	var _Card = __webpack_require__(579);
+	var _Card = __webpack_require__(580);
 
 	var _reactFlexboxGrid = __webpack_require__(420);
 
@@ -55018,7 +55077,7 @@
 	exports.default = PostsList;
 
 /***/ },
-/* 579 */
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55028,31 +55087,31 @@
 	});
 	exports.default = exports.CardExpandable = exports.CardActions = exports.CardText = exports.CardMedia = exports.CardTitle = exports.CardHeader = exports.Card = undefined;
 
-	var _Card2 = __webpack_require__(580);
+	var _Card2 = __webpack_require__(581);
 
 	var _Card3 = _interopRequireDefault(_Card2);
 
-	var _CardHeader2 = __webpack_require__(584);
+	var _CardHeader2 = __webpack_require__(585);
 
 	var _CardHeader3 = _interopRequireDefault(_CardHeader2);
 
-	var _CardTitle2 = __webpack_require__(585);
+	var _CardTitle2 = __webpack_require__(586);
 
 	var _CardTitle3 = _interopRequireDefault(_CardTitle2);
 
-	var _CardMedia2 = __webpack_require__(586);
+	var _CardMedia2 = __webpack_require__(587);
 
 	var _CardMedia3 = _interopRequireDefault(_CardMedia2);
 
-	var _CardText2 = __webpack_require__(587);
+	var _CardText2 = __webpack_require__(588);
 
 	var _CardText3 = _interopRequireDefault(_CardText2);
 
-	var _CardActions2 = __webpack_require__(588);
+	var _CardActions2 = __webpack_require__(589);
 
 	var _CardActions3 = _interopRequireDefault(_CardActions2);
 
-	var _CardExpandable2 = __webpack_require__(581);
+	var _CardExpandable2 = __webpack_require__(582);
 
 	var _CardExpandable3 = _interopRequireDefault(_CardExpandable2);
 
@@ -55068,7 +55127,7 @@
 	exports.default = _Card3.default;
 
 /***/ },
-/* 580 */
+/* 581 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55117,7 +55176,7 @@
 
 	var _Paper2 = _interopRequireDefault(_Paper);
 
-	var _CardExpandable = __webpack_require__(581);
+	var _CardExpandable = __webpack_require__(582);
 
 	var _CardExpandable2 = _interopRequireDefault(_CardExpandable);
 
@@ -55288,7 +55347,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 581 */
+/* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55325,11 +55384,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _keyboardArrowUp = __webpack_require__(582);
+	var _keyboardArrowUp = __webpack_require__(583);
 
 	var _keyboardArrowUp2 = _interopRequireDefault(_keyboardArrowUp);
 
-	var _keyboardArrowDown = __webpack_require__(583);
+	var _keyboardArrowDown = __webpack_require__(584);
 
 	var _keyboardArrowDown2 = _interopRequireDefault(_keyboardArrowDown);
 
@@ -55395,7 +55454,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 582 */
+/* 583 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55432,7 +55491,7 @@
 	exports.default = HardwareKeyboardArrowUp;
 
 /***/ },
-/* 583 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55469,7 +55528,7 @@
 	exports.default = HardwareKeyboardArrowDown;
 
 /***/ },
-/* 584 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55696,7 +55755,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 585 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55871,7 +55930,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 586 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -56082,7 +56141,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 587 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -56205,7 +56264,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 588 */
+/* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -56332,13 +56391,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 589 */
+/* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(590);
+	var content = __webpack_require__(591);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -56358,7 +56417,7 @@
 	}
 
 /***/ },
-/* 590 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -56366,13 +56425,13 @@
 
 
 	// module
-	exports.push([module.id, ".author-avatar {\n  cursor: pointer;\n}\n\n.photos-input input {\n  display: none;\n}\n\n.photos-input svg:hover {\n  cursor: pointer;\n}\n\n.dropzone {\n  width: 100% !important;\n  height: 100% !important;\n  border: 0 !important;\n  cursor: pointer;\n}\n\n#post-form {\n  margin-bottom: 10px;\n}\n", ""]);
+	exports.push([module.id, ".author-avatar {\n  cursor: pointer;\n}\n\n.photos-input input {\n  display: none;\n}\n\n.photos-input svg:hover {\n  cursor: pointer;\n}\n\n.dropzone {\n  width: 100% !important;\n  height: 100% !important;\n  border: 0 !important;\n  cursor: pointer;\n}\n\n#post-form {\n  margin-bottom: 10px;\n}\n\n.preview-photo svg {\n  position: absolute;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 591 */
+/* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56531,7 +56590,406 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Register);
 
 /***/ },
-/* 592 */
+/* 593 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ChatRooms = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(33);
+
+	var _chatRooms = __webpack_require__(594);
+
+	var _application_helper = __webpack_require__(436);
+
+	var _List = __webpack_require__(569);
+
+	var _reactInfiniteScroller = __webpack_require__(573);
+
+	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
+
+	var _Divider = __webpack_require__(571);
+
+	var _Divider2 = _interopRequireDefault(_Divider);
+
+	var _CircularProgress = __webpack_require__(559);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
+	var _TextField = __webpack_require__(553);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	var _RaisedButton = __webpack_require__(551);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	var _reactFlexboxGrid = __webpack_require__(420);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ChatRooms = exports.ChatRooms = function (_Component) {
+	  _inherits(ChatRooms, _Component);
+
+	  function ChatRooms() {
+	    _classCallCheck(this, ChatRooms);
+
+	    return _possibleConstructorReturn(this, (ChatRooms.__proto__ || Object.getPrototypeOf(ChatRooms)).apply(this, arguments));
+	  }
+
+	  _createClass(ChatRooms, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          getChatRoomsList = _props.getChatRoomsList,
+	          chatRoomsList = _props.chatRoomsList,
+	          pages = _props.pages,
+	          goToPage = _props.goToPage,
+	          createChat = _props.createChat;
+
+	      return _react2.default.createElement(
+	        _reactFlexboxGrid.Row,
+	        null,
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Col,
+	          { xs: 12 },
+	          _react2.default.createElement(
+	            'form',
+	            { id: 'chat-form', onSubmit: function onSubmit(e) {
+	                return createChat(e);
+	              } },
+	            _react2.default.createElement(_TextField2.default, {
+	              name: 'chat_room[title]',
+	              floatingLabelText: 'Create new chatroom'
+	            }),
+	            _react2.default.createElement(
+	              _RaisedButton2.default,
+	              { type: 'submit' },
+	              'Add'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Col,
+	          { xs: 12 },
+	          _react2.default.createElement(
+	            _List.List,
+	            null,
+	            _react2.default.createElement(
+	              _reactInfiniteScroller2.default,
+	              {
+	                pageStart: chatRoomsList.get('chatRooms').count() / 20,
+	                loadMore: function loadMore(page) {
+	                  return getChatRoomsList(page);
+	                },
+	                hasMore: !pages.get('chatRoomsListEnd') && !chatRoomsList.get('isFetching'),
+	                threshold: 100
+	              },
+	              chatRoomsList.get('chatRooms').map(function (chat, n) {
+	                return _react2.default.createElement(
+	                  'div',
+	                  { key: n },
+	                  _react2.default.createElement(_List.ListItem, {
+	                    onClick: function onClick(e) {
+	                      return goToPage('chatrooms/' + chat.get('id'));
+	                    },
+	                    primaryText: chat.get('title')
+	                  }),
+	                  _react2.default.createElement(_Divider2.default, null)
+	                );
+	              })
+	            ),
+	            chatRoomsList.get('isFetching') ? _react2.default.createElement(
+	              'div',
+	              { className: 'loader' },
+	              _react2.default.createElement(_CircularProgress2.default, {
+	                className: 'loader',
+	                size: 60,
+	                thickness: 5
+	              })
+	            ) : null
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ChatRooms;
+	}(_react.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    chatRoomsList: state.chatRoomsList,
+	    pages: state.pages
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    getChatRoomsList: function getChatRoomsList(page) {
+	      return dispatch((0, _chatRooms.getChatRoomsList)(page));
+	    },
+	    createChat: function createChat(e) {
+	      e.preventDefault();
+	      var chat = new FormData(document.getElementById('chat-form'));
+	      dispatch((0, _chatRooms.createChat)(chat));
+	    },
+	    goToPage: function goToPage(url) {
+	      return dispatch((0, _application_helper.goToPage)(url));
+	    }
+	  };
+	};
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ChatRooms);
+
+/***/ },
+/* 594 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.createChatRoomFailure = exports.createChatRoomSuccess = exports.createChatRoom = exports.chatRoomFailure = exports.chatRoomSuccess = exports.chatRoom = exports.chatRoomsListEnd = exports.chatRoomsListFailure = exports.chatRoomsListSuccess = exports.chatRoomsList = undefined;
+	exports.getChatRoomsList = getChatRoomsList;
+	exports.getChatRoom = getChatRoom;
+	exports.createChat = createChat;
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	var _axios = __webpack_require__(439);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _reactRouter = __webpack_require__(71);
+
+	var _token_helper = __webpack_require__(437);
+
+	var _application_helper = __webpack_require__(436);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var chatRoomsList = exports.chatRoomsList = function chatRoomsList() {
+	  return {
+	    type: types.CHAT_ROOMS_LIST
+	  };
+	};
+
+	var chatRoomsListSuccess = exports.chatRoomsListSuccess = function chatRoomsListSuccess(chatRooms) {
+	  return {
+	    type: types.CHAT_ROOMS_LIST_SUCCESS,
+	    chatRooms: chatRooms
+	  };
+	};
+
+	var chatRoomsListFailure = exports.chatRoomsListFailure = function chatRoomsListFailure(errors) {
+	  return {
+	    type: types.CHAT_ROOMS_LIST_FAILURE,
+	    errors: errors
+	  };
+	};
+
+	var chatRoomsListEnd = exports.chatRoomsListEnd = function chatRoomsListEnd() {
+	  return {
+	    type: types.CHAT_ROOMS_LIST_END
+	  };
+	};
+
+	function getChatRoomsList(page) {
+	  return function (dispatch) {
+	    dispatch(chatRoomsList());
+	    var instance = _axios2.default.create();
+	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
+	    return instance.get('/chat_rooms', { params: { page: page } }).then(function (response) {
+	      if (response.data.chatRooms < 20) dispatch(chatRoomsListEnd());
+	      dispatch(chatRoomsListSuccess(response.data.chatRooms));
+	    }).catch(function (error) {
+	      dispatch(chatRoomsListFailure(error.response.data.errors));
+	      dispatch((0, _application_helper.logOutIfUnauthorized)(error.response.status));
+	    });
+	  };
+	}
+
+	var chatRoom = exports.chatRoom = function chatRoom() {
+	  return {
+	    type: types.CHAT_ROOM
+	  };
+	};
+
+	var chatRoomSuccess = exports.chatRoomSuccess = function chatRoomSuccess(chatRoom) {
+	  return {
+	    type: types.CHAT_ROOM_SUCCESS,
+	    chatRoom: chatRoom
+	  };
+	};
+
+	var chatRoomFailure = exports.chatRoomFailure = function chatRoomFailure(errors) {
+	  return {
+	    type: types.CHAT_ROOM_FAILURE,
+	    errors: errors
+	  };
+	};
+
+	function getChatRoom(id) {
+	  return function (dispatch) {
+	    dispatch(chatRoom());
+	    var instance = _axios2.default.create();
+	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
+	    return instance.get('/chat_rooms/' + id).then(function (response) {
+	      dispatch(chatRoomSuccess(response.data.chatRoom));
+	    }).catch(function (error) {
+	      dispatch(chatRoomFailure(error.response.data.errors));
+	      dispatch((0, _application_helper.logOutIfUnauthorized)(error.response.status));
+	    });
+	  };
+	}
+
+	var createChatRoom = exports.createChatRoom = function createChatRoom() {
+	  return {
+	    type: types.CREATE_CHAT_ROOM
+	  };
+	};
+
+	var createChatRoomSuccess = exports.createChatRoomSuccess = function createChatRoomSuccess(chatRoom) {
+	  return {
+	    type: types.CREATE_CHAT_ROOM_SUCCESS,
+	    chatRoom: chatRoom
+	  };
+	};
+
+	var createChatRoomFailure = exports.createChatRoomFailure = function createChatRoomFailure(errors) {
+	  return {
+	    type: types.CREATE_CHAT_ROOM_FAILURE,
+	    errors: errors
+	  };
+	};
+
+	function createChat(chat) {
+	  return function (dispatch) {
+	    dispatch(createChatRoom());
+	    var instance = _axios2.default.create();
+	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
+	    return instance.post('/chat_rooms', chat).then(function (response) {
+	      dispatch(createChatRoomSuccess(response.data.chatRoom));
+	      _reactRouter.hashHistory.push('/chatrooms/' + response.data.chatRoom.id);
+	    });
+	  };
+	}
+
+/***/ },
+/* 595 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ChatRoom = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(33);
+
+	var _chatRooms = __webpack_require__(594);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ChatRoom = exports.ChatRoom = function (_Component) {
+	  _inherits(ChatRoom, _Component);
+
+	  function ChatRoom() {
+	    _classCallCheck(this, ChatRoom);
+
+	    return _possibleConstructorReturn(this, (ChatRoom.__proto__ || Object.getPrototypeOf(ChatRoom)).apply(this, arguments));
+	  }
+
+	  _createClass(ChatRoom, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _props = this.props,
+	          getChatRoom = _props.getChatRoom,
+	          params = _props.params,
+	          chat = _props.chat;
+
+	      if (chat.get('chatRoom').isEmpty()) getChatRoom(params.id);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var _props2 = this.props,
+	          params = _props2.params,
+	          getChatRoom = _props2.getChatRoom;
+	      var id = nextProps.params.id;
+
+	      if (params.id != id) {
+	        getChatRoom(id);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var chat = this.props.chat;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'ChatRoom: ',
+	        chat.getIn(['chatRoom', 'title'])
+	      );
+	    }
+	  }]);
+
+	  return ChatRoom;
+	}(_react.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    chat: state.chatRoom
+	  };
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    getChatRoom: function getChatRoom(id) {
+	      return dispatch((0, _chatRooms.getChatRoom)(id));
+	    }
+	  };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ChatRoom);
+
+/***/ },
+/* 596 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56543,11 +57001,11 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _reducer = __webpack_require__(593);
+	var _reducer = __webpack_require__(597);
 
 	var _reducer2 = _interopRequireDefault(_reducer);
 
-	var _reduxThunk = __webpack_require__(601);
+	var _reduxThunk = __webpack_require__(607);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -56560,7 +57018,7 @@
 	}
 
 /***/ },
-/* 593 */
+/* 597 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56571,35 +57029,39 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _immutable = __webpack_require__(594);
+	var _immutable = __webpack_require__(598);
 
-	var _currentUser = __webpack_require__(595);
+	var _currentUser = __webpack_require__(599);
 
 	var _currentUser2 = _interopRequireDefault(_currentUser);
 
-	var _errors = __webpack_require__(596);
+	var _errors = __webpack_require__(600);
 
 	var _errors2 = _interopRequireDefault(_errors);
 
-	var _user = __webpack_require__(597);
+	var _user = __webpack_require__(601);
 
 	var _user2 = _interopRequireDefault(_user);
 
-	var _pages = __webpack_require__(598);
+	var _pages = __webpack_require__(602);
 
 	var _pages2 = _interopRequireDefault(_pages);
 
-	var _usersList = __webpack_require__(599);
+	var _usersList = __webpack_require__(603);
 
 	var _usersList2 = _interopRequireDefault(_usersList);
 
-	var _postsList = __webpack_require__(600);
+	var _postsList = __webpack_require__(604);
 
 	var _postsList2 = _interopRequireDefault(_postsList);
 
-	var _chatRoomsList = __webpack_require__(610);
+	var _chatRoomsList = __webpack_require__(605);
 
 	var _chatRoomsList2 = _interopRequireDefault(_chatRoomsList);
+
+	var _chatRoom = __webpack_require__(606);
+
+	var _chatRoom2 = _interopRequireDefault(_chatRoom);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56610,7 +57072,8 @@
 	  errors: _errors2.default,
 	  usersList: _usersList2.default,
 	  postsList: _postsList2.default,
-	  chatRoomsList: _chatRoomsList2.default
+	  chatRoomsList: _chatRoomsList2.default,
+	  chatRoom: _chatRoom2.default
 	});
 
 	var reducer = function reducer() {
@@ -56629,7 +57092,7 @@
 	exports.default = reducer;
 
 /***/ },
-/* 594 */
+/* 598 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -61613,7 +62076,7 @@
 	}));
 
 /***/ },
-/* 595 */
+/* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61673,7 +62136,7 @@
 	  return state;
 	};
 
-	var _immutable = __webpack_require__(594);
+	var _immutable = __webpack_require__(598);
 
 	var _ActionTypes = __webpack_require__(464);
 
@@ -61682,7 +62145,7 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 596 */
+/* 600 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61704,10 +62167,10 @@
 	  return (0, _immutable.Map)();
 	};
 
-	var _immutable = __webpack_require__(594);
+	var _immutable = __webpack_require__(598);
 
 /***/ },
-/* 597 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61747,12 +62210,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(594);
+	var _immutable = __webpack_require__(598);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 598 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61791,12 +62254,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(594);
+	var _immutable = __webpack_require__(598);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 599 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61827,12 +62290,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(594);
+	var _immutable = __webpack_require__(598);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 600 */
+/* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61863,12 +62326,81 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(594);
+	var _immutable = __webpack_require__(598);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 601 */
+/* 605 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ chatRooms: (0, _immutable.List)() });
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.CHAT_ROOMS_LIST:
+	      return state.merge({ isFetching: true });
+	    case types.CHAT_ROOMS_LIST_SUCCESS:
+	      var chats = state.get('chatRooms').concat((0, _immutable.fromJS)(action.chatRooms));
+	      return state.merge({ chatRooms: chats, isFetching: false });
+	    case types.CHAT_ROOMS_LIST_FAILURE:
+	      return state.merge({ isFetching: false });
+	  }
+	  return state;
+	};
+
+	var _immutable = __webpack_require__(598);
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ },
+/* 606 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ chatRoom: (0, _immutable.Map)() });
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.CHAT_ROOM:
+	      return state.merge({ isFetching: true });
+	    case types.CHAT_ROOM_SUCCESS:
+	      return state.merge({ isFetching: false, chatRoom: action.chatRoom });
+	    case types.CHAT_ROOM_FAILURE:
+	      return state.merge({ isFetching: false });
+	    case types.CREATE_CHAT_ROOM_SUCCESS:
+	      return state.merge({ chatRoom: action.chatRoom });
+	  }
+	  return state;
+	};
+
+	var _immutable = __webpack_require__(598);
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ },
+/* 607 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -61896,13 +62428,13 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 602 */
+/* 608 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(603);
+	var content = __webpack_require__(609);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -61922,7 +62454,7 @@
 	}
 
 /***/ },
-/* 603 */
+/* 609 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -61936,11 +62468,11 @@
 
 
 /***/ },
-/* 604 */
+/* 610 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(9);
-	var defaultClickRejectionStrategy = __webpack_require__(605);
+	var defaultClickRejectionStrategy = __webpack_require__(611);
 
 	var alreadyInjected = false;
 
@@ -61962,14 +62494,14 @@
 	  alreadyInjected = true;
 
 	  __webpack_require__(134).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(606)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(612)(shouldRejectClick)
 	  });
 	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 605 */
+/* 611 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -61980,7 +62512,7 @@
 
 
 /***/ },
-/* 606 */
+/* 612 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -62004,14 +62536,14 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(607);
+	var EventConstants = __webpack_require__(613);
 	var EventPluginUtils = __webpack_require__(136);
 	var EventPropagators = __webpack_require__(133);
 	var SyntheticUIEvent = __webpack_require__(167);
-	var TouchEventUtils = __webpack_require__(608);
+	var TouchEventUtils = __webpack_require__(614);
 	var ViewportMetrics = __webpack_require__(168);
 
-	var keyOf = __webpack_require__(609);
+	var keyOf = __webpack_require__(615);
 	var topLevelTypes = EventConstants.topLevelTypes;
 
 	var isStartish = EventPluginUtils.isStartish;
@@ -62157,7 +62689,7 @@
 
 
 /***/ },
-/* 607 */
+/* 613 */
 /***/ function(module, exports) {
 
 	/**
@@ -62253,7 +62785,7 @@
 	module.exports = EventConstants;
 
 /***/ },
-/* 608 */
+/* 614 */
 /***/ function(module, exports) {
 
 	/**
@@ -62301,7 +62833,7 @@
 
 
 /***/ },
-/* 609 */
+/* 615 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -62338,235 +62870,6 @@
 	};
 
 	module.exports = keyOf;
-
-/***/ },
-/* 610 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ chatRooms: (0, _immutable.List)() });
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case types.CHAT_ROOMS_LIST:
-	      return state.merge({ isFetching: true });
-	    case types.CHAT_ROOMS_LIST_SUCCESS:
-	      var chats = state.get('chatRooms').concat((0, _immutable.fromJS)(action.chatRooms));
-	      return state.merge({ chatRooms: chats, isFetching: false });
-	    case types.CHAT_ROOMS_LIST_FAILURE:
-	      return state.merge({ isFetching: false });
-	  }
-	  return state;
-	};
-
-	var _immutable = __webpack_require__(594);
-
-	var _ActionTypes = __webpack_require__(464);
-
-	var types = _interopRequireWildcard(_ActionTypes);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/***/ },
-/* 611 */,
-/* 612 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.ChatRooms = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(33);
-
-	var _chatRooms = __webpack_require__(613);
-
-	var _application_helper = __webpack_require__(436);
-
-	var _List = __webpack_require__(569);
-
-	var _reactInfiniteScroller = __webpack_require__(573);
-
-	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
-
-	var _Divider = __webpack_require__(571);
-
-	var _Divider2 = _interopRequireDefault(_Divider);
-
-	var _CircularProgress = __webpack_require__(559);
-
-	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ChatRooms = exports.ChatRooms = function (_Component) {
-	  _inherits(ChatRooms, _Component);
-
-	  function ChatRooms() {
-	    _classCallCheck(this, ChatRooms);
-
-	    return _possibleConstructorReturn(this, (ChatRooms.__proto__ || Object.getPrototypeOf(ChatRooms)).apply(this, arguments));
-	  }
-
-	  _createClass(ChatRooms, [{
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props,
-	          getChatRoomsList = _props.getChatRoomsList,
-	          chatRoomsList = _props.chatRoomsList,
-	          pages = _props.pages,
-	          goToPage = _props.goToPage;
-
-	      return _react2.default.createElement(
-	        _List.List,
-	        null,
-	        _react2.default.createElement(
-	          _reactInfiniteScroller2.default,
-	          {
-	            pageStart: chatRoomsList.get('chatRooms').count() / 20,
-	            loadMore: function loadMore(page) {
-	              return getChatRoomsList(page);
-	            },
-	            hasMore: !pages.get('chatRoomsListEnd') && !chatRoomsList.get('isFetching'),
-	            threshold: 100
-	          },
-	          chatRoomsList.get('chatRooms').map(function (chat, n) {
-	            return _react2.default.createElement(
-	              'div',
-	              { key: n },
-	              _react2.default.createElement(_List.ListItem, {
-	                onClick: function onClick(e) {
-	                  return goToPage('chatrooms/' + chat.get('id'));
-	                },
-	                primaryText: chat.get('title')
-	              }),
-	              _react2.default.createElement(_Divider2.default, null)
-	            );
-	          })
-	        ),
-	        chatRoomsList.get('isFetching') ? _react2.default.createElement(
-	          'div',
-	          { className: 'loader' },
-	          _react2.default.createElement(_CircularProgress2.default, {
-	            className: 'loader',
-	            size: 60,
-	            thickness: 5
-	          })
-	        ) : null
-	      );
-	    }
-	  }]);
-
-	  return ChatRooms;
-	}(_react.Component);
-
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    chatRoomsList: state.chatRoomsList,
-	    pages: state.pages
-	  };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  return {
-	    getChatRoomsList: function getChatRoomsList(page) {
-	      return dispatch((0, _chatRooms.getChatRoomsList)(page));
-	    },
-	    goToPage: function goToPage(url) {
-	      return dispatch((0, _application_helper.goToPage)(url));
-	    }
-	  };
-	};
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ChatRooms);
-
-/***/ },
-/* 613 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.chatRoomsListEnd = exports.chatRoomsListFailure = exports.chatRoomsListSuccess = exports.chatRoomsList = undefined;
-	exports.getChatRoomsList = getChatRoomsList;
-
-	var _ActionTypes = __webpack_require__(464);
-
-	var types = _interopRequireWildcard(_ActionTypes);
-
-	var _axios = __webpack_require__(439);
-
-	var _axios2 = _interopRequireDefault(_axios);
-
-	var _token_helper = __webpack_require__(437);
-
-	var _application_helper = __webpack_require__(436);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	var chatRoomsList = exports.chatRoomsList = function chatRoomsList() {
-	  return {
-	    type: types.CHAT_ROOMS_LIST
-	  };
-	};
-
-	var chatRoomsListSuccess = exports.chatRoomsListSuccess = function chatRoomsListSuccess(chatRooms) {
-	  return {
-	    type: types.CHAT_ROOMS_LIST_SUCCESS,
-	    chatRooms: chatRooms
-	  };
-	};
-
-	var chatRoomsListFailure = exports.chatRoomsListFailure = function chatRoomsListFailure(errors) {
-	  return {
-	    type: types.CHAT_ROOMS_LIST_FAILURE,
-	    errors: errors
-	  };
-	};
-
-	var chatRoomsListEnd = exports.chatRoomsListEnd = function chatRoomsListEnd() {
-	  return {
-	    type: types.CHAT_ROOMS_LIST_END
-	  };
-	};
-
-	function getChatRoomsList(page) {
-	  return function (dispatch) {
-	    dispatch(chatRoomsList());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.get('/chat_rooms', { params: { page: page } }).then(function (response) {
-	      if (response.data.chatRooms < 20) dispatch(chatRoomsListEnd());
-	      dispatch(chatRoomsListSuccess(response.data.chatRooms));
-	    }).catch(function (error) {
-	      dispatch(chatRoomsListFailure(error.response.data.errors));
-	      dispatch((0, _application_helper.logOutIfUnauthorized)(error.response.status));
-	    });
-	  };
-	}
 
 /***/ }
 /******/ ]);

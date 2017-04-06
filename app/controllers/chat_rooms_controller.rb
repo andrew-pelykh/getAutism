@@ -7,7 +7,7 @@ class ChatRoomsController < BaseController
   end
 
   def create
-    chat_room = @current_user.chat_rooms.new(title: params[:title])
+    chat_room = @current_user.chat_rooms.new(title: params[:chat_room][:title])
     if chat_room.save
       render json: {chatRoom: chat_room}
     else
