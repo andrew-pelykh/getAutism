@@ -6,12 +6,13 @@ class PostsController < BaseController
     posts = []
     Post.order(created_at: :desc).page(params[:page]).per(20).map do |post|
       user = User.find(post.user_id)
-      images = post.images.map{ |image| image.image_url }
-      p images
+      if post.images.first
+        image = post.images.first.image_url
+      end
       posts.push({
         id: post.id,
-        content: post.content,
-        images: images,
+        content: content_preview(post.content),
+        image: image,
         createdAt: post.created_at.strftime("%B %d, %Y"),
         author:{
             name: user.name,
@@ -48,5 +49,9 @@ class PostsController < BaseController
 
   def post_params
     params.require(:post).permit(:content, :images)
+  end
+
+  def content_preview content
+    (content.length >= 297)? content.slice(0..297) + "..." : content
   end
 end

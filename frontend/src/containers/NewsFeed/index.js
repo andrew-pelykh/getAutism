@@ -1,30 +1,45 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getPostsList, createPost } from '../../actions/posts'
-import { setPostDialog } from '../../actions/pages'
+import { setPostDialog, uploadPhotos, deletePreview } from '../../actions/pages'
 import PostForm from '../../components/PostForm'
 import PostsList from '../../components/PostsList'
 import { goToPage } from '../../helpers/application_helper'
+import { Row, Col } from 'react-flexbox-grid'
 import './styles.css'
 
 export class NewsFeed extends Component {
 
   render() {
-    const { postsList, getPostsList, setPostDialog, pages, createPost, goToPage } = this.props
+    const { postsList, getPostsList, setPostDialog, pages, createPost, goToPage,
+      uploadPhotos, deletePreview } = this.props
     return(
-      <div>
-      <PostForm
-        setPostDialog={setPostDialog}
-        open={pages.get('postDialog')}
-        createPost={createPost}
-      />
-      <PostsList
-        postsList={postsList}
-        goToPage={goToPage}
-        getPostsList={getPostsList}
-        listEnd={pages.get('postsListEnd')}
-       />
-      </div>
+      <Row>
+        <Col
+          xs={12}
+          sm={8}
+          md={6}
+          lg={4}
+        >
+          <PostForm
+            setPostDialog={setPostDialog}
+            open={pages.get('postDialog')}
+            createPost={createPost}
+            onDrop={uploadPhotos}
+            deletePreview={deletePreview}
+            photos={pages.get('photos')}
+            previewsMax={pages.get('previewsMax')}
+          />
+        </Col>
+        <Col xs={12}>
+          <PostsList
+            postsList={postsList}
+            goToPage={goToPage}
+            getPostsList={getPostsList}
+            listEnd={pages.get('postsListEnd')}
+          />
+        </Col>
+      </Row>
     )
   }
 }
@@ -37,9 +52,15 @@ const mapDispatchToProps = dispatch => ({
   getPostsList: page => dispatch(getPostsList(page)),
   setPostDialog: value => dispatch(setPostDialog(value)),
   goToPage: url => dispatch(goToPage(url)),
-  createPost: (e) => {
+  uploadPhotos: photos => dispatch(uploadPhotos(photos)),
+  deletePreview: n => dispatch(deletePreview(n)),
+  createPost: (e, photos) => {
     e.preventDefault()
     const post = new FormData(document.getElementById('post-form'))
+    if (photos.count() <= 10)
+      photos.map(photo => {
+        post.append('images[]', photo)
+      })
     dispatch(createPost(post))
   }
 })

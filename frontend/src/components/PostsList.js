@@ -3,13 +3,14 @@ import Avatar from 'material-ui/Avatar'
 import InfiniteScroll from 'react-infinite-scroller'
 import CircularProgress from 'material-ui/CircularProgress'
 import { Card, CardHeader, CardText, CardMedia } from 'material-ui/Card'
+import { Col, Row } from 'react-flexbox-grid'
 
 export default class PostsList extends Component {
 
   render() {
     const { postsList, getPostsList, goToPage, listEnd } = this.props
     return(
-      <div>
+      <Row>
         <InfiniteScroll
           pageStart={postsList.get('posts').count()/20}
           loadMore={page => getPostsList(page)}
@@ -25,7 +26,7 @@ export default class PostsList extends Component {
                     <CardHeader
                       avatar={
                         <Avatar
-                          onTouchTap={(e) => goToPage('users/'+author.get('id'))}
+                          onTouchTap={(e) => goToPage('users/' + author.get('id'))}
                           className="author-avatar"
                           src={author.get('avatar')}
                         />
@@ -33,16 +34,8 @@ export default class PostsList extends Component {
                       title={author.get('name')}
                       subtitle={post.get('createdAt')}
                     />
-                    <CardMedia>
-                      {
-                        post.get('images').map((image,k) => {
-                          return(
-                            <div key={k} >
-                              <img src={image}/>
-                            </div>
-                          )
-                        })
-                      }
+                    <CardMedia className="post-photo">
+                        {post.get('image')? <img src={ post.get('image') }/> : null}
                     </CardMedia>
                     <CardText>
                       {post.get('content')}
@@ -65,7 +58,7 @@ export default class PostsList extends Component {
             :
             null
         }
-      </div>
+      </Row>
     )
   }
 }

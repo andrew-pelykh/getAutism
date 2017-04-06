@@ -1,18 +1,26 @@
 import * as types from '../constants/ActionTypes'
-import { Map } from 'immutable'
+import { Map, List, fromJS   } from 'immutable'
 
-export default function (state = Map(), action) {
+export default function (state = Map({ photos: List()}), action) {
   switch(action.type) {
     case types.SET_DRAWER:
       return state.merge({ drawer: action.value })
     case types.SET_POST_DIALOG:
       return state.merge({ postDialog: action.value })
     case types.POST_CREATE_SUCCESS:
-      return state.merge({ postDialog: false })
+      return state.merge({ postDialog: false, photos: List(), previewsMax: false })
     case types.USERS_LIST_END:
       return state.merge({usersListEnd: true })
     case types.POSTS_LIST_END:
       return state.merge({ postsListEnd: true })
+    case types.UPLOAD_PHOTOS:
+      var photos = state.get('photos').concat(fromJS(action.photos))
+      if (photos.count() <= 10)
+        return state.merge({ photos: photos, previewsMax: false })
+      else
+      return state.merge({previewsMax: true})
+    case types.DELETE_PREVIEW:
+      return state.merge({photos: state.get('photos').delete(action.n), previewsMax: false})
   }
   return state
 }

@@ -8,7 +8,7 @@ export default class Children extends Component {
     const { children } = this.props
     if (isMobile()) {
       return (
-        <Grid className="root">
+        <Grid fluid className="root">
           {children}
         </Grid>)
     } else {

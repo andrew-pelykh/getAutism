@@ -19,3 +19,7 @@ input:-webkit-autofill {
 .root {
   padding-top: 65px;
 }
+
+img {
+  max-width: 100%;
+}
