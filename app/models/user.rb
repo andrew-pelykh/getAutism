@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_secure_token :auth_token
   has_many :posts
   has_many :images
+  has_many :messages
+  has_many :chat_rooms
 
   mount_uploader :avatar, AvatarUploader
 

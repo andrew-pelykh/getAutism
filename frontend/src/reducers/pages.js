@@ -13,6 +13,8 @@ export default function (state = Map({ photos: List()}), action) {
       return state.merge({usersListEnd: true })
     case types.POSTS_LIST_END:
       return state.merge({ postsListEnd: true })
+    case types.CHAT_ROOMS_LIST_END:
+      return state.merge({ chatRoomsListEnd: true })
     case types.UPLOAD_PHOTOS:
       var photos = state.get('photos').concat(fromJS(action.photos))
       if (photos.count() <= 10)

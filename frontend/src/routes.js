@@ -7,6 +7,7 @@ import User from './containers/User'
 import Users from './containers/Users'
 import NewsFeed from './containers/NewsFeed'
 import Register from './containers/Register'
+import ChatRooms from './containers/ChatRooms'
 import { getToken } from './helpers/token_helper'
 
 const routes = (
@@ -15,6 +16,7 @@ const routes = (
     <IndexRoute component={NewsFeed}/>
     <Route path="users/:id" component={User} />
     <Route path="/users" component={Users} />
+    <Route path="chatrooms" component={ChatRooms} />
   </Route>
   <Route path="/" component={AuthorizationLayout} onEnter={checkLogout}>
     <Route path="login" component={Login} />

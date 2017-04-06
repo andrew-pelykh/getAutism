@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   patch "/users/", to: "users#update"
   resources :users, only: [:create, :index]
   resources :posts, only: [:create, :index]
+  resources :chat_rooms, only: [:create, :index, :show]
 end

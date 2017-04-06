@@ -43,6 +43,10 @@ export class LeftBar extends Component {
           Users
         </MenuItem>
 
+        <MenuItem onTouchTap={(e) => goToPage('chatrooms')}>
+          Chatrooms
+        </MenuItem>
+
         <MenuItem onTouchTap={(e) => logOut(e)}>
           Exit
         </MenuItem>

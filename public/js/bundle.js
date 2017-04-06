@@ -77,13 +77,13 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(591);
+	var _store = __webpack_require__(592);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	__webpack_require__(601);
+	__webpack_require__(602);
 
-	var _reactTapEventPlugin = __webpack_require__(603);
+	var _reactTapEventPlugin = __webpack_require__(604);
 
 	var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
@@ -36179,9 +36179,13 @@
 
 	var _NewsFeed2 = _interopRequireDefault(_NewsFeed);
 
-	var _Register = __webpack_require__(590);
+	var _Register = __webpack_require__(591);
 
 	var _Register2 = _interopRequireDefault(_Register);
+
+	var _ChatRooms = __webpack_require__(612);
+
+	var _ChatRooms2 = _interopRequireDefault(_ChatRooms);
 
 	var _token_helper = __webpack_require__(437);
 
@@ -36195,7 +36199,8 @@
 	    { path: '/', component: _ApplicationLayout2.default, onEnter: checkLogin },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _NewsFeed2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'users/:id', component: _User2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/users', component: _Users2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: '/users', component: _Users2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'chatrooms', component: _ChatRooms2.default })
 	  ),
 	  _react2.default.createElement(
 	    _reactRouter.Route,
@@ -36329,7 +36334,7 @@
 	      if ((0, _application_helper.isMobile)()) {
 	        return _react2.default.createElement(
 	          _reactFlexboxGrid.Grid,
-	          { className: 'root' },
+	          { fluid: true, className: 'root' },
 	          children
 	        );
 	      } else {
@@ -40909,6 +40914,9 @@
 	var SET_POST_DIALOG = exports.SET_POST_DIALOG = ' SET_POST_DIALOG';
 	var USERS_LIST_END = exports.USERS_LIST_END = 'USERS_LIST_END';
 	var POSTS_LIST_END = exports.POSTS_LIST_END = 'POSTS_LIST_END';
+	var UPLOAD_PHOTOS = exports.UPLOAD_PHOTOS = 'UPLOAD_PHOTOS';
+	var DELETE_PREVIEW = exports.DELETE_PREVIEW = 'DELETE_PREVIEW';
+	var CHAT_ROOMS_LIST_END = exports.CHAT_ROOMS_LIST_END = 'CHAT_ROOMS_LIST_END';
 
 	var REGISTRAION = exports.REGISTRAION = 'REGISTRAION';
 	var REGISTRATION_SUCCESS = exports.REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
@@ -40930,6 +40938,10 @@
 	var POST_CREATE_SUCCESS = exports.POST_CREATE_SUCCESS = 'POST_CREATE_SUCCESS';
 	var POST_CREATE_FAILURE = exports.POST_CREATE_FAILURE = 'POST_CREATE_FAILURE';
 
+	var CHAT_ROOMS_LIST = exports.CHAT_ROOMS_LIST = 'CHAT_ROOMS_LIST';
+	var CHAT_ROOMS_LIST_SUCCESS = exports.CHAT_ROOMS_LIST_SUCCESS = 'CHAT_ROOMS_LIST_SUCCESS';
+	var CHAT_ROOMS_LIST_FAILURE = exports.CHAT_ROOMS_LIST_FAILURE = 'CHAT_ROOMS_LIST_FAILURE';
+
 /***/ },
 /* 465 */
 /***/ function(module, exports, __webpack_require__) {
@@ -40941,6 +40953,8 @@
 	});
 	exports.setDrawer = setDrawer;
 	exports.setPostDialog = setPostDialog;
+	exports.uploadPhotos = uploadPhotos;
+	exports.deletePreview = deletePreview;
 
 	var _ActionTypes = __webpack_require__(464);
 
@@ -40953,6 +40967,18 @@
 	function setPostDialog(value) {
 	  return function (dispatch) {
 	    return dispatch({ type: _ActionTypes.SET_POST_DIALOG, value: value });
+	  };
+	}
+
+	function uploadPhotos(photos) {
+	  return function (dispatch) {
+	    return dispatch({ type: _ActionTypes.UPLOAD_PHOTOS, photos: photos });
+	  };
+	}
+
+	function deletePreview(n) {
+	  return function (dispatch) {
+	    return dispatch({ type: _ActionTypes.DELETE_PREVIEW, n: n });
 	  };
 	}
 
@@ -41070,6 +41096,13 @@
 	              return goToPage('users');
 	            } },
 	          'Users'
+	        ),
+	        _react2.default.createElement(
+	          _MenuItem2.default,
+	          { onTouchTap: function onTouchTap(e) {
+	              return goToPage('chatrooms');
+	            } },
+	          'Chatrooms'
 	        ),
 	        _react2.default.createElement(
 	          _MenuItem2.default,
@@ -54478,13 +54511,15 @@
 
 	var _PostForm2 = _interopRequireDefault(_PostForm);
 
-	var _PostsList = __webpack_require__(577);
+	var _PostsList = __webpack_require__(578);
 
 	var _PostsList2 = _interopRequireDefault(_PostsList);
 
 	var _application_helper = __webpack_require__(436);
 
-	__webpack_require__(588);
+	var _reactFlexboxGrid = __webpack_require__(420);
+
+	__webpack_require__(589);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54512,22 +54547,41 @@
 	          setPostDialog = _props.setPostDialog,
 	          pages = _props.pages,
 	          createPost = _props.createPost,
-	          goToPage = _props.goToPage;
+	          goToPage = _props.goToPage,
+	          uploadPhotos = _props.uploadPhotos,
+	          deletePreview = _props.deletePreview;
 
 	      return _react2.default.createElement(
-	        'div',
+	        _reactFlexboxGrid.Row,
 	        null,
-	        _react2.default.createElement(_PostForm2.default, {
-	          setPostDialog: setPostDialog,
-	          open: pages.get('postDialog'),
-	          createPost: createPost
-	        }),
-	        _react2.default.createElement(_PostsList2.default, {
-	          postsList: postsList,
-	          goToPage: goToPage,
-	          getPostsList: getPostsList,
-	          listEnd: pages.get('postsListEnd')
-	        })
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Col,
+	          {
+	            xs: 12,
+	            sm: 8,
+	            md: 6,
+	            lg: 4
+	          },
+	          _react2.default.createElement(_PostForm2.default, {
+	            setPostDialog: setPostDialog,
+	            open: pages.get('postDialog'),
+	            createPost: createPost,
+	            onDrop: uploadPhotos,
+	            deletePreview: deletePreview,
+	            photos: pages.get('photos'),
+	            previewsMax: pages.get('previewsMax')
+	          })
+	        ),
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Col,
+	          { xs: 12 },
+	          _react2.default.createElement(_PostsList2.default, {
+	            postsList: postsList,
+	            goToPage: goToPage,
+	            getPostsList: getPostsList,
+	            listEnd: pages.get('postsListEnd')
+	          })
+	        )
 	      );
 	    }
 	  }]);
@@ -54553,9 +54607,18 @@
 	    goToPage: function goToPage(url) {
 	      return dispatch((0, _application_helper.goToPage)(url));
 	    },
-	    createPost: function createPost(e) {
+	    uploadPhotos: function uploadPhotos(photos) {
+	      return dispatch((0, _pages.uploadPhotos)(photos));
+	    },
+	    deletePreview: function deletePreview(n) {
+	      return dispatch((0, _pages.deletePreview)(n));
+	    },
+	    createPost: function createPost(e, photos) {
 	      e.preventDefault();
 	      var post = new FormData(document.getElementById('post-form'));
+	      if (photos.count() <= 10) photos.map(function (photo) {
+	        post.append('images[]', photo);
+	      });
 	      dispatch((0, _posts.createPost)(post));
 	    }
 	  };
@@ -54696,6 +54759,12 @@
 
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 
+	var _addAPhoto = __webpack_require__(577);
+
+	var _addAPhoto2 = _interopRequireDefault(_addAPhoto);
+
+	var _reactFlexboxGrid = __webpack_require__(420);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54719,25 +54788,66 @@
 	      var _props = this.props,
 	          setPostDialog = _props.setPostDialog,
 	          open = _props.open,
-	          createPost = _props.createPost;
+	          createPost = _props.createPost,
+	          photos = _props.photos,
+	          onDrop = _props.onDrop,
+	          deletePreview = _props.deletePreview,
+	          previewsMax = _props.previewsMax;
 
 	      return _react2.default.createElement(
 	        'form',
 	        { id: 'post-form', onSubmit: function onSubmit(e) {
-	            return createPost(e);
+	            return createPost(e, photos);
 	          } },
-	        _react2.default.createElement(_TextField2.default, {
-	          name: 'post[content]'
-	        }),
 	        _react2.default.createElement(
-	          _reactDropzone2.default,
-	          { name: 'images[]' },
-	          'Upload your photos'
+	          _reactFlexboxGrid.Row,
+	          null,
+	          _react2.default.createElement(_TextField2.default, {
+	            name: 'post[content]',
+	            multiLine: true,
+	            rowsMax: 4,
+	            fullWidth: true
+	          })
 	        ),
 	        _react2.default.createElement(
-	          _RaisedButton2.default,
-	          { type: 'submit' },
-	          'Post'
+	          _reactFlexboxGrid.Row,
+	          null,
+	          photos.map(function (photo, n) {
+	            return _react2.default.createElement(
+	              _reactFlexboxGrid.Col,
+	              { xs: 2, key: n },
+	              _react2.default.createElement('img', { onClick: function onClick() {
+	                  return deletePreview(n);
+	                }, src: photo.preview })
+	            );
+	          })
+	        ),
+	        previewsMax ? _react2.default.createElement(
+	          'p',
+	          null,
+	          '10 photos max'
+	        ) : null,
+	        _react2.default.createElement(
+	          _reactFlexboxGrid.Row,
+	          null,
+	          _react2.default.createElement(
+	            _reactFlexboxGrid.Col,
+	            { xs: 8 },
+	            _react2.default.createElement(
+	              _reactDropzone2.default,
+	              { className: 'dropzone', name: 'photos', onDrop: onDrop },
+	              _react2.default.createElement(_addAPhoto2.default, null)
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactFlexboxGrid.Col,
+	            { xs: 4 },
+	            _react2.default.createElement(
+	              _RaisedButton2.default,
+	              { type: 'submit' },
+	              'Post'
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -54750,6 +54860,43 @@
 
 /***/ },
 /* 577 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _pure = __webpack_require__(502);
+
+	var _pure2 = _interopRequireDefault(_pure);
+
+	var _SvgIcon = __webpack_require__(511);
+
+	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ImageAddAPhoto = function ImageAddAPhoto(props) {
+	  return _react2.default.createElement(
+	    _SvgIcon2.default,
+	    props,
+	    _react2.default.createElement('path', { d: 'M3 4V1h2v3h3v2H5v3H3V6H0V4h3zm3 6V7h3V4h7l1.83 2H21c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V10h3zm7 9c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-3.2-5c0 1.77 1.43 3.2 3.2 3.2s3.2-1.43 3.2-3.2-1.43-3.2-3.2-3.2-3.2 1.43-3.2 3.2z' })
+	  );
+	};
+	ImageAddAPhoto = (0, _pure2.default)(ImageAddAPhoto);
+	ImageAddAPhoto.displayName = 'ImageAddAPhoto';
+	ImageAddAPhoto.muiName = 'SvgIcon';
+
+	exports.default = ImageAddAPhoto;
+
+/***/ },
+/* 578 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54776,7 +54923,9 @@
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
-	var _Card = __webpack_require__(578);
+	var _Card = __webpack_require__(579);
+
+	var _reactFlexboxGrid = __webpack_require__(420);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54805,7 +54954,7 @@
 	          listEnd = _props.listEnd;
 
 	      return _react2.default.createElement(
-	        'div',
+	        _reactFlexboxGrid.Row,
 	        null,
 	        _react2.default.createElement(
 	          _reactInfiniteScroller2.default,
@@ -54838,14 +54987,8 @@
 	                }),
 	                _react2.default.createElement(
 	                  _Card.CardMedia,
-	                  null,
-	                  post.get('images').map(function (image, k) {
-	                    return _react2.default.createElement(
-	                      'div',
-	                      { key: k },
-	                      _react2.default.createElement('img', { src: image })
-	                    );
-	                  })
+	                  { className: 'post-photo' },
+	                  post.get('image') ? _react2.default.createElement('img', { src: post.get('image') }) : null
 	                ),
 	                _react2.default.createElement(
 	                  _Card.CardText,
@@ -54875,7 +55018,7 @@
 	exports.default = PostsList;
 
 /***/ },
-/* 578 */
+/* 579 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54885,31 +55028,31 @@
 	});
 	exports.default = exports.CardExpandable = exports.CardActions = exports.CardText = exports.CardMedia = exports.CardTitle = exports.CardHeader = exports.Card = undefined;
 
-	var _Card2 = __webpack_require__(579);
+	var _Card2 = __webpack_require__(580);
 
 	var _Card3 = _interopRequireDefault(_Card2);
 
-	var _CardHeader2 = __webpack_require__(583);
+	var _CardHeader2 = __webpack_require__(584);
 
 	var _CardHeader3 = _interopRequireDefault(_CardHeader2);
 
-	var _CardTitle2 = __webpack_require__(584);
+	var _CardTitle2 = __webpack_require__(585);
 
 	var _CardTitle3 = _interopRequireDefault(_CardTitle2);
 
-	var _CardMedia2 = __webpack_require__(585);
+	var _CardMedia2 = __webpack_require__(586);
 
 	var _CardMedia3 = _interopRequireDefault(_CardMedia2);
 
-	var _CardText2 = __webpack_require__(586);
+	var _CardText2 = __webpack_require__(587);
 
 	var _CardText3 = _interopRequireDefault(_CardText2);
 
-	var _CardActions2 = __webpack_require__(587);
+	var _CardActions2 = __webpack_require__(588);
 
 	var _CardActions3 = _interopRequireDefault(_CardActions2);
 
-	var _CardExpandable2 = __webpack_require__(580);
+	var _CardExpandable2 = __webpack_require__(581);
 
 	var _CardExpandable3 = _interopRequireDefault(_CardExpandable2);
 
@@ -54925,7 +55068,7 @@
 	exports.default = _Card3.default;
 
 /***/ },
-/* 579 */
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -54974,7 +55117,7 @@
 
 	var _Paper2 = _interopRequireDefault(_Paper);
 
-	var _CardExpandable = __webpack_require__(580);
+	var _CardExpandable = __webpack_require__(581);
 
 	var _CardExpandable2 = _interopRequireDefault(_CardExpandable);
 
@@ -55145,7 +55288,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 580 */
+/* 581 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55182,11 +55325,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _keyboardArrowUp = __webpack_require__(581);
+	var _keyboardArrowUp = __webpack_require__(582);
 
 	var _keyboardArrowUp2 = _interopRequireDefault(_keyboardArrowUp);
 
-	var _keyboardArrowDown = __webpack_require__(582);
+	var _keyboardArrowDown = __webpack_require__(583);
 
 	var _keyboardArrowDown2 = _interopRequireDefault(_keyboardArrowDown);
 
@@ -55252,7 +55395,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 581 */
+/* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55289,7 +55432,7 @@
 	exports.default = HardwareKeyboardArrowUp;
 
 /***/ },
-/* 582 */
+/* 583 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55326,7 +55469,7 @@
 	exports.default = HardwareKeyboardArrowDown;
 
 /***/ },
-/* 583 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55553,7 +55696,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 584 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55728,7 +55871,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 585 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -55939,7 +56082,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 586 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -56062,7 +56205,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 587 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -56189,13 +56332,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 588 */
+/* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(589);
+	var content = __webpack_require__(590);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -56215,7 +56358,7 @@
 	}
 
 /***/ },
-/* 589 */
+/* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -56223,13 +56366,13 @@
 
 
 	// module
-	exports.push([module.id, ".author-avatar {\n  cursor: pointer;\n}\n", ""]);
+	exports.push([module.id, ".author-avatar {\n  cursor: pointer;\n}\n\n.photos-input input {\n  display: none;\n}\n\n.photos-input svg:hover {\n  cursor: pointer;\n}\n\n.dropzone {\n  width: 100% !important;\n  height: 100% !important;\n  border: 0 !important;\n  cursor: pointer;\n}\n\n#post-form {\n  margin-bottom: 10px;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 590 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56388,7 +56531,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Register);
 
 /***/ },
-/* 591 */
+/* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56400,11 +56543,11 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _reducer = __webpack_require__(592);
+	var _reducer = __webpack_require__(593);
 
 	var _reducer2 = _interopRequireDefault(_reducer);
 
-	var _reduxThunk = __webpack_require__(600);
+	var _reduxThunk = __webpack_require__(601);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -56417,7 +56560,7 @@
 	}
 
 /***/ },
-/* 592 */
+/* 593 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56428,31 +56571,35 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _immutable = __webpack_require__(593);
+	var _immutable = __webpack_require__(594);
 
-	var _currentUser = __webpack_require__(594);
+	var _currentUser = __webpack_require__(595);
 
 	var _currentUser2 = _interopRequireDefault(_currentUser);
 
-	var _errors = __webpack_require__(595);
+	var _errors = __webpack_require__(596);
 
 	var _errors2 = _interopRequireDefault(_errors);
 
-	var _user = __webpack_require__(596);
+	var _user = __webpack_require__(597);
 
 	var _user2 = _interopRequireDefault(_user);
 
-	var _pages = __webpack_require__(597);
+	var _pages = __webpack_require__(598);
 
 	var _pages2 = _interopRequireDefault(_pages);
 
-	var _usersList = __webpack_require__(598);
+	var _usersList = __webpack_require__(599);
 
 	var _usersList2 = _interopRequireDefault(_usersList);
 
-	var _postsList = __webpack_require__(599);
+	var _postsList = __webpack_require__(600);
 
 	var _postsList2 = _interopRequireDefault(_postsList);
+
+	var _chatRoomsList = __webpack_require__(610);
+
+	var _chatRoomsList2 = _interopRequireDefault(_chatRoomsList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56462,7 +56609,8 @@
 	  pages: _pages2.default,
 	  errors: _errors2.default,
 	  usersList: _usersList2.default,
-	  postsList: _postsList2.default
+	  postsList: _postsList2.default,
+	  chatRoomsList: _chatRoomsList2.default
 	});
 
 	var reducer = function reducer() {
@@ -56481,7 +56629,7 @@
 	exports.default = reducer;
 
 /***/ },
-/* 593 */
+/* 594 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -61465,7 +61613,7 @@
 	}));
 
 /***/ },
-/* 594 */
+/* 595 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61525,7 +61673,7 @@
 	  return state;
 	};
 
-	var _immutable = __webpack_require__(593);
+	var _immutable = __webpack_require__(594);
 
 	var _ActionTypes = __webpack_require__(464);
 
@@ -61534,7 +61682,7 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 595 */
+/* 596 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61556,10 +61704,10 @@
 	  return (0, _immutable.Map)();
 	};
 
-	var _immutable = __webpack_require__(593);
+	var _immutable = __webpack_require__(594);
 
 /***/ },
-/* 596 */
+/* 597 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61599,12 +61747,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(593);
+	var _immutable = __webpack_require__(594);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 597 */
+/* 598 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61614,7 +61762,7 @@
 	});
 
 	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)();
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ photos: (0, _immutable.List)() });
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -61623,11 +61771,18 @@
 	    case types.SET_POST_DIALOG:
 	      return state.merge({ postDialog: action.value });
 	    case types.POST_CREATE_SUCCESS:
-	      return state.merge({ postDialog: false });
+	      return state.merge({ postDialog: false, photos: (0, _immutable.List)(), previewsMax: false });
 	    case types.USERS_LIST_END:
 	      return state.merge({ usersListEnd: true });
 	    case types.POSTS_LIST_END:
 	      return state.merge({ postsListEnd: true });
+	    case types.CHAT_ROOMS_LIST_END:
+	      return state.merge({ chatRoomsListEnd: true });
+	    case types.UPLOAD_PHOTOS:
+	      var photos = state.get('photos').concat((0, _immutable.fromJS)(action.photos));
+	      if (photos.count() <= 10) return state.merge({ photos: photos, previewsMax: false });else return state.merge({ previewsMax: true });
+	    case types.DELETE_PREVIEW:
+	      return state.merge({ photos: state.get('photos').delete(action.n), previewsMax: false });
 	  }
 	  return state;
 	};
@@ -61636,12 +61791,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(593);
+	var _immutable = __webpack_require__(594);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 598 */
+/* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61672,12 +61827,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(593);
+	var _immutable = __webpack_require__(594);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 599 */
+/* 600 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61708,12 +61863,12 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(593);
+	var _immutable = __webpack_require__(594);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
-/* 600 */
+/* 601 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -61741,13 +61896,13 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 601 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(602);
+	var content = __webpack_require__(603);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -61767,7 +61922,7 @@
 	}
 
 /***/ },
-/* 602 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -61775,17 +61930,17 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  margin: 0;\n}\n\n.loader {\n  width: 100%;\n  text-align: center;\n  margin-top: 10px;\n}\n\ninput:-webkit-autofill {\n    -webkit-box-shadow: 0 0 0px 1000px white inset;\n}\n\n.app-bar {\n  position: fixed !important;\n}\n\n.root {\n  padding-top: 65px;\n}\n", ""]);
+	exports.push([module.id, "body {\n  margin: 0;\n}\n\n.loader {\n  width: 100%;\n  text-align: center;\n  margin-top: 10px;\n}\n\ninput:-webkit-autofill {\n    -webkit-box-shadow: 0 0 0px 1000px white inset;\n}\n\n.app-bar {\n  position: fixed !important;\n}\n\n.root {\n  padding-top: 65px;\n}\n\nimg {\n  max-width: 100%;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 603 */
+/* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(9);
-	var defaultClickRejectionStrategy = __webpack_require__(604);
+	var defaultClickRejectionStrategy = __webpack_require__(605);
 
 	var alreadyInjected = false;
 
@@ -61807,14 +61962,14 @@
 	  alreadyInjected = true;
 
 	  __webpack_require__(134).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(605)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(606)(shouldRejectClick)
 	  });
 	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 604 */
+/* 605 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -61825,7 +61980,7 @@
 
 
 /***/ },
-/* 605 */
+/* 606 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -61849,14 +62004,14 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(606);
+	var EventConstants = __webpack_require__(607);
 	var EventPluginUtils = __webpack_require__(136);
 	var EventPropagators = __webpack_require__(133);
 	var SyntheticUIEvent = __webpack_require__(167);
-	var TouchEventUtils = __webpack_require__(607);
+	var TouchEventUtils = __webpack_require__(608);
 	var ViewportMetrics = __webpack_require__(168);
 
-	var keyOf = __webpack_require__(608);
+	var keyOf = __webpack_require__(609);
 	var topLevelTypes = EventConstants.topLevelTypes;
 
 	var isStartish = EventPluginUtils.isStartish;
@@ -62002,7 +62157,7 @@
 
 
 /***/ },
-/* 606 */
+/* 607 */
 /***/ function(module, exports) {
 
 	/**
@@ -62098,7 +62253,7 @@
 	module.exports = EventConstants;
 
 /***/ },
-/* 607 */
+/* 608 */
 /***/ function(module, exports) {
 
 	/**
@@ -62146,7 +62301,7 @@
 
 
 /***/ },
-/* 608 */
+/* 609 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -62183,6 +62338,235 @@
 	};
 
 	module.exports = keyOf;
+
+/***/ },
+/* 610 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ chatRooms: (0, _immutable.List)() });
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.CHAT_ROOMS_LIST:
+	      return state.merge({ isFetching: true });
+	    case types.CHAT_ROOMS_LIST_SUCCESS:
+	      var chats = state.get('chatRooms').concat((0, _immutable.fromJS)(action.chatRooms));
+	      return state.merge({ chatRooms: chats, isFetching: false });
+	    case types.CHAT_ROOMS_LIST_FAILURE:
+	      return state.merge({ isFetching: false });
+	  }
+	  return state;
+	};
+
+	var _immutable = __webpack_require__(594);
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ },
+/* 611 */,
+/* 612 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ChatRooms = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(33);
+
+	var _chatRooms = __webpack_require__(613);
+
+	var _application_helper = __webpack_require__(436);
+
+	var _List = __webpack_require__(569);
+
+	var _reactInfiniteScroller = __webpack_require__(573);
+
+	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
+
+	var _Divider = __webpack_require__(571);
+
+	var _Divider2 = _interopRequireDefault(_Divider);
+
+	var _CircularProgress = __webpack_require__(559);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ChatRooms = exports.ChatRooms = function (_Component) {
+	  _inherits(ChatRooms, _Component);
+
+	  function ChatRooms() {
+	    _classCallCheck(this, ChatRooms);
+
+	    return _possibleConstructorReturn(this, (ChatRooms.__proto__ || Object.getPrototypeOf(ChatRooms)).apply(this, arguments));
+	  }
+
+	  _createClass(ChatRooms, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          getChatRoomsList = _props.getChatRoomsList,
+	          chatRoomsList = _props.chatRoomsList,
+	          pages = _props.pages,
+	          goToPage = _props.goToPage;
+
+	      return _react2.default.createElement(
+	        _List.List,
+	        null,
+	        _react2.default.createElement(
+	          _reactInfiniteScroller2.default,
+	          {
+	            pageStart: chatRoomsList.get('chatRooms').count() / 20,
+	            loadMore: function loadMore(page) {
+	              return getChatRoomsList(page);
+	            },
+	            hasMore: !pages.get('chatRoomsListEnd') && !chatRoomsList.get('isFetching'),
+	            threshold: 100
+	          },
+	          chatRoomsList.get('chatRooms').map(function (chat, n) {
+	            return _react2.default.createElement(
+	              'div',
+	              { key: n },
+	              _react2.default.createElement(_List.ListItem, {
+	                onClick: function onClick(e) {
+	                  return goToPage('chatrooms/' + chat.get('id'));
+	                },
+	                primaryText: chat.get('title')
+	              }),
+	              _react2.default.createElement(_Divider2.default, null)
+	            );
+	          })
+	        ),
+	        chatRoomsList.get('isFetching') ? _react2.default.createElement(
+	          'div',
+	          { className: 'loader' },
+	          _react2.default.createElement(_CircularProgress2.default, {
+	            className: 'loader',
+	            size: 60,
+	            thickness: 5
+	          })
+	        ) : null
+	      );
+	    }
+	  }]);
+
+	  return ChatRooms;
+	}(_react.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    chatRoomsList: state.chatRoomsList,
+	    pages: state.pages
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    getChatRoomsList: function getChatRoomsList(page) {
+	      return dispatch((0, _chatRooms.getChatRoomsList)(page));
+	    },
+	    goToPage: function goToPage(url) {
+	      return dispatch((0, _application_helper.goToPage)(url));
+	    }
+	  };
+	};
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ChatRooms);
+
+/***/ },
+/* 613 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.chatRoomsListEnd = exports.chatRoomsListFailure = exports.chatRoomsListSuccess = exports.chatRoomsList = undefined;
+	exports.getChatRoomsList = getChatRoomsList;
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	var _axios = __webpack_require__(439);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _token_helper = __webpack_require__(437);
+
+	var _application_helper = __webpack_require__(436);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var chatRoomsList = exports.chatRoomsList = function chatRoomsList() {
+	  return {
+	    type: types.CHAT_ROOMS_LIST
+	  };
+	};
+
+	var chatRoomsListSuccess = exports.chatRoomsListSuccess = function chatRoomsListSuccess(chatRooms) {
+	  return {
+	    type: types.CHAT_ROOMS_LIST_SUCCESS,
+	    chatRooms: chatRooms
+	  };
+	};
+
+	var chatRoomsListFailure = exports.chatRoomsListFailure = function chatRoomsListFailure(errors) {
+	  return {
+	    type: types.CHAT_ROOMS_LIST_FAILURE,
+	    errors: errors
+	  };
+	};
+
+	var chatRoomsListEnd = exports.chatRoomsListEnd = function chatRoomsListEnd() {
+	  return {
+	    type: types.CHAT_ROOMS_LIST_END
+	  };
+	};
+
+	function getChatRoomsList(page) {
+	  return function (dispatch) {
+	    dispatch(chatRoomsList());
+	    var instance = _axios2.default.create();
+	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
+	    return instance.get('/chat_rooms', { params: { page: page } }).then(function (response) {
+	      if (response.data.chatRooms < 20) dispatch(chatRoomsListEnd());
+	      dispatch(chatRoomsListSuccess(response.data.chatRooms));
+	    }).catch(function (error) {
+	      dispatch(chatRoomsListFailure(error.response.data.errors));
+	      dispatch((0, _application_helper.logOutIfUnauthorized)(error.response.status));
+	    });
+	  };
+	}
 
 /***/ }
 /******/ ]);
