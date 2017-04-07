@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 import { expect } from 'chai'
 import reducer from '../../src/reducers/usersList'
 import * as usersActions from '../../src/actions/users'
@@ -12,7 +12,7 @@ describe('usersList reducer', () => {
 
   it('should return users list on USERS_LIST_SUCCESS', () => {
     var users = [{name:'1'},{name:'2'}]
-    var newState = reducer(Map(), usersActions.usersListSuccess(users))
+    var newState = reducer(Map({users:List()}), usersActions.usersListSuccess(users))
     expect(newState.get('users').count()).to.be.equal(2)
   })
 

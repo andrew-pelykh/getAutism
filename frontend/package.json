@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --debug --watch",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js \"test/**/*@(.js|.jsx)\"",
-    "webpack:deploy": "webpack --config=frontend/webpack.config.js -p",
-    "heroku-postbuild": "npm run webpack:deploy"
+    "test": "mocha --compilers js:babel-core/register --require ignore-styles --require ./test/test_helper.js \"test/**/*@(.js|.jsx)\""
   },
   "engines": {
     "node": "7.6.0"
@@ -26,6 +24,7 @@
     "chai-immutable": "^1.6.0",
     "css-loader": "^0.28.0",
     "enzyme": "^2.7.1",
+    "ignore-styles": "^5.0.1",
     "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
     "nock": "^9.0.9",

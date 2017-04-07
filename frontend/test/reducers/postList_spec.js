@@ -1,13 +1,13 @@
 import reducer from '../../src/reducers/postsList'
 import * as postActions from '../../src/actions/posts'
 import { expect } from 'chai'
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 
 describe('postsList reducer',() => {
 
   it('should return post list on POSTS_LIST_SUCCESS',() => {
     var posts = [{content: 'post1'}, {content: 'post2'}]
-    var newState = reducer(Map(), postActions.postsListSuccess(posts))
+    var newState = reducer(Map({posts:List()}), postActions.postsListSuccess(posts))
     expect(newState.get('posts').count()).to.equal(2)
   })
 

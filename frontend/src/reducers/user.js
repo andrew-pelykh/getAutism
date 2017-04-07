@@ -12,15 +12,16 @@ export default function (state=Map(), action) {
 
     case types.USER_FAILURE:
       return state.merge({ isFetching: false })
-      case types.USER_UPDATE:
-        return state.merge({ isFetching: true })
 
-      case types.USER_UPDATE_SUCCESS:
-        var user = Map(action.user).merge({ isFetching: false })
-        return state.merge(user)
+    case types.USER_UPDATE:
+      return state.merge({ isFetching: true })
 
-      case types.USER_UPDATE_FAILURE:
-        return state.merge({ isFetching: false })
+    case types.USER_UPDATE_SUCCESS:
+      var user = Map(action.user).merge({ isFetching: false })
+      return state.merge(user)
+
+    case types.USER_UPDATE_FAILURE:
+      return state.merge({ isFetching: false })
   }
   return state
 }
