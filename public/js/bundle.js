@@ -40964,6 +40964,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.deletePhotoPreview = exports.uploadPhotosPreviews = exports.setDrawerValue = undefined;
 	exports.setDrawer = setDrawer;
 	exports.setPostDialog = setPostDialog;
 	exports.uploadPhotos = uploadPhotos;
@@ -40971,27 +40972,46 @@
 
 	var _ActionTypes = __webpack_require__(464);
 
+	var setDrawerValue = exports.setDrawerValue = function setDrawerValue(value) {
+	  return {
+	    type: _ActionTypes.SET_DRAWER,
+	    value: value
+	  };
+	};
 	function setDrawer(value) {
 	  return function (dispatch) {
-	    return dispatch({ type: _ActionTypes.SET_DRAWER, value: value });
+	    return dispatch(setDrawerValue(value));
 	  };
 	}
 
 	function setPostDialog(value) {
 	  return function (dispatch) {
-	    return dispatch({ type: _ActionTypes.SET_POST_DIALOG, value: value });
+	    return dispatch(setPostDialogValue(value));
 	  };
 	}
+
+	var uploadPhotosPreviews = exports.uploadPhotosPreviews = function uploadPhotosPreviews(photos) {
+	  return {
+	    type: _ActionTypes.UPLOAD_PHOTOS,
+	    photos: photos
+	  };
+	};
 
 	function uploadPhotos(photos) {
 	  return function (dispatch) {
-	    return dispatch({ type: _ActionTypes.UPLOAD_PHOTOS, photos: photos });
+	    return dispatch(uploadPhotosPreviews(photos));
 	  };
 	}
 
+	var deletePhotoPreview = exports.deletePhotoPreview = function deletePhotoPreview(n) {
+	  return {
+	    type: _ActionTypes.DELETE_PREVIEW,
+	    n: n
+	  };
+	};
 	function deletePreview(n) {
 	  return function (dispatch) {
-	    return dispatch({ type: _ActionTypes.DELETE_PREVIEW, n: n });
+	    return dispatch(deletePhotoPreview(n));
 	  };
 	}
 
@@ -62193,6 +62213,7 @@
 
 	    case types.USER_FAILURE:
 	      return state.merge({ isFetching: false });
+
 	    case types.USER_UPDATE:
 	      return state.merge({ isFetching: true });
 
@@ -62229,21 +62250,26 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
+
 	    case types.SET_DRAWER:
 	      return state.merge({ drawer: action.value });
-	    case types.SET_POST_DIALOG:
-	      return state.merge({ postDialog: action.value });
+
 	    case types.POST_CREATE_SUCCESS:
-	      return state.merge({ postDialog: false, photos: (0, _immutable.List)(), previewsMax: false });
+	      return state.merge({ photos: (0, _immutable.List)(), previewsMax: false });
+
 	    case types.USERS_LIST_END:
 	      return state.merge({ usersListEnd: true });
+
 	    case types.POSTS_LIST_END:
 	      return state.merge({ postsListEnd: true });
+
 	    case types.CHAT_ROOMS_LIST_END:
 	      return state.merge({ chatRoomsListEnd: true });
+
 	    case types.UPLOAD_PHOTOS:
 	      var photos = state.get('photos').concat((0, _immutable.fromJS)(action.photos));
 	      if (photos.count() <= 10) return state.merge({ photos: photos, previewsMax: false });else return state.merge({ previewsMax: true });
+
 	    case types.DELETE_PREVIEW:
 	      return state.merge({ photos: state.get('photos').delete(action.n), previewsMax: false });
 	  }
@@ -62347,9 +62373,11 @@
 	  switch (action.type) {
 	    case types.CHAT_ROOMS_LIST:
 	      return state.merge({ isFetching: true });
+
 	    case types.CHAT_ROOMS_LIST_SUCCESS:
 	      var chats = state.get('chatRooms').concat((0, _immutable.fromJS)(action.chatRooms));
 	      return state.merge({ chatRooms: chats, isFetching: false });
+
 	    case types.CHAT_ROOMS_LIST_FAILURE:
 	      return state.merge({ isFetching: false });
 	  }
