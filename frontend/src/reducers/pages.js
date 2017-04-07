@@ -14,6 +14,9 @@ export default function (state = initialState, action) {
     case types.POST_CREATE_SUCCESS:
       return state.merge({ photos: List(), previewsMax: false })
 
+    case types.MESSAGES_LIST_END:
+      return state.merge({messagesListEnd: true})  
+
     case types.USERS_LIST_END:
       return state.merge({usersListEnd: true })
 

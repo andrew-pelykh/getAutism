@@ -39,11 +39,11 @@ export class LeftBar extends Component {
           News
         </MenuItem>
 
-        <MenuItem onTouchTap={(e) => goToPage('users')}>
+        <MenuItem onTouchTap={(e) => goToPage('users/')}>
           Users
         </MenuItem>
 
-        <MenuItem onTouchTap={(e) => goToPage('chatrooms')}>
+        <MenuItem onTouchTap={(e) => goToPage('chatrooms/')}>
           Chatrooms
         </MenuItem>
 

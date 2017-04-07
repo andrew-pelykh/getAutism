@@ -8,7 +8,8 @@ import Divider from 'material-ui/Divider'
 import CircularProgress from 'material-ui/CircularProgress'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
-import { Col,Row } from 'react-flexbox-grid'
+import { Col, Row } from 'react-flexbox-grid'
+import './styles.css'
 
 export class ChatRooms extends Component {
   render() {

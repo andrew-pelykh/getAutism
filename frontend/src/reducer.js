@@ -8,6 +8,7 @@ import usersList from './reducers/usersList'
 import postsList from './reducers/postsList'
 import chatRoomsList from './reducers/chatRoomsList'
 import chatRoom from './reducers/chatRoom'
+import messagesList from './reducers/messagesList'
 
 const appReducer = combineReducers({
   currentUser,
@@ -17,7 +18,8 @@ const appReducer = combineReducers({
   usersList,
   postsList,
   chatRoomsList,
-  chatRoom
+  chatRoom,
+  messagesList
 })
 
 const reducer = (state = {}, action) => {

@@ -20,8 +20,7 @@ export default class UsersList extends Component {
           threshold={100}
         >
           {
-            usersList.get('users').map((user,n) => {
-            return (
+            usersList.get('users').map((user,n) => (
               <div key={n}>
                 <ListItem
                   onClick={(e) => goToPage('users/' + user.get('id'))}
@@ -30,8 +29,7 @@ export default class UsersList extends Component {
                 />
                 <Divider />
               </div>
-              )
-            })
+              ))
           }
         </InfiniteScroll>
         {

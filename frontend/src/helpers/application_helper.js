@@ -23,7 +23,7 @@ export function goToPage(nextUrl) {
     if (isMobile())
       dispatch(setDrawer(false))
     const currentUrl = hashHistory.getCurrentLocation().pathname
-    if (currentUrl == nextUrl) return null
+    if (currentUrl == nextUrl || currentUrl == ("/" + nextUrl)) return null
     hashHistory.push(nextUrl)
   }
 }

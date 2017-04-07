@@ -21,13 +21,13 @@ describe('chatRoom reducer', () => {
     let chat = { title: "lol" }
     let newState = reducer(initialState, actions.chatRoomSuccess(chat))
     expect(newState.get('isFetching')).to.not.be.ok
-    expect(newState.get('chatRoom')).to.be.equal(Map(chat))
+    expect(newState.get('title')).to.be.equal("lol")
   })
 
   it('should set chatRoom, and set is Fetching flag to false on CREATE_CHAT_ROOM_SUCCESS', ()=> {
     let chat = { title: "lol" }
     let newState = reducer(initialState, actions.createChatRoomSuccess(chat))
     expect(newState.get('isFetching')).to.not.be.ok
-    expect(newState.get('chatRoom')).to.be.equal(Map(chat))
+    expect(newState.get('title')).to.be.equal("lol")
   })
 })

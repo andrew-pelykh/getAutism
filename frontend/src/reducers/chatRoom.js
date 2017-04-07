@@ -17,9 +17,4 @@ export default function(state = initialState, action) {
 
 const setIsFetching = (state, value) => state.merge({isFetching: value})
 
-const setChatRoom = (state, chat) => (
-  state.merge({
-    chatRoom: chat,
-    isFetching: false
-  })
-)
+const setChatRoom = (state, chat) => state.merge(Map(chat).merge({ isFetching: false }))

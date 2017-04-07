@@ -16,16 +16,19 @@ export const messagesListFailure = errors => ({
   errors
 })
 
+export const messagesListEnd = () => ({
+  type: types.MESSAGES_LIST_END
+})
+
 export function getMessages(id, page) {
   return dispatch => {
     dispatch(messagesList())
     return axios.get('/messages', { params: {page: page, id: id}})
     .then(response => {
+      if(response.data.messages.length < 20)
+        dispatch(messagesListEnd())
       dispatch(messagesListSuccess(response.data.messages))
     })
-    .catch(error => {
-      dispatch(messagesListFailure(error.response.data.errors))
-      dispatch(logOutIfUnauthorized(errors.response.status))
-    })
+
   }
 }

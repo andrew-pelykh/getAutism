@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getUsersList } from '../actions/users'
-import { goToPage } from '../helpers/application_helper'
-import UsersList from '../components/UsersList'
+import { getUsersList } from '../../actions/users'
+import { goToPage } from '../../helpers/application_helper'
+import UsersList from '../../components/UsersList'
 
 export class Users extends Component {
 
