@@ -3,6 +3,8 @@ import { hashHistory } from 'react-router'
 import { setToken, getToken, removeToken } from '../helpers/token_helper'
 import * as types from '../constants/ActionTypes'
 
+axios.defaults.headers.common['X-Api-Key'] = getToken()
+
 export const login = () => ({
   type: types.LOGIN
 })
@@ -36,6 +38,7 @@ export function logIn(user) {
     return axios.post('/log_in', user)
     .then(response => {
       setToken(response.data.user.token)
+      axios.defaults.headers.common['X-Api-Key'] = response.data.user.token
       dispatch(loginSuccess(response.data.user))
       hashHistory.push('/')
     })
@@ -52,6 +55,7 @@ export function logOut() {
     }
     removeToken('token')
     hashHistory.push('/login')
+    axios.defaults.headers.common['X-Api-Key'] = ""
     dispatch(logout())
     return axios.delete('/log_out', config)
     .then( response => {

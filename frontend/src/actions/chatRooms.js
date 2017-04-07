@@ -25,9 +25,7 @@ export const chatRoomsListEnd = () => ({
 export function getChatRoomsList(page) {
   return dispatch => {
     dispatch(chatRoomsList())
-    var instance = axios.create()
-    instance.defaults.headers.common['X-Api-Key'] = getToken()
-    return instance.get('/chat_rooms', { params: { page: page }})
+    return axios.get('/chat_rooms', { params: { page: page }})
       .then(response => {
         if(response.data.chatRooms < 20)
           dispatch(chatRoomsListEnd())
@@ -57,9 +55,7 @@ export const chatRoomFailure = errors => ({
 export function getChatRoom(id) {
   return dispatch => {
     dispatch(chatRoom())
-    var instance = axios.create()
-    instance.defaults.headers.common['X-Api-Key'] = getToken()
-    return instance.get('/chat_rooms/'+ id)
+    return axios.get('/chat_rooms/'+ id)
       .then(response => {
         dispatch(chatRoomSuccess(response.data.chatRoom))
       })
@@ -87,9 +83,7 @@ export const createChatRoomFailure = errors => ({
 export function createChat(chat) {
   return dispatch => {
     dispatch(createChatRoom())
-    var instance = axios.create()
-    instance.defaults.headers.common['X-Api-Key'] = getToken()
-    return instance.post('/chat_rooms', chat)
+    return axios.post('/chat_rooms', chat)
       .then(response => {
         dispatch(createChatRoomSuccess(response.data.chatRoom))
         hashHistory.push('/chatrooms/'+ response.data.chatRoom.id)

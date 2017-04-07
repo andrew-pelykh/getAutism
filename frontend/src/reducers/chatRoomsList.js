@@ -1,17 +1,24 @@
 import { List, Map, fromJS }from 'immutable'
 import * as types from '../constants/ActionTypes'
 
-export default function(state=Map({chatRooms: List()}), action) {
-  switch(action.type){
-    case types.CHAT_ROOMS_LIST:
-      return state.merge({isFetching: true})
+const initialState =Map({
+  chatRooms: List()
+})
 
-    case types.CHAT_ROOMS_LIST_SUCCESS:
-      let chats = state.get('chatRooms').concat(fromJS(action.chatRooms))
-      return state.merge({chatRooms: chats, isFetching: false})
-      
-    case types.CHAT_ROOMS_LIST_FAILURE:
-      return state.merge({isFetching: false})
+export default function(state = initialState, action) {
+  switch(action.type){
+    case types.CHAT_ROOMS_LIST: return setIsFetching(state, true)
+    case types.CHAT_ROOMS_LIST_SUCCESS: return AddChatRoomsToList(state, action.chatRooms)
+    case types.CHAT_ROOMS_LIST_FAILURE: return setIsFetching(state, false)
+    default: return state
   }
-  return state
 }
+
+const setIsFetching = (state, value) => state.merge({isFetching: value})
+
+const AddChatRoomsToList = (state, chatRooms) => (
+  state.merge({
+    chatRooms: state.get('chatRooms').concat(fromJS(chatRooms)),
+    isFetching: false
+  })
+)

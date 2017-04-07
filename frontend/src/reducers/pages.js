@@ -1,7 +1,11 @@
 import * as types from '../constants/ActionTypes'
 import { Map, List, fromJS   } from 'immutable'
 
-export default function (state = Map({ photos: List()}), action) {
+const initialState = Map({
+  photos: List()
+})
+
+export default function (state = initialState, action) {
   switch(action.type) {
 
     case types.SET_DRAWER:

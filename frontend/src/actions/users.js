@@ -21,10 +21,7 @@ export const currentUserFailure = (errors) => ({
 export function getCurrentUser() {
   return dispatch => {
     dispatch(currentUser())
-    const config = {
-      headers: {'X-Api-Key': getToken()}
-    }
-    return axios.get('/current_user', config)
+    return axios.get('/current_user')
     .then(response => {
       dispatch(currentUserSuccess(response.data.user))
     })
@@ -52,10 +49,7 @@ export const userFailure = (errors) => ({
 export function getUser(id) {
   return dispatch => {
     dispatch(user())
-    const config = {
-      headers: {'X-Api-Key': getToken()}
-    }
-    return axios.get('/users/' + id, config)
+    return axios.get('/users/' + id)
     .then(response => {
       dispatch(userSuccess(response.data.user))
     })
@@ -116,9 +110,7 @@ export const usersListEnd = () => ({
 export function getUsersList(page) {
   return dispatch => {
     dispatch(usersList())
-    var instance = axios.create()
-    instance.defaults.headers.common['X-Api-Key'] = getToken()
-    return instance.get('/users', { params: { page: page }})
+    return axios.get('/users', { params: { page: page }})
     .then(response => {
       if(response.data.users < 20)
         dispatch(usersListEnd())
@@ -148,9 +140,7 @@ export const userUpdateFailure = errors => ({
 export function updateUser(user) {
   return dispatch => {
     dispatch(userUpdate())
-    var instance = axios.create()
-    instance.defaults.headers.common['X-Api-Key'] = getToken()
-    return instance.patch('/users', user)
+    return axios.patch('/users', user)
     .then(response => {
       dispatch(userUpdateSuccess(response.data.user))
     })

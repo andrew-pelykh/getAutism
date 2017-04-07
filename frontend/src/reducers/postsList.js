@@ -1,17 +1,25 @@
 import * as types from '../constants/ActionTypes'
 import { Map, fromJS, List } from 'immutable'
 
-export default function (state=Map({posts:List()}), action) {
+const initialState = Map({
+  posts:List()
+})
+
+export default function (state = initialState, action) {
   switch(action.type) {
-    case types.POSTS_LIST:
-      return state.merge({ isFetching: true })
-
-    case types.POSTS_LIST_SUCCESS:
-      let posts = state.get('posts').concat(fromJS(action.posts))
-      return Map({ isFetching: false, posts: posts })
-
-    case types.POSTS_LIST_FAILURE:
-      return state.merge({ isFetching: false })
+    case types.POSTS_LIST: return setIsFetching(state, true)
+    case types.POSTS_LIST_SUCCESS: return AddPostsToList(state, action.posts)
+    case types.POSTS_LIST_FAILURE: return setIsFetching(state, false)
+    default: return state
   }
-  return state
+}
+
+const setIsFetching = (state, value) => state.merge({isFetching: value})
+
+const AddPostsToList = (state, posts) => {
+  let newState = state.get('posts').concat(fromJS(posts))
+  return state.merge({
+    posts: newState,
+    isFetching: false
+  })
 }

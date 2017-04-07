@@ -24,9 +24,7 @@ export const postsListEnd = () => ({
 export function getPostsList(page) {
   return dispatch => {
     dispatch(postsList())
-    var instance = axios.create()
-    instance.defaults.headers.common['X-Api-Key'] = getToken()
-    return instance.get('/posts', { params: { page: page }})
+    return axios.get('/posts', { params: { page: page }})
     .then(response => {
       if (response.data.posts.length < 20)
         dispatch(postsListEnd())
@@ -56,9 +54,7 @@ export const postCreateFailure = errors => ({
 export function createPost(post) {
   return dispatch => {
     dispatch(postCreate())
-    var instance = axios.create()
-    instance.defaults.headers.common['X-Api-Key'] = getToken()
-    return instance.post('/posts', post)
+    return axios.post('/posts', post)
     .then(response => {
       dispatch(postCreateSuccess(response.data.post))
     })
