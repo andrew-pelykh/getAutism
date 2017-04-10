@@ -29,6 +29,10 @@ export function getMessages(id, page) {
         dispatch(messagesListEnd())
       dispatch(messagesListSuccess(response.data.messages))
     })
+    .catch(error => {
+      dispatch(messagesListFailure(errors.response.data.errors))
+      dispatch(logOutIfUnauthorized(error.response.status))
+    })
 
   }
 }

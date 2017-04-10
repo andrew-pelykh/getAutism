@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import { getChatRoom } from '../../actions/chatRooms'
 import MessagesList from '../../components/messages/MessagesList'
 import { getMessages } from '../../actions/messages'
+import { Col } from 'react-flexbox-grid'
 
 export class ChatRoom extends Component {
 
   componentDidMount() {
     const { getChatRoom, params, chat } = this.props
-    if(!chat.get('id'))
+    if(chat.get('id') !== params.id)
       getChatRoom(params.id)
   }
 
@@ -21,27 +22,31 @@ export class ChatRoom extends Component {
   }
 
   render() {
-    const { chat, messagesList, getMessages, pages } = this.props
+    const { chat, getMessages, pages, params } = this.props
     return(
-      <div>
+      <Col
+      xs={12}
+      smOffset={1} sm={10} smOffset={1}
+      mdOffset={1} md={8} mdOffset={3}
+      lgOffset={2} lg={6} lgOffset={4}
+      >
         ChatRoom: {chat.get('title')}
-        { chat.get('id')?
         <MessagesList
-          chatId={chat.get('id')}
+          chatId={params.id}
           listEnd={pages.get('messagesListEnd')}
-          messagesList={messagesList}
+          messagesList={chat.get('messagesList')}
           getMessages={getMessages}
-        /> : null
-      }
-      </div>
+        />
+      </Col>
     )
   }
 }
+
 const mapStateToProps = state => ({
   chat: state.chatRoom,
-  messagesList: state.messagesList,
   pages: state.pages
 })
+
 const mapDispatchToProps = dispatch => ({
   getChatRoom: id => dispatch(getChatRoom(id)),
   getMessages: (id, page) => dispatch(getMessages(id, page))

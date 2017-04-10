@@ -37,3 +37,9 @@ end
 200.times do
   User.order("RANDOM()").first.posts.create(content: contents.sample)
 end
+
+ChatRoom.create(title: "Chat", user_id:1)
+
+500.times do |n|
+ ChatRoom.first.messages.create(body:"message#{n}", user_id: 1)
+end

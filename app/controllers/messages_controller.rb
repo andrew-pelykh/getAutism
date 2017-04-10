@@ -4,6 +4,6 @@ class MessagesController < BaseController
 
   def index
     chat = ChatRoom.find(params[:id])
-    render json: { messages: chat.messages.page(params[:page])}
+    render json: { messages: chat.messages.order(created_at: :desc).page(params[:page]).per(20)} 
   end
 end

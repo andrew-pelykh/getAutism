@@ -15,7 +15,10 @@ export default function (state = initialState, action) {
       return state.merge({ photos: List(), previewsMax: false })
 
     case types.MESSAGES_LIST_END:
-      return state.merge({messagesListEnd: true})  
+      return state.merge({messagesListEnd: true})
+
+    case types.CHAT_ROOM:
+      return state.merge({messagesListEnd: false})
 
     case types.USERS_LIST_END:
       return state.merge({usersListEnd: true })

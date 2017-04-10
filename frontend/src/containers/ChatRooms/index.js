@@ -13,7 +13,7 @@ import './styles.css'
 
 export class ChatRooms extends Component {
   render() {
-    const { getChatRoomsList, chatRoomsList, pages, goToPage, createChat } = this.props
+    const { getChatRoomsList, chat, chatRoomsList, pages, goToPage, createChat } = this.props
     return(
       <Row>
         <Col xs={12}>
@@ -68,6 +68,7 @@ export class ChatRooms extends Component {
 
 const mapStateToProps = state => ({
   chatRoomsList: state.chatRoomsList,
+  chat: state.chatRoom,
   pages: state.pages
 })
 

@@ -17,7 +17,11 @@ const setIsFetching = (state, value) => state.merge({isFetching: value})
 
 const AddMessagesToList = (state, messages) => {
   if(!messages) return state.merge({isFetching: false})
-  let newState = state.get('messages').concat(fromJS(messages))
+  const newState = state.get('messages').concat(fromJS(messages)).sort((a, b) => {
+    if (a.get('id') < b.get('id')) { return -1; }
+    if (a.get('id') > b.get('id')) { return 1; }
+    if (a.get('id') === b.get('id')) { return 0; }
+  })
   return state.merge({
     messages: newState,
     isFetching: false

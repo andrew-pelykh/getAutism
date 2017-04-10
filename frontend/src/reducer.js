@@ -18,8 +18,7 @@ const appReducer = combineReducers({
   usersList,
   postsList,
   chatRoomsList,
-  chatRoom,
-  messagesList
+  chatRoom
 })
 
 const reducer = (state = {}, action) => {
