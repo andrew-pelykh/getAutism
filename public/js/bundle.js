@@ -57037,7 +57037,7 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      window.App.cable = _actioncable2.default.createConsumer('ws://rails-redux-app.herokuapp.com/cable?token=' + (0, _token_helper.getToken)());
+	      window.App.cable = _actioncable2.default.createConsumer('wss://rails-redux-app.herokuapp.com/cable?token=' + (0, _token_helper.getToken)());
 	      this.setupSubscription();
 	      var _props = this.props,
 	          getChatRoom = _props.getChatRoom,
