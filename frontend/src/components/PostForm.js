@@ -14,6 +14,7 @@ export default class PostForm extends Component {
           <form id="post-form" onSubmit={(e) => createPost(e, photos)}>
             <Row>
               <TextField
+                id = 'post'
                 name="post[content]"
                 multiLine={true}
                 rowsMax={4}

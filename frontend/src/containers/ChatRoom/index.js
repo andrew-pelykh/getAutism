@@ -27,7 +27,7 @@ export class ChatRoom extends Component {
   }
 
   componentDidMount() {
-    window.App.cable = ActionCable.createConsumer(`ws://localhost:3000/cable?token=${getToken()}`)
+    window.App.cable = ActionCable.createConsumer(`ws://rails-redux-app.herokuapp.com/cable?token=${getToken()}`)
     this.setupSubscription()
     const { getChatRoom, params, chat } = this.props
     if(chat.get('id') !== params.id)

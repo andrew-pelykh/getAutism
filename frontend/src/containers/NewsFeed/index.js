@@ -61,6 +61,7 @@ const mapDispatchToProps = dispatch => ({
       photos.map(photo => {
         post.append('images[]', photo)
       })
+    document.getElementById('post').value = ""
     dispatch(createPost(post))
   }
 })
