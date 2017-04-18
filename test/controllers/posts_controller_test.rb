@@ -15,7 +15,7 @@ class PostsControllerTest < ActionController::TestCase
     assert_response 200
     jdata = JSON.parse response.body
     assert_equal 2, jdata["posts"].length
-    assert_equal "post1", jdata["posts"][0]["content"]
+    assert_equal "post2", jdata["posts"][0]["content"]
       assert_equal "Naruto", jdata["posts"][0]["author"]["name"]
   end
 

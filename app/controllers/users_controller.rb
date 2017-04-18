@@ -4,28 +4,17 @@ class UsersController < BaseController
   skip_before_action  :authorizate_request!, only: [:create]
 
   def current_user
-    render json: {
-      user: {
-        id: @current_user.id,
-        name: @current_user.name,
-        avatar: @current_user.avatar_url
-      }
-    }, status: 200
+    render_user @current_user
   end
 
   def user
     begin
       user = User.find(params[:id])
     rescue
-      render_errors({"errors-list" => "Wrong id provided"}, 404) and return
+      render_errors({"errors-list" => "Wrong id provided"},
+                      404) and return
     end
-    render json: {
-      user: {
-        id: user.id,
-        name: user.name,
-        avatar: user.avatar_url
-      }
-    }, status: 200
+    render_user user
   end
 
   def create
@@ -41,7 +30,8 @@ class UsersController < BaseController
   def index
     users = []
     filter = params[:filter] || ""
-    User.order(:name).where("name ~* ?", "^#{filter}").page(params[:page]).per(20).map do |user|
+    page = params[:page]
+    filtered_users(filter, page).map do |user|
       users.push({ id: user.id, name: user.name, avatar: user.avatar_url})
     end
     render json: { users: users }
@@ -60,6 +50,20 @@ class UsersController < BaseController
   end
 
   private
+
+  def render_user user
+    render json: {
+      user: {
+        id: user.id,
+        name: user.name,
+        avatar: user.avatar_url
+      }
+    }, status: 200
+  end
+
+  def filtered_users filter, page
+    User.order(:name).where("name ~* ?", "^#{filter}").page(page).per(20)
+  end
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)

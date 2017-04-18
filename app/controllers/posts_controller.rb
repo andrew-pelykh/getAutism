@@ -28,8 +28,10 @@ class PostsController < BaseController
     user = @current_user
     images = params[:images]
     if post.save
-       images.each do |image|
-         post.images.create(user_id: user.id, image: image)
+       if images
+         images.each do |image|
+           post.images.create(user_id: user.id, image: image)
+         end
        end
        render json: {post: {
         id: post.id,
