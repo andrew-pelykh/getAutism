@@ -28,6 +28,8 @@ export function getMessages(id, page) {
       if(response.data.messages.length < 20)
         dispatch(messagesListEnd())
       dispatch(messagesListSuccess(response.data.messages))
+      var objDiv = document.getElementById('chat')
+      objDiv.scrollTop = 400
     })
     .catch(error => {
       dispatch(messagesListFailure(errors.response.data.errors))
@@ -35,4 +37,13 @@ export function getMessages(id, page) {
     })
 
   }
+}
+
+export const receiveMessage = message => {
+  var objDiv = document.getElementById('chat')
+  objDiv.scrollTop = objDiv.scrollHeight
+  return({
+    type: types.RECEIVE_MESSAGE,
+    message
+  })
 }

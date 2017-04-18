@@ -77,19 +77,21 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(596);
+	var _store = __webpack_require__(598);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	__webpack_require__(608);
+	__webpack_require__(611);
 
-	var _reactTapEventPlugin = __webpack_require__(610);
+	var _reactTapEventPlugin = __webpack_require__(613);
 
 	var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _reactTapEventPlugin2.default)();
+
+	window.App = {};
 
 	var store = (0, _store2.default)();
 
@@ -36187,7 +36189,7 @@
 
 	var _ChatRooms2 = _interopRequireDefault(_ChatRooms);
 
-	var _ChatRoom = __webpack_require__(595);
+	var _ChatRoom = __webpack_require__(597);
 
 	var _ChatRoom2 = _interopRequireDefault(_ChatRoom);
 
@@ -39238,7 +39240,7 @@
 	  return function (dispatch) {
 	    if (isMobile()) dispatch((0, _pages.setDrawer)(false));
 	    var currentUrl = _reactRouter.hashHistory.getCurrentLocation().pathname;
-	    if (currentUrl == nextUrl) return null;
+	    if (currentUrl == nextUrl || currentUrl == "/" + nextUrl) return null;
 	    _reactRouter.hashHistory.push(nextUrl);
 	  };
 	}
@@ -39333,6 +39335,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	_axios2.default.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
+
 	var login = exports.login = function login() {
 	  return {
 	    type: types.LOGIN
@@ -39377,6 +39381,7 @@
 	    dispatch(login());
 	    return _axios2.default.post('/log_in', user).then(function (response) {
 	      (0, _token_helper.setToken)(response.data.user.token);
+	      _axios2.default.defaults.headers.common['X-Api-Key'] = response.data.user.token;
 	      dispatch(loginSuccess(response.data.user));
 	      _reactRouter.hashHistory.push('/');
 	    }).catch(function (error) {
@@ -39392,6 +39397,7 @@
 	    };
 	    (0, _token_helper.removeToken)('token');
 	    _reactRouter.hashHistory.push('/login');
+	    _axios2.default.defaults.headers.common['X-Api-Key'] = "";
 	    dispatch(logout());
 	    return _axios2.default.delete('/log_out', config).then(function (response) {
 	      dispatch(logoutSuccess());
@@ -40922,6 +40928,7 @@
 	var UPLOAD_PHOTOS = exports.UPLOAD_PHOTOS = 'UPLOAD_PHOTOS';
 	var DELETE_PREVIEW = exports.DELETE_PREVIEW = 'DELETE_PREVIEW';
 	var CHAT_ROOMS_LIST_END = exports.CHAT_ROOMS_LIST_END = 'CHAT_ROOMS_LIST_END';
+	var MESSAGES_LIST_END = exports.MESSAGES_LIST_END = 'MESSAGES_LIST_END';
 
 	var REGISTRAION = exports.REGISTRAION = 'REGISTRAION';
 	var REGISTRATION_SUCCESS = exports.REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
@@ -40954,6 +40961,12 @@
 	var CREATE_CHAT_ROOM = exports.CREATE_CHAT_ROOM = 'CREATE_CHAT_ROOM';
 	var CREATE_CHAT_ROOM_SUCCESS = exports.CREATE_CHAT_ROOM_SUCCESS = 'CREATE_CHAT_ROOM_SUCCESS';
 	var CREATE_CHAT_ROOM_FAILURE = exports.CREATE_CHAT_ROOM_FAILURE = 'CREATE_CHAT_ROOM_FAILURE';
+
+	var MESSAGES_LIST = exports.MESSAGES_LIST = 'MESSAGES_LIST';
+	var MESSAGES_LIST_SUCCESS = exports.MESSAGES_LIST_SUCCESS = 'MESSAGES_LIST_SUCCESS';
+	var MESSAGES_LIST_FAILURE = exports.MESSAGES_LIST_FAILURE = 'MESSAGES_LIST_FAILURE';
+
+	var RECEIVE_MESSAGE = exports.RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 
 /***/ },
 /* 465 */
@@ -41126,14 +41139,14 @@
 	        _react2.default.createElement(
 	          _MenuItem2.default,
 	          { onTouchTap: function onTouchTap(e) {
-	              return goToPage('users');
+	              return goToPage('users/');
 	            } },
 	          'Users'
 	        ),
 	        _react2.default.createElement(
 	          _MenuItem2.default,
 	          { onTouchTap: function onTouchTap(e) {
-	              return goToPage('chatrooms');
+	              return goToPage('chatrooms/');
 	            } },
 	          'Chatrooms'
 	        ),
@@ -41239,10 +41252,7 @@
 	function getCurrentUser() {
 	  return function (dispatch) {
 	    dispatch(currentUser());
-	    var config = {
-	      headers: { 'X-Api-Key': (0, _token_helper.getToken)() }
-	    };
-	    return _axios2.default.get('/current_user', config).then(function (response) {
+	    return _axios2.default.get('/current_user').then(function (response) {
 	      dispatch(currentUserSuccess(response.data.user));
 	    }).catch(function (error) {
 	      dispatch(currentUserFailure(error.response.data.errors));
@@ -41274,10 +41284,7 @@
 	function getUser(id) {
 	  return function (dispatch) {
 	    dispatch(user());
-	    var config = {
-	      headers: { 'X-Api-Key': (0, _token_helper.getToken)() }
-	    };
-	    return _axios2.default.get('/users/' + id, config).then(function (response) {
+	    return _axios2.default.get('/users/' + id).then(function (response) {
 	      dispatch(userSuccess(response.data.user));
 	    }).catch(function (error) {
 	      dispatch(userFailure(error.response.data.errors));
@@ -41347,9 +41354,7 @@
 	function getUsersList(page) {
 	  return function (dispatch) {
 	    dispatch(usersList());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.get('/users', { params: { page: page } }).then(function (response) {
+	    return _axios2.default.get('/users', { params: { page: page } }).then(function (response) {
 	      if (response.data.users < 20) dispatch(usersListEnd());
 	      dispatch(usersListSuccess(response.data.users));
 	    }).catch(function (error) {
@@ -41382,9 +41387,7 @@
 	function updateUser(user) {
 	  return function (dispatch) {
 	    dispatch(userUpdate());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.patch('/users', user).then(function (response) {
+	    return _axios2.default.patch('/users', user).then(function (response) {
 	      dispatch(userUpdateSuccess(response.data.user));
 	    }).catch(function (error) {
 	      dispatch(userUpdateFailure());
@@ -54718,9 +54721,7 @@
 	function getPostsList(page) {
 	  return function (dispatch) {
 	    dispatch(postsList());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.get('/posts', { params: { page: page } }).then(function (response) {
+	    return _axios2.default.get('/posts', { params: { page: page } }).then(function (response) {
 	      if (response.data.posts.length < 20) dispatch(postsListEnd());
 	      dispatch(postsListSuccess(response.data.posts));
 	    }).catch(function (error) {
@@ -54753,9 +54754,7 @@
 	function createPost(post) {
 	  return function (dispatch) {
 	    dispatch(postCreate());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.post('/posts', post).then(function (response) {
+	    return _axios2.default.post('/posts', post).then(function (response) {
 	      dispatch(postCreateSuccess(response.data.post));
 	    }).catch(function (error) {
 	      dispatch(postCreateFailure(error.response.data.errors));
@@ -56656,6 +56655,8 @@
 
 	var _reactFlexboxGrid = __webpack_require__(420);
 
+	__webpack_require__(595);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56678,6 +56679,7 @@
 	    value: function render() {
 	      var _props = this.props,
 	          getChatRoomsList = _props.getChatRoomsList,
+	          chat = _props.chat,
 	          chatRoomsList = _props.chatRoomsList,
 	          pages = _props.pages,
 	          goToPage = _props.goToPage,
@@ -56756,6 +56758,7 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    chatRoomsList: state.chatRoomsList,
+	    chat: state.chatRoom,
 	    pages: state.pages
 	  };
 	};
@@ -56838,9 +56841,7 @@
 	function getChatRoomsList(page) {
 	  return function (dispatch) {
 	    dispatch(chatRoomsList());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.get('/chat_rooms', { params: { page: page } }).then(function (response) {
+	    return _axios2.default.get('/chat_rooms', { params: { page: page } }).then(function (response) {
 	      if (response.data.chatRooms < 20) dispatch(chatRoomsListEnd());
 	      dispatch(chatRoomsListSuccess(response.data.chatRooms));
 	    }).catch(function (error) {
@@ -56873,9 +56874,7 @@
 	function getChatRoom(id) {
 	  return function (dispatch) {
 	    dispatch(chatRoom());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.get('/chat_rooms/' + id).then(function (response) {
+	    return _axios2.default.get('/chat_rooms/' + id).then(function (response) {
 	      dispatch(chatRoomSuccess(response.data.chatRoom));
 	    }).catch(function (error) {
 	      dispatch(chatRoomFailure(error.response.data.errors));
@@ -56907,9 +56906,7 @@
 	function createChat(chat) {
 	  return function (dispatch) {
 	    dispatch(createChatRoom());
-	    var instance = _axios2.default.create();
-	    instance.defaults.headers.common['X-Api-Key'] = (0, _token_helper.getToken)();
-	    return instance.post('/chat_rooms', chat).then(function (response) {
+	    return _axios2.default.post('/chat_rooms', chat).then(function (response) {
 	      dispatch(createChatRoomSuccess(response.data.chatRoom));
 	      _reactRouter.hashHistory.push('/chatrooms/' + response.data.chatRoom.id);
 	    });
@@ -56918,6 +56915,46 @@
 
 /***/ },
 /* 595 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(596);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(430)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!./styles.css", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!./styles.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 596 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(425)(undefined);
+	// imports
+
+
+	// module
+	exports.push([module.id, "#chat {\n  height: 400px;\n  overflow:auto;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 597 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56937,7 +56974,27 @@
 
 	var _chatRooms = __webpack_require__(594);
 
+	var _MessagesList = __webpack_require__(619);
+
+	var _MessagesList2 = _interopRequireDefault(_MessagesList);
+
+	var _MessageForm = __webpack_require__(622);
+
+	var _MessageForm2 = _interopRequireDefault(_MessageForm);
+
+	var _messages = __webpack_require__(620);
+
+	var _reactFlexboxGrid = __webpack_require__(420);
+
+	var _actioncable = __webpack_require__(621);
+
+	var _actioncable2 = _interopRequireDefault(_actioncable);
+
+	var _token_helper = __webpack_require__(437);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -56955,14 +57012,37 @@
 	  }
 
 	  _createClass(ChatRoom, [{
+	    key: 'setupSubscription',
+	    value: function setupSubscription() {
+	      var receiveMessage = this.props.receiveMessage;
+
+	      window.App.messages = window.App.cable.subscriptions.create("ChatRoomsChannel", {
+	        chat_room_id: this.props.params.id,
+	        connected: function connected() {
+	          var _this2 = this;
+
+	          setTimeout(function () {
+	            return _this2.perform('follow', { chat_room_id: _this2.chat_room_id });
+	          }, 1000);
+	        },
+	        received: function received(data) {
+	          receiveMessage(data.message);
+	        },
+	        send_message: function send_message(message, chat_room_id) {
+	          this.perform('send_message', { message: message, chat_room_id: chat_room_id });
+	        } });
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      window.App.cable = _actioncable2.default.createConsumer('ws://localhost:3000/cable?token=' + (0, _token_helper.getToken)());
+	      this.setupSubscription();
 	      var _props = this.props,
 	          getChatRoom = _props.getChatRoom,
 	          params = _props.params,
 	          chat = _props.chat;
 
-	      if (chat.get('chatRoom').isEmpty()) getChatRoom(params.id);
+	      if (chat.get('id') !== params.id) getChatRoom(params.id);
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
@@ -56977,15 +57057,50 @@
 	      }
 	    }
 	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+	      var text = document.getElementById('message');
+	      window.App.messages.send_message(text.value, this.props.params.id);
+	      text.value = "";
+	    }
+	  }, {
+	    key: 'handleKeyUp',
+	    value: function handleKeyUp(e) {
+	      if (e.keyCode == 13) {
+	        this.handleSubmit(e);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var chat = this.props.chat;
+	      var _React$createElement;
+
+	      var _props3 = this.props,
+	          chat = _props3.chat,
+	          getMessages = _props3.getMessages,
+	          pages = _props3.pages,
+	          params = _props3.params;
+	      var handleSubmit = this.handleSubmit,
+	          handleKeyUp = this.handleKeyUp;
 
 	      return _react2.default.createElement(
-	        'div',
-	        null,
+	        _reactFlexboxGrid.Col,
+	        (_React$createElement = {
+	          xs: 12,
+	          smOffset: 1, sm: 10 }, _defineProperty(_React$createElement, 'smOffset', 1), _defineProperty(_React$createElement, 'mdOffset', 1), _defineProperty(_React$createElement, 'md', 8), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'lgOffset', 2), _defineProperty(_React$createElement, 'lg', 6), _defineProperty(_React$createElement, 'lgOffset', 4), _React$createElement),
 	        'ChatRoom: ',
-	        chat.getIn(['chatRoom', 'title'])
+	        chat.get('title'),
+	        _react2.default.createElement(_MessagesList2.default, {
+	          chatId: params.id,
+	          listEnd: pages.get('messagesListEnd'),
+	          messagesList: chat.get('messagesList'),
+	          getMessages: getMessages
+	        }),
+	        _react2.default.createElement(_MessageForm2.default, {
+	          handleSubmit: handleSubmit.bind(this),
+	          handleKeyUp: handleKeyUp.bind(this)
+	        })
 	      );
 	    }
 	  }]);
@@ -56995,13 +57110,21 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    chat: state.chatRoom
+	    chat: state.chatRoom,
+	    pages: state.pages
 	  };
 	};
+
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
 	    getChatRoom: function getChatRoom(id) {
 	      return dispatch((0, _chatRooms.getChatRoom)(id));
+	    },
+	    getMessages: function getMessages(id, page) {
+	      return dispatch((0, _messages.getMessages)(id, page));
+	    },
+	    receiveMessage: function receiveMessage(message) {
+	      return dispatch((0, _messages.receiveMessage)(message));
 	    }
 	  };
 	};
@@ -57009,7 +57132,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ChatRoom);
 
 /***/ },
-/* 596 */
+/* 598 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57021,11 +57144,11 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _reducer = __webpack_require__(597);
+	var _reducer = __webpack_require__(599);
 
 	var _reducer2 = _interopRequireDefault(_reducer);
 
-	var _reduxThunk = __webpack_require__(607);
+	var _reduxThunk = __webpack_require__(610);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -57038,7 +57161,7 @@
 	}
 
 /***/ },
-/* 597 */
+/* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57049,39 +57172,43 @@
 
 	var _redux = __webpack_require__(44);
 
-	var _immutable = __webpack_require__(598);
+	var _immutable = __webpack_require__(600);
 
-	var _currentUser = __webpack_require__(599);
+	var _currentUser = __webpack_require__(601);
 
 	var _currentUser2 = _interopRequireDefault(_currentUser);
 
-	var _errors = __webpack_require__(600);
+	var _errors = __webpack_require__(602);
 
 	var _errors2 = _interopRequireDefault(_errors);
 
-	var _user = __webpack_require__(601);
+	var _user = __webpack_require__(603);
 
 	var _user2 = _interopRequireDefault(_user);
 
-	var _pages = __webpack_require__(602);
+	var _pages = __webpack_require__(604);
 
 	var _pages2 = _interopRequireDefault(_pages);
 
-	var _usersList = __webpack_require__(603);
+	var _usersList = __webpack_require__(605);
 
 	var _usersList2 = _interopRequireDefault(_usersList);
 
-	var _postsList = __webpack_require__(604);
+	var _postsList = __webpack_require__(606);
 
 	var _postsList2 = _interopRequireDefault(_postsList);
 
-	var _chatRoomsList = __webpack_require__(605);
+	var _chatRoomsList = __webpack_require__(607);
 
 	var _chatRoomsList2 = _interopRequireDefault(_chatRoomsList);
 
-	var _chatRoom = __webpack_require__(606);
+	var _chatRoom = __webpack_require__(608);
 
 	var _chatRoom2 = _interopRequireDefault(_chatRoom);
+
+	var _messagesList = __webpack_require__(609);
+
+	var _messagesList2 = _interopRequireDefault(_messagesList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57112,7 +57239,7 @@
 	exports.default = reducer;
 
 /***/ },
-/* 598 */
+/* 600 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -62096,7 +62223,7 @@
 	}));
 
 /***/ },
-/* 599 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62109,54 +62236,37 @@
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)();
 	  var action = arguments[1];
 
-	  var user = void 0;
 	  switch (action.type) {
-
 	    case types.CURRENT_USER:
-	      return state.merge({ isFetching: true });
-
+	      return setIsFetching(state, true);
 	    case types.CURRENT_USER_SUCCESS:
-	      user = (0, _immutable.Map)(action.user).merge({ isFetching: false });
-	      return state.merge(user);
-
+	      return setCurrentUser(state, action.user);
 	    case types.CURRENT_USER_FAILURE:
-	      return state.merge({ isFetching: false });
-
+	      return setIsFetching(state, false);
 	    case types.LOGIN:
-	      return state.merge({ isFetching: true });
-
+	      return setIsFetching(state, true);
 	    case types.LOGIN_SUCCESS:
-	      user = (0, _immutable.Map)(action.user).merge({ isFetching: false });
-	      return state.merge(user);
-
+	      return setCurrentUser(state, action.user);
 	    case types.LOGIN_FAILURE:
-	      return state.merge({ isFetching: false });
-
+	      return setIsFetching(state, false);
 	    case types.REGISTRAION:
-	      return state.merge({ isFetching: true });
-
+	      return setIsFetching(state, true);
 	    case types.REGISTRAION_FAILURE:
-	      return state.merge({ isFetching: false });
-
+	      return setIsFetching(state, false);
 	    case types.REGISTRATION_SUCCESS:
-	      user = (0, _immutable.Map)(action.user).merge({ isFetching: false });
-	      return state.merge(user);
-
+	      return setCurrentUser(state, action.user);
 	    case types.USER_UPDATE:
-	      return state.merge({ isFetching: true });
-
+	      return setIsFetching(state, true);
 	    case types.USER_UPDATE_SUCCESS:
-	      user = (0, _immutable.Map)(action.user).merge({ isFetching: false });
-	      return state.merge(user);
-
+	      return setCurrentUser(state, action.user);
 	    case types.USER_UPDATE_FAILURE:
-	      return state.merge({ isFetching: false });
-
+	      return setIsFetching(state, false);
+	    default:
+	      return state;
 	  }
-	  return state;
 	};
 
-	var _immutable = __webpack_require__(598);
+	var _immutable = __webpack_require__(600);
 
 	var _ActionTypes = __webpack_require__(464);
 
@@ -62164,8 +62274,16 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	var setIsFetching = function setIsFetching(state, value) {
+	  return state.merge({ isFetching: value });
+	};
+
+	var setCurrentUser = function setCurrentUser(state, user) {
+	  return state.merge((0, _immutable.Map)(user).merge({ isFetching: false }));
+	};
+
 /***/ },
-/* 600 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62187,10 +62305,10 @@
 	  return (0, _immutable.Map)();
 	};
 
-	var _immutable = __webpack_require__(598);
+	var _immutable = __webpack_require__(600);
 
 /***/ },
-/* 601 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62205,38 +62323,40 @@
 
 	  switch (action.type) {
 	    case types.USER:
-	      return state.merge({ isFetching: true });
-
+	      return setIsFetching(state, true);
 	    case types.USER_SUCCESS:
-	      var user = (0, _immutable.Map)(action.user).merge({ isFetching: false });
-	      return state.merge(user);
-
+	      return setUser(state, action.user);
 	    case types.USER_FAILURE:
-	      return state.merge({ isFetching: false });
-
+	      return setIsFetching(state, false);
 	    case types.USER_UPDATE:
-	      return state.merge({ isFetching: true });
-
+	      return setIsFetching(state, true);
 	    case types.USER_UPDATE_SUCCESS:
-	      var user = (0, _immutable.Map)(action.user).merge({ isFetching: false });
-	      return state.merge(user);
-
+	      return setUser(state, action.user);
 	    case types.USER_UPDATE_FAILURE:
-	      return state.merge({ isFetching: false });
+	      return setIsFetching(state, false);
+	    default:
+	      return state;
 	  }
-	  return state;
 	};
 
 	var _ActionTypes = __webpack_require__(464);
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(598);
+	var _immutable = __webpack_require__(600);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	var setIsFetching = function setIsFetching(state, value) {
+	  return state.merge({ isFetching: value });
+	};
+
+	var setUser = function setUser(state, user) {
+	  return state.merge((0, _immutable.Map)(user).merge({ isFetching: false }));
+	};
+
 /***/ },
-/* 602 */
+/* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62246,7 +62366,7 @@
 	});
 
 	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ photos: (0, _immutable.List)() });
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -62256,6 +62376,12 @@
 
 	    case types.POST_CREATE_SUCCESS:
 	      return state.merge({ photos: (0, _immutable.List)(), previewsMax: false });
+
+	    case types.MESSAGES_LIST_END:
+	      return state.merge({ messagesListEnd: true });
+
+	    case types.CHAT_ROOM:
+	      return state.merge({ messagesListEnd: false });
 
 	    case types.USERS_LIST_END:
 	      return state.merge({ usersListEnd: true });
@@ -62280,81 +62406,13 @@
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
-	var _immutable = __webpack_require__(598);
+	var _immutable = __webpack_require__(600);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-/***/ },
-/* 603 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	var initialState = (0, _immutable.Map)({
+	  photos: (0, _immutable.List)()
 	});
-
-	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ users: (0, _immutable.List)() });
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case types.USERS_LIST:
-	      return state.merge({ isFetching: true });
-
-	    case types.USERS_LIST_SUCCESS:
-	      var users = state.get('users').concat((0, _immutable.fromJS)(action.users));
-	      return (0, _immutable.Map)({ isFetching: false, users: users });
-
-	    case types.USERS_LIST_FAILURE:
-	      return state.merge({ isFetching: false });
-	  }
-	  return state;
-	};
-
-	var _ActionTypes = __webpack_require__(464);
-
-	var types = _interopRequireWildcard(_ActionTypes);
-
-	var _immutable = __webpack_require__(598);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/***/ },
-/* 604 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ posts: (0, _immutable.List)() });
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case types.POSTS_LIST:
-	      return state.merge({ isFetching: true });
-
-	    case types.POSTS_LIST_SUCCESS:
-	      var posts = state.get('posts').concat((0, _immutable.fromJS)(action.posts));
-	      return (0, _immutable.Map)({ isFetching: false, posts: posts });
-
-	    case types.POSTS_LIST_FAILURE:
-	      return state.merge({ isFetching: false });
-	  }
-	  return state;
-	};
-
-	var _ActionTypes = __webpack_require__(464);
-
-	var types = _interopRequireWildcard(_ActionTypes);
-
-	var _immutable = __webpack_require__(598);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ },
 /* 605 */
@@ -62367,30 +62425,43 @@
 	});
 
 	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ chatRooms: (0, _immutable.List)() });
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case types.CHAT_ROOMS_LIST:
-	      return state.merge({ isFetching: true });
-
-	    case types.CHAT_ROOMS_LIST_SUCCESS:
-	      var chats = state.get('chatRooms').concat((0, _immutable.fromJS)(action.chatRooms));
-	      return state.merge({ chatRooms: chats, isFetching: false });
-
-	    case types.CHAT_ROOMS_LIST_FAILURE:
-	      return state.merge({ isFetching: false });
+	    case types.USERS_LIST:
+	      return setIsFetching(state, true);
+	    case types.USERS_LIST_SUCCESS:
+	      return AddUsersToList(state, action.users);
+	    case types.USERS_LIST_FAILURE:
+	      return setIsFetching(state, false);
 	  }
 	  return state;
 	};
-
-	var _immutable = __webpack_require__(598);
 
 	var _ActionTypes = __webpack_require__(464);
 
 	var types = _interopRequireWildcard(_ActionTypes);
 
+	var _immutable = __webpack_require__(600);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var initialState = (0, _immutable.Map)({
+	  users: (0, _immutable.List)()
+	});
+
+	var setIsFetching = function setIsFetching(state, value) {
+	  return state.merge({ isFetching: value });
+	};
+
+	var AddUsersToList = function AddUsersToList(state, users) {
+	  var newState = state.get('users').concat((0, _immutable.fromJS)(users));
+	  return state.merge({
+	    users: newState,
+	    isFetching: false
+	  });
+	};
 
 /***/ },
 /* 606 */
@@ -62403,23 +62474,72 @@
 	});
 
 	exports.default = function () {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _immutable.Map)({ chatRoom: (0, _immutable.Map)() });
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case types.CHAT_ROOM:
-	      return state.merge({ isFetching: true });
-	    case types.CHAT_ROOM_SUCCESS:
-	      return state.merge({ isFetching: false, chatRoom: action.chatRoom });
-	    case types.CHAT_ROOM_FAILURE:
-	      return state.merge({ isFetching: false });
-	    case types.CREATE_CHAT_ROOM_SUCCESS:
-	      return state.merge({ chatRoom: action.chatRoom });
+	    case types.POSTS_LIST:
+	      return setIsFetching(state, true);
+	    case types.POSTS_LIST_SUCCESS:
+	      return AddPostsToList(state, action.posts);
+	    case types.POSTS_LIST_FAILURE:
+	      return setIsFetching(state, false);
+	    default:
+	      return state;
 	  }
-	  return state;
 	};
 
-	var _immutable = __webpack_require__(598);
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	var _immutable = __webpack_require__(600);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var initialState = (0, _immutable.Map)({
+	  posts: (0, _immutable.List)()
+	});
+
+	var setIsFetching = function setIsFetching(state, value) {
+	  return state.merge({ isFetching: value });
+	};
+
+	var AddPostsToList = function AddPostsToList(state, posts) {
+	  var newState = state.get('posts').concat((0, _immutable.fromJS)(posts));
+	  return state.merge({
+	    posts: newState,
+	    isFetching: false
+	  });
+	};
+
+/***/ },
+/* 607 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.CHAT_ROOMS_LIST:
+	      return setIsFetching(state, true);
+	    case types.CHAT_ROOMS_LIST_SUCCESS:
+	      return AddChatRoomsToList(state, action.chatRooms);
+	    case types.CHAT_ROOMS_LIST_FAILURE:
+	      return setIsFetching(state, false);
+	    default:
+	      return state;
+	  }
+	};
+
+	var _immutable = __webpack_require__(600);
 
 	var _ActionTypes = __webpack_require__(464);
 
@@ -62427,8 +62547,165 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	var initialState = (0, _immutable.Map)({
+	  chatRooms: (0, _immutable.List)()
+	});
+
+	var setIsFetching = function setIsFetching(state, value) {
+	  return state.merge({ isFetching: value });
+	};
+
+	var AddChatRoomsToList = function AddChatRoomsToList(state, chatRooms) {
+	  return state.merge({
+	    chatRooms: state.get('chatRooms').concat((0, _immutable.fromJS)(chatRooms)),
+	    isFetching: false
+	  });
+	};
+
 /***/ },
-/* 607 */
+/* 608 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = chatRoom;
+
+	var _immutable = __webpack_require__(600);
+
+	var _redux = __webpack_require__(44);
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	var _messagesList = __webpack_require__(609);
+
+	var _messagesList2 = _interopRequireDefault(_messagesList);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var initialState = (0, _immutable.Map)({
+	  chatRoom: (0, _immutable.Map)(),
+	  isFetching: false,
+	  messagesList: (0, _immutable.Map)({ messages: (0, _immutable.List)() })
+	});
+
+	function chatRoom() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.CHAT_ROOM:
+	      return setIsFetchingAndResetMessagesList(state, true);
+	    case types.CHAT_ROOM_SUCCESS:
+	      return setChatRoom(state, action.chatRoom);
+	    case types.CHAT_ROOM_FAILURE:
+	      return setIsFetching(state, false);
+	    case types.CREATE_CHAT_ROOM_SUCCESS:
+	      return setChatRoom(state, action.chatRoom);
+	    default:
+	      return state.merge({ messagesList: (0, _messagesList2.default)(state.get('messagesList'), action) });
+	  }
+	}
+
+	var setIsFetching = function setIsFetching(state, value) {
+	  return state.merge({ isFetching: value });
+	};
+
+	var setIsFetchingAndResetMessagesList = function setIsFetchingAndResetMessagesList(state, value) {
+	  return state.merge({
+	    isFetching: value,
+	    messagesList: (0, _immutable.Map)({
+	      messages: (0, _immutable.List)()
+	    })
+	  });
+	};
+
+	var setChatRoom = function setChatRoom(state, chat) {
+	  return state.merge((0, _immutable.Map)(chat).merge({
+	    isFetching: false
+	  }));
+	};
+
+/***/ },
+/* 609 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case types.MESSAGES_LIST:
+	      return setIsFetching(state, true);
+	    case types.MESSAGES_LIST_SUCCESS:
+	      return addMessages(state, action.messages);
+	    case types.MESSAGES_LIST_FAILURE:
+	      return setIsFetching(state, false);
+	    case types.RECEIVE_MESSAGE:
+	      return addMessage(state, action.message);
+	    default:
+	      return state;
+	  }
+	};
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	var _immutable = __webpack_require__(600);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var initialState = (0, _immutable.Map)({
+	  messages: (0, _immutable.List)()
+	});
+
+
+	var setIsFetching = function setIsFetching(state, value) {
+	  return state.merge({ isFetching: value });
+	};
+
+	var addMessages = function addMessages(state, messages) {
+	  if (!messages) return state.merge({ isFetching: false });
+	  var newState = state.get('messages').concat((0, _immutable.fromJS)(messages)).sort(function (a, b) {
+	    if (a.get('id') < b.get('id')) {
+	      return -1;
+	    }
+	    if (a.get('id') > b.get('id')) {
+	      return 1;
+	    }
+	    if (a.get('id') === b.get('id')) {
+	      return 0;
+	    }
+	  });
+	  return state.merge({
+	    messages: newState,
+	    isFetching: false
+	  });
+	};
+
+	var addMessage = function addMessage(state, message) {
+	  var newState = state.get('messages').push((0, _immutable.fromJS)(message));
+	  return state.merge({
+	    messages: newState,
+	    isFetching: false
+	  });
+	};
+
+/***/ },
+/* 610 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62456,13 +62733,13 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 608 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(609);
+	var content = __webpack_require__(612);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(430)(content, {});
@@ -62482,7 +62759,7 @@
 	}
 
 /***/ },
-/* 609 */
+/* 612 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(425)(undefined);
@@ -62496,11 +62773,11 @@
 
 
 /***/ },
-/* 610 */
+/* 613 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(9);
-	var defaultClickRejectionStrategy = __webpack_require__(611);
+	var defaultClickRejectionStrategy = __webpack_require__(614);
 
 	var alreadyInjected = false;
 
@@ -62522,14 +62799,14 @@
 	  alreadyInjected = true;
 
 	  __webpack_require__(134).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(612)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(615)(shouldRejectClick)
 	  });
 	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 611 */
+/* 614 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -62540,7 +62817,7 @@
 
 
 /***/ },
-/* 612 */
+/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -62564,14 +62841,14 @@
 
 	"use strict";
 
-	var EventConstants = __webpack_require__(613);
+	var EventConstants = __webpack_require__(616);
 	var EventPluginUtils = __webpack_require__(136);
 	var EventPropagators = __webpack_require__(133);
 	var SyntheticUIEvent = __webpack_require__(167);
-	var TouchEventUtils = __webpack_require__(614);
+	var TouchEventUtils = __webpack_require__(617);
 	var ViewportMetrics = __webpack_require__(168);
 
-	var keyOf = __webpack_require__(615);
+	var keyOf = __webpack_require__(618);
 	var topLevelTypes = EventConstants.topLevelTypes;
 
 	var isStartish = EventPluginUtils.isStartish;
@@ -62717,7 +62994,7 @@
 
 
 /***/ },
-/* 613 */
+/* 616 */
 /***/ function(module, exports) {
 
 	/**
@@ -62813,7 +63090,7 @@
 	module.exports = EventConstants;
 
 /***/ },
-/* 614 */
+/* 617 */
 /***/ function(module, exports) {
 
 	/**
@@ -62861,7 +63138,7 @@
 
 
 /***/ },
-/* 615 */
+/* 618 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -62898,6 +63175,859 @@
 	};
 
 	module.exports = keyOf;
+
+/***/ },
+/* 619 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Avatar = __webpack_require__(490);
+
+	var _Avatar2 = _interopRequireDefault(_Avatar);
+
+	var _reactInfiniteScroller = __webpack_require__(573);
+
+	var _reactInfiniteScroller2 = _interopRequireDefault(_reactInfiniteScroller);
+
+	var _CircularProgress = __webpack_require__(559);
+
+	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
+
+	var _List = __webpack_require__(569);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MessagesList = function (_Component) {
+	  _inherits(MessagesList, _Component);
+
+	  function MessagesList() {
+	    _classCallCheck(this, MessagesList);
+
+	    return _possibleConstructorReturn(this, (MessagesList.__proto__ || Object.getPrototypeOf(MessagesList)).apply(this, arguments));
+	  }
+
+	  _createClass(MessagesList, [{
+	    key: 'getMessagesList',
+	    value: function getMessagesList(page) {
+	      this.props.getMessages(this.props.chatId, page);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var _props = this.props,
+	          getMessages = _props.getMessages,
+	          chatId = _props.chatId,
+	          messagesList = _props.messagesList,
+	          listEnd = _props.listEnd;
+
+	      return _react2.default.createElement(
+	        _List.List,
+	        { id: 'chat' },
+	        _react2.default.createElement(
+	          _reactInfiniteScroller2.default,
+	          {
+	            pageStart: messagesList.get('messages').count() / 20,
+	            loadMore: function loadMore(page) {
+	              return _this2.getMessagesList(page);
+	            },
+	            hasMore: !listEnd && !messagesList.get('isFetching'),
+	            threshold: 1,
+	            isReverse: true,
+	            useWindow: false
+	          },
+	          messagesList.get('messages').map(function (message, n) {
+	            return _react2.default.createElement(
+	              'div',
+	              { key: n },
+	              _react2.default.createElement(_List.ListItem, {
+	                primaryText: message.get('body')
+	              })
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return MessagesList;
+	}(_react.Component);
+
+	exports.default = MessagesList;
+
+/***/ },
+/* 620 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.receiveMessage = exports.messagesListEnd = exports.messagesListFailure = exports.messagesListSuccess = exports.messagesList = undefined;
+	exports.getMessages = getMessages;
+
+	var _axios = __webpack_require__(439);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _ActionTypes = __webpack_require__(464);
+
+	var types = _interopRequireWildcard(_ActionTypes);
+
+	var _application_helper = __webpack_require__(436);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var messagesList = exports.messagesList = function messagesList() {
+	  return {
+	    type: types.MESSAGES_LIST
+	  };
+	};
+
+	var messagesListSuccess = exports.messagesListSuccess = function messagesListSuccess(messages) {
+	  return {
+	    type: types.MESSAGES_LIST_SUCCESS,
+	    messages: messages
+	  };
+	};
+
+	var messagesListFailure = exports.messagesListFailure = function messagesListFailure(errors) {
+	  return {
+	    type: types.MESSAGES_LIST_FAILURE,
+	    errors: errors
+	  };
+	};
+
+	var messagesListEnd = exports.messagesListEnd = function messagesListEnd() {
+	  return {
+	    type: types.MESSAGES_LIST_END
+	  };
+	};
+
+	function getMessages(id, page) {
+	  return function (dispatch) {
+	    dispatch(messagesList());
+	    return _axios2.default.get('/messages', { params: { page: page, id: id } }).then(function (response) {
+	      if (response.data.messages.length < 20) dispatch(messagesListEnd());
+	      dispatch(messagesListSuccess(response.data.messages));
+	      var objDiv = document.getElementById('chat');
+	      objDiv.scrollTop = 400;
+	    }).catch(function (error) {
+	      dispatch(messagesListFailure(errors.response.data.errors));
+	      dispatch((0, _application_helper.logOutIfUnauthorized)(error.response.status));
+	    });
+	  };
+	}
+
+	var receiveMessage = exports.receiveMessage = function receiveMessage(message) {
+	  var objDiv = document.getElementById('chat');
+	  objDiv.scrollTop = objDiv.scrollHeight;
+	  return {
+	    type: types.RECEIVE_MESSAGE,
+	    message: message
+	  };
+	};
+
+/***/ },
+/* 621 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
+	  (function() {
+	    (function() {
+	      var slice = [].slice;
+
+	      this.ActionCable = {
+	        INTERNAL: {
+	          "message_types": {
+	            "welcome": "welcome",
+	            "ping": "ping",
+	            "confirmation": "confirm_subscription",
+	            "rejection": "reject_subscription"
+	          },
+	          "default_mount_path": "/cable",
+	          "protocols": ["actioncable-v1-json", "actioncable-unsupported"]
+	        },
+	        createConsumer: function(url) {
+	          var ref;
+	          if (url == null) {
+	            url = (ref = this.getConfig("url")) != null ? ref : this.INTERNAL.default_mount_path;
+	          }
+	          return new ActionCable.Consumer(this.createWebSocketURL(url));
+	        },
+	        getConfig: function(name) {
+	          var element;
+	          element = document.head.querySelector("meta[name='action-cable-" + name + "']");
+	          return element != null ? element.getAttribute("content") : void 0;
+	        },
+	        createWebSocketURL: function(url) {
+	          var a;
+	          if (url && !/^wss?:/i.test(url)) {
+	            a = document.createElement("a");
+	            a.href = url;
+	            a.href = a.href;
+	            a.protocol = a.protocol.replace("http", "ws");
+	            return a.href;
+	          } else {
+	            return url;
+	          }
+	        },
+	        startDebugging: function() {
+	          return this.debugging = true;
+	        },
+	        stopDebugging: function() {
+	          return this.debugging = null;
+	        },
+	        log: function() {
+	          var messages;
+	          messages = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+	          if (this.debugging) {
+	            messages.push(Date.now());
+	            return console.log.apply(console, ["[ActionCable]"].concat(slice.call(messages)));
+	          }
+	        }
+	      };
+
+	    }).call(this);
+	  }).call(this);
+
+	  var ActionCable = this.ActionCable;
+
+	  (function() {
+	    (function() {
+	      var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+	      ActionCable.ConnectionMonitor = (function() {
+	        var clamp, now, secondsSince;
+
+	        ConnectionMonitor.pollInterval = {
+	          min: 3,
+	          max: 30
+	        };
+
+	        ConnectionMonitor.staleThreshold = 6;
+
+	        function ConnectionMonitor(connection) {
+	          this.connection = connection;
+	          this.visibilityDidChange = bind(this.visibilityDidChange, this);
+	          this.reconnectAttempts = 0;
+	        }
+
+	        ConnectionMonitor.prototype.start = function() {
+	          if (!this.isRunning()) {
+	            this.startedAt = now();
+	            delete this.stoppedAt;
+	            this.startPolling();
+	            document.addEventListener("visibilitychange", this.visibilityDidChange);
+	            return ActionCable.log("ConnectionMonitor started. pollInterval = " + (this.getPollInterval()) + " ms");
+	          }
+	        };
+
+	        ConnectionMonitor.prototype.stop = function() {
+	          if (this.isRunning()) {
+	            this.stoppedAt = now();
+	            this.stopPolling();
+	            document.removeEventListener("visibilitychange", this.visibilityDidChange);
+	            return ActionCable.log("ConnectionMonitor stopped");
+	          }
+	        };
+
+	        ConnectionMonitor.prototype.isRunning = function() {
+	          return (this.startedAt != null) && (this.stoppedAt == null);
+	        };
+
+	        ConnectionMonitor.prototype.recordPing = function() {
+	          return this.pingedAt = now();
+	        };
+
+	        ConnectionMonitor.prototype.recordConnect = function() {
+	          this.reconnectAttempts = 0;
+	          this.recordPing();
+	          delete this.disconnectedAt;
+	          return ActionCable.log("ConnectionMonitor recorded connect");
+	        };
+
+	        ConnectionMonitor.prototype.recordDisconnect = function() {
+	          this.disconnectedAt = now();
+	          return ActionCable.log("ConnectionMonitor recorded disconnect");
+	        };
+
+	        ConnectionMonitor.prototype.startPolling = function() {
+	          this.stopPolling();
+	          return this.poll();
+	        };
+
+	        ConnectionMonitor.prototype.stopPolling = function() {
+	          return clearTimeout(this.pollTimeout);
+	        };
+
+	        ConnectionMonitor.prototype.poll = function() {
+	          return this.pollTimeout = setTimeout((function(_this) {
+	            return function() {
+	              _this.reconnectIfStale();
+	              return _this.poll();
+	            };
+	          })(this), this.getPollInterval());
+	        };
+
+	        ConnectionMonitor.prototype.getPollInterval = function() {
+	          var interval, max, min, ref;
+	          ref = this.constructor.pollInterval, min = ref.min, max = ref.max;
+	          interval = 5 * Math.log(this.reconnectAttempts + 1);
+	          return Math.round(clamp(interval, min, max) * 1000);
+	        };
+
+	        ConnectionMonitor.prototype.reconnectIfStale = function() {
+	          if (this.connectionIsStale()) {
+	            ActionCable.log("ConnectionMonitor detected stale connection. reconnectAttempts = " + this.reconnectAttempts + ", pollInterval = " + (this.getPollInterval()) + " ms, time disconnected = " + (secondsSince(this.disconnectedAt)) + " s, stale threshold = " + this.constructor.staleThreshold + " s");
+	            this.reconnectAttempts++;
+	            if (this.disconnectedRecently()) {
+	              return ActionCable.log("ConnectionMonitor skipping reopening recent disconnect");
+	            } else {
+	              ActionCable.log("ConnectionMonitor reopening");
+	              return this.connection.reopen();
+	            }
+	          }
+	        };
+
+	        ConnectionMonitor.prototype.connectionIsStale = function() {
+	          var ref;
+	          return secondsSince((ref = this.pingedAt) != null ? ref : this.startedAt) > this.constructor.staleThreshold;
+	        };
+
+	        ConnectionMonitor.prototype.disconnectedRecently = function() {
+	          return this.disconnectedAt && secondsSince(this.disconnectedAt) < this.constructor.staleThreshold;
+	        };
+
+	        ConnectionMonitor.prototype.visibilityDidChange = function() {
+	          if (document.visibilityState === "visible") {
+	            return setTimeout((function(_this) {
+	              return function() {
+	                if (_this.connectionIsStale() || !_this.connection.isOpen()) {
+	                  ActionCable.log("ConnectionMonitor reopening stale connection on visibilitychange. visbilityState = " + document.visibilityState);
+	                  return _this.connection.reopen();
+	                }
+	              };
+	            })(this), 200);
+	          }
+	        };
+
+	        now = function() {
+	          return new Date().getTime();
+	        };
+
+	        secondsSince = function(time) {
+	          return (now() - time) / 1000;
+	        };
+
+	        clamp = function(number, min, max) {
+	          return Math.max(min, Math.min(max, number));
+	        };
+
+	        return ConnectionMonitor;
+
+	      })();
+
+	    }).call(this);
+	    (function() {
+	      var i, message_types, protocols, ref, supportedProtocols, unsupportedProtocol,
+	        slice = [].slice,
+	        bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+	        indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+	      ref = ActionCable.INTERNAL, message_types = ref.message_types, protocols = ref.protocols;
+
+	      supportedProtocols = 2 <= protocols.length ? slice.call(protocols, 0, i = protocols.length - 1) : (i = 0, []), unsupportedProtocol = protocols[i++];
+
+	      ActionCable.Connection = (function() {
+	        Connection.reopenDelay = 500;
+
+	        function Connection(consumer) {
+	          this.consumer = consumer;
+	          this.open = bind(this.open, this);
+	          this.subscriptions = this.consumer.subscriptions;
+	          this.monitor = new ActionCable.ConnectionMonitor(this);
+	          this.disconnected = true;
+	        }
+
+	        Connection.prototype.send = function(data) {
+	          if (this.isOpen()) {
+	            this.webSocket.send(JSON.stringify(data));
+	            return true;
+	          } else {
+	            return false;
+	          }
+	        };
+
+	        Connection.prototype.open = function() {
+	          if (this.isActive()) {
+	            ActionCable.log("Attempted to open WebSocket, but existing socket is " + (this.getState()));
+	            throw new Error("Existing connection must be closed before opening");
+	          } else {
+	            ActionCable.log("Opening WebSocket, current state is " + (this.getState()) + ", subprotocols: " + protocols);
+	            if (this.webSocket != null) {
+	              this.uninstallEventHandlers();
+	            }
+	            this.webSocket = new WebSocket(this.consumer.url, protocols);
+	            this.installEventHandlers();
+	            this.monitor.start();
+	            return true;
+	          }
+	        };
+
+	        Connection.prototype.close = function(arg) {
+	          var allowReconnect, ref1;
+	          allowReconnect = (arg != null ? arg : {
+	            allowReconnect: true
+	          }).allowReconnect;
+	          if (!allowReconnect) {
+	            this.monitor.stop();
+	          }
+	          if (this.isActive()) {
+	            return (ref1 = this.webSocket) != null ? ref1.close() : void 0;
+	          }
+	        };
+
+	        Connection.prototype.reopen = function() {
+	          var error;
+	          ActionCable.log("Reopening WebSocket, current state is " + (this.getState()));
+	          if (this.isActive()) {
+	            try {
+	              return this.close();
+	            } catch (error1) {
+	              error = error1;
+	              return ActionCable.log("Failed to reopen WebSocket", error);
+	            } finally {
+	              ActionCable.log("Reopening WebSocket in " + this.constructor.reopenDelay + "ms");
+	              setTimeout(this.open, this.constructor.reopenDelay);
+	            }
+	          } else {
+	            return this.open();
+	          }
+	        };
+
+	        Connection.prototype.getProtocol = function() {
+	          var ref1;
+	          return (ref1 = this.webSocket) != null ? ref1.protocol : void 0;
+	        };
+
+	        Connection.prototype.isOpen = function() {
+	          return this.isState("open");
+	        };
+
+	        Connection.prototype.isActive = function() {
+	          return this.isState("open", "connecting");
+	        };
+
+	        Connection.prototype.isProtocolSupported = function() {
+	          var ref1;
+	          return ref1 = this.getProtocol(), indexOf.call(supportedProtocols, ref1) >= 0;
+	        };
+
+	        Connection.prototype.isState = function() {
+	          var ref1, states;
+	          states = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+	          return ref1 = this.getState(), indexOf.call(states, ref1) >= 0;
+	        };
+
+	        Connection.prototype.getState = function() {
+	          var ref1, state, value;
+	          for (state in WebSocket) {
+	            value = WebSocket[state];
+	            if (value === ((ref1 = this.webSocket) != null ? ref1.readyState : void 0)) {
+	              return state.toLowerCase();
+	            }
+	          }
+	          return null;
+	        };
+
+	        Connection.prototype.installEventHandlers = function() {
+	          var eventName, handler;
+	          for (eventName in this.events) {
+	            handler = this.events[eventName].bind(this);
+	            this.webSocket["on" + eventName] = handler;
+	          }
+	        };
+
+	        Connection.prototype.uninstallEventHandlers = function() {
+	          var eventName;
+	          for (eventName in this.events) {
+	            this.webSocket["on" + eventName] = function() {};
+	          }
+	        };
+
+	        Connection.prototype.events = {
+	          message: function(event) {
+	            var identifier, message, ref1, type;
+	            if (!this.isProtocolSupported()) {
+	              return;
+	            }
+	            ref1 = JSON.parse(event.data), identifier = ref1.identifier, message = ref1.message, type = ref1.type;
+	            switch (type) {
+	              case message_types.welcome:
+	                this.monitor.recordConnect();
+	                return this.subscriptions.reload();
+	              case message_types.ping:
+	                return this.monitor.recordPing();
+	              case message_types.confirmation:
+	                return this.subscriptions.notify(identifier, "connected");
+	              case message_types.rejection:
+	                return this.subscriptions.reject(identifier);
+	              default:
+	                return this.subscriptions.notify(identifier, "received", message);
+	            }
+	          },
+	          open: function() {
+	            ActionCable.log("WebSocket onopen event, using '" + (this.getProtocol()) + "' subprotocol");
+	            this.disconnected = false;
+	            if (!this.isProtocolSupported()) {
+	              ActionCable.log("Protocol is unsupported. Stopping monitor and disconnecting.");
+	              return this.close({
+	                allowReconnect: false
+	              });
+	            }
+	          },
+	          close: function(event) {
+	            ActionCable.log("WebSocket onclose event");
+	            if (this.disconnected) {
+	              return;
+	            }
+	            this.disconnected = true;
+	            this.monitor.recordDisconnect();
+	            return this.subscriptions.notifyAll("disconnected", {
+	              willAttemptReconnect: this.monitor.isRunning()
+	            });
+	          },
+	          error: function() {
+	            return ActionCable.log("WebSocket onerror event");
+	          }
+	        };
+
+	        return Connection;
+
+	      })();
+
+	    }).call(this);
+	    (function() {
+	      var slice = [].slice;
+
+	      ActionCable.Subscriptions = (function() {
+	        function Subscriptions(consumer) {
+	          this.consumer = consumer;
+	          this.subscriptions = [];
+	        }
+
+	        Subscriptions.prototype.create = function(channelName, mixin) {
+	          var channel, params, subscription;
+	          channel = channelName;
+	          params = typeof channel === "object" ? channel : {
+	            channel: channel
+	          };
+	          subscription = new ActionCable.Subscription(this.consumer, params, mixin);
+	          return this.add(subscription);
+	        };
+
+	        Subscriptions.prototype.add = function(subscription) {
+	          this.subscriptions.push(subscription);
+	          this.consumer.ensureActiveConnection();
+	          this.notify(subscription, "initialized");
+	          this.sendCommand(subscription, "subscribe");
+	          return subscription;
+	        };
+
+	        Subscriptions.prototype.remove = function(subscription) {
+	          this.forget(subscription);
+	          if (!this.findAll(subscription.identifier).length) {
+	            this.sendCommand(subscription, "unsubscribe");
+	          }
+	          return subscription;
+	        };
+
+	        Subscriptions.prototype.reject = function(identifier) {
+	          var i, len, ref, results, subscription;
+	          ref = this.findAll(identifier);
+	          results = [];
+	          for (i = 0, len = ref.length; i < len; i++) {
+	            subscription = ref[i];
+	            this.forget(subscription);
+	            this.notify(subscription, "rejected");
+	            results.push(subscription);
+	          }
+	          return results;
+	        };
+
+	        Subscriptions.prototype.forget = function(subscription) {
+	          var s;
+	          this.subscriptions = (function() {
+	            var i, len, ref, results;
+	            ref = this.subscriptions;
+	            results = [];
+	            for (i = 0, len = ref.length; i < len; i++) {
+	              s = ref[i];
+	              if (s !== subscription) {
+	                results.push(s);
+	              }
+	            }
+	            return results;
+	          }).call(this);
+	          return subscription;
+	        };
+
+	        Subscriptions.prototype.findAll = function(identifier) {
+	          var i, len, ref, results, s;
+	          ref = this.subscriptions;
+	          results = [];
+	          for (i = 0, len = ref.length; i < len; i++) {
+	            s = ref[i];
+	            if (s.identifier === identifier) {
+	              results.push(s);
+	            }
+	          }
+	          return results;
+	        };
+
+	        Subscriptions.prototype.reload = function() {
+	          var i, len, ref, results, subscription;
+	          ref = this.subscriptions;
+	          results = [];
+	          for (i = 0, len = ref.length; i < len; i++) {
+	            subscription = ref[i];
+	            results.push(this.sendCommand(subscription, "subscribe"));
+	          }
+	          return results;
+	        };
+
+	        Subscriptions.prototype.notifyAll = function() {
+	          var args, callbackName, i, len, ref, results, subscription;
+	          callbackName = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+	          ref = this.subscriptions;
+	          results = [];
+	          for (i = 0, len = ref.length; i < len; i++) {
+	            subscription = ref[i];
+	            results.push(this.notify.apply(this, [subscription, callbackName].concat(slice.call(args))));
+	          }
+	          return results;
+	        };
+
+	        Subscriptions.prototype.notify = function() {
+	          var args, callbackName, i, len, results, subscription, subscriptions;
+	          subscription = arguments[0], callbackName = arguments[1], args = 3 <= arguments.length ? slice.call(arguments, 2) : [];
+	          if (typeof subscription === "string") {
+	            subscriptions = this.findAll(subscription);
+	          } else {
+	            subscriptions = [subscription];
+	          }
+	          results = [];
+	          for (i = 0, len = subscriptions.length; i < len; i++) {
+	            subscription = subscriptions[i];
+	            results.push(typeof subscription[callbackName] === "function" ? subscription[callbackName].apply(subscription, args) : void 0);
+	          }
+	          return results;
+	        };
+
+	        Subscriptions.prototype.sendCommand = function(subscription, command) {
+	          var identifier;
+	          identifier = subscription.identifier;
+	          return this.consumer.send({
+	            command: command,
+	            identifier: identifier
+	          });
+	        };
+
+	        return Subscriptions;
+
+	      })();
+
+	    }).call(this);
+	    (function() {
+	      ActionCable.Subscription = (function() {
+	        var extend;
+
+	        function Subscription(consumer, params, mixin) {
+	          this.consumer = consumer;
+	          if (params == null) {
+	            params = {};
+	          }
+	          this.identifier = JSON.stringify(params);
+	          extend(this, mixin);
+	        }
+
+	        Subscription.prototype.perform = function(action, data) {
+	          if (data == null) {
+	            data = {};
+	          }
+	          data.action = action;
+	          return this.send(data);
+	        };
+
+	        Subscription.prototype.send = function(data) {
+	          return this.consumer.send({
+	            command: "message",
+	            identifier: this.identifier,
+	            data: JSON.stringify(data)
+	          });
+	        };
+
+	        Subscription.prototype.unsubscribe = function() {
+	          return this.consumer.subscriptions.remove(this);
+	        };
+
+	        extend = function(object, properties) {
+	          var key, value;
+	          if (properties != null) {
+	            for (key in properties) {
+	              value = properties[key];
+	              object[key] = value;
+	            }
+	          }
+	          return object;
+	        };
+
+	        return Subscription;
+
+	      })();
+
+	    }).call(this);
+	    (function() {
+	      ActionCable.Consumer = (function() {
+	        function Consumer(url) {
+	          this.url = url;
+	          this.subscriptions = new ActionCable.Subscriptions(this);
+	          this.connection = new ActionCable.Connection(this);
+	        }
+
+	        Consumer.prototype.send = function(data) {
+	          return this.connection.send(data);
+	        };
+
+	        Consumer.prototype.connect = function() {
+	          return this.connection.open();
+	        };
+
+	        Consumer.prototype.disconnect = function() {
+	          return this.connection.close({
+	            allowReconnect: false
+	          });
+	        };
+
+	        Consumer.prototype.ensureActiveConnection = function() {
+	          if (!this.connection.isActive()) {
+	            return this.connection.open();
+	          }
+	        };
+
+	        return Consumer;
+
+	      })();
+
+	    }).call(this);
+	  }).call(this);
+
+	  if (typeof module === "object" && module.exports) {
+	    module.exports = ActionCable;
+	  } else if (true) {
+	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (ActionCable), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  }
+	}).call(this);
+
+
+/***/ },
+/* 622 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TextField = __webpack_require__(553);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	var _RaisedButton = __webpack_require__(551);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MessageForm = function (_Component) {
+	  _inherits(MessageForm, _Component);
+
+	  function MessageForm() {
+	    _classCallCheck(this, MessageForm);
+
+	    return _possibleConstructorReturn(this, (MessageForm.__proto__ || Object.getPrototypeOf(MessageForm)).apply(this, arguments));
+	  }
+
+	  _createClass(MessageForm, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          handleSubmit = _props.handleSubmit,
+	          handleKeyUp = _props.handleKeyUp;
+
+	      return _react2.default.createElement(
+	        'form',
+	        { onSubmit: function onSubmit(e) {
+	            return handleSubmit(e);
+	          } },
+	        _react2.default.createElement(_TextField2.default, {
+	          id: 'message',
+	          multiLine: true,
+	          rows: 4,
+	          rowsMax: 4,
+	          fullWidth: true,
+	          onKeyUp: function onKeyUp(e) {
+	            return handleKeyUp(e);
+	          }
+	        }),
+	        _react2.default.createElement(
+	          _RaisedButton2.default,
+	          { type: 'submit' },
+	          'Send'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return MessageForm;
+	}(_react.Component);
+
+	exports.default = MessageForm;
 
 /***/ }
 /******/ ]);

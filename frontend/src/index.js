@@ -4,13 +4,15 @@ import { Router, hashHistory } from 'react-router'
 import { render } from 'react-dom'
 import { blueGrey800 } from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import routes from './routes'
 import configureStore from './store'
 import './main.css'
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+import injectTapEventPlugin from 'react-tap-event-plugin'
+injectTapEventPlugin()
+
+window.App = {}
 
 const store = configureStore()
 

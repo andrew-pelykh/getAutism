@@ -10,11 +10,6 @@ export default class MessagesList extends Component {
     this.props.getMessages(this.props.chatId, page)
   }
 
-  componentDidUpdate(prevProps) {
-    var objDiv = document.getElementById('chat')
-    objDiv.scrollTop = objDiv.scrollHeight
-  }
-
   render() {
     const { getMessages, chatId, messagesList, listEnd } = this.props
     return(
@@ -33,8 +28,7 @@ export default class MessagesList extends Component {
                 <ListItem
                   primaryText={message.get('body')}
                 />
-              </div>
-              ))
+              </div>))
           }
         </InfiniteScroll>
       </List>
