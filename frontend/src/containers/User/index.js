@@ -39,7 +39,8 @@ export class User extends Component {
               </div>
               <img className="avatar" src={user.get('avatar')}/>
             </Dropzone>
-          </form>
+            <p>Click on image to change avatar</p>
+          </form>    
           :
           <img className="avatar" src={user.get('avatar')}/>
         }

@@ -40,7 +40,8 @@ class UsersController < BaseController
 
   def index
     users = []
-    User.order(:name).page(params[:page]).per(20).map do |user|
+    filter = params[:filter] || ""
+    User.order(:name).where("name ~* ?", "^#{filter}").page(params[:page]).per(20).map do |user|
       users.push({ id: user.id, name: user.name, avatar: user.avatar_url})
     end
     render json: { users: users }

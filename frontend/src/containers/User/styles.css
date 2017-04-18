@@ -15,10 +15,3 @@
 #avatar-dropzone div {
   display: none;
 }
-
-#avatar-dropzone:hover div {
-  position: absolute;
-  opacity: 0.2;
-  background-color: #000000;
-  display: inline;
-}

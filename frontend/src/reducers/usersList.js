@@ -10,6 +10,7 @@ export default function (state = initialState, action) {
     case types.USERS_LIST: return setIsFetching(state, true)
     case types.USERS_LIST_SUCCESS: return AddUsersToList(state, action.users)
     case types.USERS_LIST_FAILURE: return setIsFetching(state, false)
+    case types.SET_USERS_FILTER: return setFilter(state, action.filter)
   }
   return state
 }
@@ -23,3 +24,5 @@ const AddUsersToList = (state, users) => {
     isFetching: false
   })
 }
+
+const setFilter = (state, filter) => state.merge({filter: filter})

@@ -107,10 +107,10 @@ export const usersListEnd = () => ({
   type: types.USERS_LIST_END
 })
 
-export function getUsersList(page) {
+export function getUsersList(page, filter) {
   return dispatch => {
     dispatch(usersList())
-    return axios.get('/users', { params: { page: page }})
+    return axios.get('/users', { params: { page: page, filter: filter }})
     .then(response => {
       if(response.data.users < 20)
         dispatch(usersListEnd())
@@ -150,3 +150,8 @@ export function updateUser(user) {
     })
   }
 }
+
+export const setUsersFilter = filter => ({
+  type: types.SET_USERS_FILTER,
+  filter
+})

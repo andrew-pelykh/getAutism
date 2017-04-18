@@ -40968,6 +40968,8 @@
 
 	var RECEIVE_MESSAGE = exports.RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 
+	var SET_USERS_FILTER = exports.SET_USERS_FILTER = 'SET_USERS_FILTER';
+
 /***/ },
 /* 465 */
 /***/ function(module, exports, __webpack_require__) {
@@ -41204,7 +41206,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.userUpdateFailure = exports.userUpdateSuccess = exports.userUpdate = exports.usersListEnd = exports.usersListFailure = exports.usersListSuccess = exports.usersList = exports.registrationFailure = exports.registrationSuccess = exports.registration = exports.userFailure = exports.userSuccess = exports.user = exports.currentUserFailure = exports.currentUserSuccess = exports.currentUser = undefined;
+	exports.setUsersFilter = exports.userUpdateFailure = exports.userUpdateSuccess = exports.userUpdate = exports.usersListEnd = exports.usersListFailure = exports.usersListSuccess = exports.usersList = exports.registrationFailure = exports.registrationSuccess = exports.registration = exports.userFailure = exports.userSuccess = exports.user = exports.currentUserFailure = exports.currentUserSuccess = exports.currentUser = undefined;
 	exports.getCurrentUser = getCurrentUser;
 	exports.getUser = getUser;
 	exports.register = register;
@@ -41351,10 +41353,10 @@
 	  };
 	};
 
-	function getUsersList(page) {
+	function getUsersList(page, filter) {
 	  return function (dispatch) {
 	    dispatch(usersList());
-	    return _axios2.default.get('/users', { params: { page: page } }).then(function (response) {
+	    return _axios2.default.get('/users', { params: { page: page, filter: filter } }).then(function (response) {
 	      if (response.data.users < 20) dispatch(usersListEnd());
 	      dispatch(usersListSuccess(response.data.users));
 	    }).catch(function (error) {
@@ -41395,6 +41397,13 @@
 	    });
 	  };
 	}
+
+	var setUsersFilter = exports.setUsersFilter = function setUsersFilter(filter) {
+	  return {
+	    type: types.SET_USERS_FILTER,
+	    filter: filter
+	  };
+	};
 
 /***/ },
 /* 468 */
@@ -53212,6 +53221,11 @@
 	              'Upload your photo'
 	            ),
 	            _react2.default.createElement('img', { className: 'avatar', src: user.get('avatar') })
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Click on image to change avatar'
 	          )
 	        ) : _react2.default.createElement('img', { className: 'avatar', src: user.get('avatar') }),
 	        _react2.default.createElement(
@@ -53849,7 +53863,7 @@
 
 
 	// module
-	exports.push([module.id, ".avatar {\n    max-width: 100%;\n  }\n\n.user-profile {\n  text-align: center;\n}\n\n#avatar-dropzone {\n  width: 100% !important;\n  height: 100% !important;\n  border: 0 !important;\n}\n\n#avatar-dropzone div {\n  display: none;\n}\n\n#avatar-dropzone:hover div {\n  position: absolute;\n  opacity: 0.2;\n  background-color: #000000;\n  display: inline;\n}\n", ""]);
+	exports.push([module.id, ".avatar {\n    max-width: 100%;\n  }\n\n.user-profile {\n  text-align: center;\n}\n\n#avatar-dropzone {\n  width: 100% !important;\n  height: 100% !important;\n  border: 0 !important;\n}\n\n#avatar-dropzone div {\n  display: none;\n}\n", ""]);
 
 	// exports
 
@@ -53881,6 +53895,10 @@
 
 	var _UsersList2 = _interopRequireDefault(_UsersList);
 
+	var _TextField = __webpack_require__(553);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53899,20 +53917,43 @@
 	  }
 
 	  _createClass(Users, [{
+	    key: 'showVisibleUsers',
+	    value: function showVisibleUsers() {
+	      var filter = this.props.usersList.get('filter');
+	      var users = this.props.usersList.get('users');
+	      if (filter) return users.filter(function (user) {
+	        return user.get('name').includes(filter);
+	      });
+	      return users;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
 	          usersList = _props.usersList,
 	          getUsersList = _props.getUsersList,
 	          pages = _props.pages,
-	          goToPage = _props.goToPage;
+	          goToPage = _props.goToPage,
+	          setUsersFilter = _props.setUsersFilter;
 
-	      return _react2.default.createElement(_UsersList2.default, {
-	        usersList: usersList,
-	        goToPage: goToPage,
-	        getUsersList: getUsersList,
-	        listEnd: pages.get('usersListEnd')
-	      });
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_TextField2.default, {
+	          id: 'users-filter',
+	          floatingLabelText: 'Search',
+	          onKeyUp: function onKeyUp(e) {
+	            return setUsersFilter(e);
+	          }
+	        }),
+	        _react2.default.createElement(_UsersList2.default, {
+	          users: this.showVisibleUsers(),
+	          isFetching: usersList.get('isFetching'),
+	          goToPage: goToPage,
+	          getUsersList: getUsersList,
+	          listEnd: pages.get('usersListEnd')
+	        })
+	      );
 	    }
 	  }]);
 
@@ -53929,10 +53970,15 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
 	    getUsersList: function getUsersList(page) {
-	      return dispatch((0, _users.getUsersList)(page));
+	      var filter = document.getElementById('users-filter').value;
+	      dispatch((0, _users.getUsersList)(page, filter));
 	    },
 	    goToPage: function goToPage(url) {
 	      return dispatch((0, _application_helper.goToPage)(url));
+	    },
+	    setUsersFilter: function setUsersFilter(e) {
+	      var filter = document.getElementById('users-filter').value;
+	      dispatch((0, _users.setUsersFilter)(filter));
 	    }
 	  };
 	};
@@ -53994,7 +54040,8 @@
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
-	          usersList = _props.usersList,
+	          users = _props.users,
+	          isFetching = _props.isFetching,
 	          getUsersList = _props.getUsersList,
 	          listEnd = _props.listEnd,
 	          goToPage = _props.goToPage;
@@ -54005,14 +54052,14 @@
 	        _react2.default.createElement(
 	          _reactInfiniteScroller2.default,
 	          {
-	            pageStart: usersList.get('users').count() / 20,
+	            pageStart: users.count() / 20,
 	            loadMore: function loadMore(page) {
 	              return getUsersList(page);
 	            },
-	            hasMore: !listEnd && !usersList.get('isFetching'),
+	            hasMore: !listEnd && !isFetching,
 	            threshold: 100
 	          },
-	          usersList.get('users').map(function (user, n) {
+	          users.map(function (user, n) {
 	            return _react2.default.createElement(
 	              'div',
 	              { key: n },
@@ -54027,7 +54074,7 @@
 	            );
 	          })
 	        ),
-	        usersList.get('isFetching') ? _react2.default.createElement(
+	        isFetching ? _react2.default.createElement(
 	          'div',
 	          { className: 'loader' },
 	          _react2.default.createElement(_CircularProgress2.default, {
@@ -57037,7 +57084,7 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      window.App.cable = _actioncable2.default.createConsumer('wss://rails-redux-app.herokuapp.com/cable?token=' + (0, _token_helper.getToken)());
+	      window.App.cable = _actioncable2.default.createConsumer('ws://localhost:3000/cable?token=' + (0, _token_helper.getToken)());
 	      this.setupSubscription();
 	      var _props = this.props,
 	          getChatRoom = _props.getChatRoom,
@@ -63290,6 +63337,8 @@
 	      return AddUsersToList(state, action.users);
 	    case types.USERS_LIST_FAILURE:
 	      return setIsFetching(state, false);
+	    case types.SET_USERS_FILTER:
+	      return setFilter(state, action.filter);
 	  }
 	  return state;
 	};
@@ -63316,6 +63365,10 @@
 	    users: newState,
 	    isFetching: false
 	  });
+	};
+
+	var setFilter = function setFilter(state, filter) {
+	  return state.merge({ filter: filter });
 	};
 
 /***/ },
