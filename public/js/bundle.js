@@ -56997,7 +56997,7 @@
 
 
 	// module
-	exports.push([module.id, "#chat {\n  height: 60vh;\n  overflow:auto;\n}\n", ""]);
+	exports.push([module.id, "#chat {\n  height: 70vh;\n  overflow:auto;\n}\n", ""]);
 
 	// exports
 
@@ -57086,7 +57086,7 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      window.App.cable = _actioncable2.default.createConsumer('ws://' + window.location.host + '/cable?token=' + (0, _token_helper.getToken)());
+	      window.App.cable = _actioncable2.default.createConsumer('wss://' + window.location.host + '/cable?token=' + (0, _token_helper.getToken)());
 	      this.setupSubscription();
 	      var _props = this.props,
 	          getChatRoom = _props.getChatRoom,
@@ -57141,8 +57141,11 @@
 	        (_React$createElement = {
 	          xs: 12,
 	          smOffset: 1, sm: 10 }, _defineProperty(_React$createElement, 'smOffset', 1), _defineProperty(_React$createElement, 'md', 10), _defineProperty(_React$createElement, 'lg', 8), _React$createElement),
-	        'ChatRoom: ',
-	        chat.get('title'),
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          chat.get('title')
+	        ),
 	        _react2.default.createElement(_MessagesList2.default, {
 	          chatId: params.id,
 	          listEnd: pages.get('messagesListEnd'),
@@ -57352,14 +57355,14 @@
 
 	      return _react2.default.createElement(
 	        'form',
-	        { onSubmit: function onSubmit(e) {
+	        { id: 'message-form', onSubmit: function onSubmit(e) {
 	            return handleSubmit(e);
 	          } },
 	        _react2.default.createElement(_TextField2.default, {
 	          id: 'message',
 	          multiLine: true,
-	          rows: 4,
-	          rowsMax: 4,
+	          rows: 1,
+	          rowsMax: 3,
 	          fullWidth: true,
 	          onKeyUp: function onKeyUp(e) {
 	            return handleKeyUp(e);

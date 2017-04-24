@@ -7,12 +7,12 @@ export default class MessageForm extends Component {
   render() {
     const { handleSubmit, handleKeyUp } = this.props
     return(
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form id="message-form" onSubmit={(e) => handleSubmit(e)}>
         <TextField
           id="message"
           multiLine={true}
-          rows ={4}
-          rowsMax={4}
+          rows ={1}
+          rowsMax={3}
           fullWidth={true}
            onKeyUp={(e) => handleKeyUp(e)}
         />

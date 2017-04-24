@@ -28,7 +28,7 @@ export class ChatRoom extends Component {
   }
 
   componentDidMount() {
-    window.App.cable = ActionCable.createConsumer(`ws://${window.location.host}/cable?token=${getToken()}`)
+    window.App.cable = ActionCable.createConsumer(`wss://${window.location.host}/cable?token=${getToken()}`)
     this.setupSubscription()
     const { getChatRoom, params, chat } = this.props
     if(chat.get('id') !== params.id)
@@ -66,7 +66,7 @@ export class ChatRoom extends Component {
       md={10}
       lg={8}
       >
-        ChatRoom: {chat.get('title')}
+        <h2>{chat.get('title')}</h2>
         <MessagesList
           chatId={params.id}
           listEnd={pages.get('messagesListEnd')}
