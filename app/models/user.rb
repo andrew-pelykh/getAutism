@@ -15,6 +15,23 @@ class User < ApplicationRecord
                     format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i }
   validates :password, presence: true, length: { in: 8..20 }, allow_blank: true
 
+  def payload
+    {
+      id: self.id,
+      name: self.name,
+      avatar: self.avatar_url
+    }
+  end
+
+  def authorization_payload
+    {
+      id: self.id,
+      name: self.name,
+      avatar: self.avatar_url,
+      token: self.auth_token
+    }
+  end
+
   private
 
   def set_email_to_lower_case!

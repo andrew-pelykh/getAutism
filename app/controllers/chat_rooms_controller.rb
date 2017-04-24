@@ -16,7 +16,6 @@ class ChatRoomsController < BaseController
   end
 
   def show
-    chat_room = ChatRoom.find(params[:id])
-    render json: {chatRoom: chat_room}
+    render json: { chatRoom: ChatRoom.find(params[:id]) }
   end
 end

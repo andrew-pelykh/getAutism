@@ -16,7 +16,7 @@ class PostsControllerTest < ActionController::TestCase
     jdata = JSON.parse response.body
     assert_equal 2, jdata["posts"].length
     assert_equal "post2", jdata["posts"][0]["content"]
-      assert_equal "Naruto", jdata["posts"][0]["author"]["name"]
+    assert_equal "Naruto", jdata["posts"][0]["author"]["name"]
   end
 
   test "should create post with valid data" do

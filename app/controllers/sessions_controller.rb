@@ -4,7 +4,7 @@ class SessionsController < BaseController
   def create
     user = User.find_by(email: params[:user][:email])
     if user && user.authenticate(params[:user][:password])
-      render_user(user)
+      render json: { user: user.authorization_payload }
     else
      render_login_errors
     end
@@ -19,13 +19,9 @@ class SessionsController < BaseController
 
   private
 
-  def render_user(user)
-    render json: { user: { id: user.id, name: user.name, avatar: user.avatar_url,
-                     token: user.auth_token }}
-  end
-
   def render_login_errors
     login_errors = { "login-form" => ["Invalid email or password"]}
     render_errors(login_errors, 403)
   end
+  
 end
