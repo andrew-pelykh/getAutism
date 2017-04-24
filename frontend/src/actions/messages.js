@@ -39,11 +39,15 @@ export function getMessages(id, page) {
   }
 }
 
-export const receiveMessage = message => {
-  var objDiv = document.getElementById('chat')
-  objDiv.scrollTop = objDiv.scrollHeight
-  return({
-    type: types.RECEIVE_MESSAGE,
-    message
-  })
-}
+export const receiveMessage = message => ({
+  type: types.RECEIVE_MESSAGE,
+  message
+})
+
+export const appendMessage = message => (
+  dispatch => {
+    dispatch(receiveMessage(message))
+    var objDiv = document.getElementById('chat')
+    objDiv.scrollTop = objDiv.scrollHeight
+  }
+)

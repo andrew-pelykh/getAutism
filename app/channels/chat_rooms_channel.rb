@@ -1,4 +1,5 @@
 class ChatRoomsChannel < ApplicationCable::Channel
+  
   def follow(data)
     stream_from "chat_rooms_#{data['chat_room_id']}_channel"
   end

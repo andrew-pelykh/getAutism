@@ -56997,7 +56997,7 @@
 
 
 	// module
-	exports.push([module.id, "#chat {\n  height: 400px;\n  overflow:auto;\n}\n", ""]);
+	exports.push([module.id, "#chat {\n  height: 60vh;\n  overflow:auto;\n}\n", ""]);
 
 	// exports
 
@@ -57041,6 +57041,8 @@
 
 	var _token_helper = __webpack_require__(437);
 
+	var _application_helper = __webpack_require__(436);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -57063,7 +57065,7 @@
 	  _createClass(ChatRoom, [{
 	    key: 'setupSubscription',
 	    value: function setupSubscription() {
-	      var receiveMessage = this.props.receiveMessage;
+	      var appendMessage = this.props.appendMessage;
 
 	      window.App.messages = window.App.cable.subscriptions.create("ChatRoomsChannel", {
 	        chat_room_id: this.props.params.id,
@@ -57075,7 +57077,7 @@
 	          }, 1000);
 	        },
 	        received: function received(data) {
-	          receiveMessage(data.message);
+	          appendMessage(data.message);
 	        },
 	        send_message: function send_message(message, chat_room_id) {
 	          this.perform('send_message', { message: message, chat_room_id: chat_room_id });
@@ -57084,7 +57086,7 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      window.App.cable = _actioncable2.default.createConsumer('wss://rails-redux-app.herokuapp.com/cable?token=' + (0, _token_helper.getToken)());
+	      window.App.cable = _actioncable2.default.createConsumer('ws://' + window.location.host + '/cable?token=' + (0, _token_helper.getToken)());
 	      this.setupSubscription();
 	      var _props = this.props,
 	          getChatRoom = _props.getChatRoom,
@@ -57116,7 +57118,7 @@
 	  }, {
 	    key: 'handleKeyUp',
 	    value: function handleKeyUp(e) {
-	      if (e.keyCode == 13) {
+	      if (e.keyCode == 13 && !e.shiftKey) {
 	        this.handleSubmit(e);
 	      }
 	    }
@@ -57129,7 +57131,8 @@
 	          chat = _props3.chat,
 	          getMessages = _props3.getMessages,
 	          pages = _props3.pages,
-	          params = _props3.params;
+	          params = _props3.params,
+	          goToPage = _props3.goToPage;
 	      var handleSubmit = this.handleSubmit,
 	          handleKeyUp = this.handleKeyUp;
 
@@ -57144,7 +57147,8 @@
 	          chatId: params.id,
 	          listEnd: pages.get('messagesListEnd'),
 	          messagesList: chat.get('messagesList'),
-	          getMessages: getMessages
+	          getMessages: getMessages,
+	          goToPage: goToPage
 	        }),
 	        _react2.default.createElement(_MessageForm2.default, {
 	          handleSubmit: handleSubmit.bind(this),
@@ -57172,8 +57176,11 @@
 	    getMessages: function getMessages(id, page) {
 	      return dispatch((0, _messages.getMessages)(id, page));
 	    },
-	    receiveMessage: function receiveMessage(message) {
-	      return dispatch((0, _messages.receiveMessage)(message));
+	    appendMessage: function appendMessage(message) {
+	      return dispatch((0, _messages.appendMessage)(message));
+	    },
+	    goToPage: function goToPage(nextUrl) {
+	      return dispatch((0, _application_helper.goToPage)(nextUrl));
 	    }
 	  };
 	};
@@ -57208,7 +57215,7 @@
 
 	var _CircularProgress2 = _interopRequireDefault(_CircularProgress);
 
-	var _List = __webpack_require__(569);
+	var _Card = __webpack_require__(580);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57241,10 +57248,11 @@
 	          getMessages = _props.getMessages,
 	          chatId = _props.chatId,
 	          messagesList = _props.messagesList,
-	          listEnd = _props.listEnd;
+	          listEnd = _props.listEnd,
+	          goToPage = _props.goToPage;
 
 	      return _react2.default.createElement(
-	        _List.List,
+	        'div',
 	        { id: 'chat' },
 	        _react2.default.createElement(
 	          _reactInfiniteScroller2.default,
@@ -57262,9 +57270,26 @@
 	            return _react2.default.createElement(
 	              'div',
 	              { key: n },
-	              _react2.default.createElement(_List.ListItem, {
-	                primaryText: message.get('body')
-	              })
+	              _react2.default.createElement(
+	                _Card.Card,
+	                null,
+	                _react2.default.createElement(_Card.CardHeader, {
+	                  avatar: _react2.default.createElement(_Avatar2.default, {
+	                    onTouchTap: function onTouchTap() {
+	                      return goToPage('users/' + message.getIn(['author', 'id']));
+	                    },
+	                    src: message.getIn(['author', 'avatar']),
+	                    className: 'author-avatar'
+	                  }),
+	                  title: message.getIn(['author', 'name']),
+	                  subtitle: message.get('createdAt')
+	                }),
+	                _react2.default.createElement(
+	                  _Card.CardText,
+	                  null,
+	                  message.get('body')
+	                )
+	              )
 	            );
 	          })
 	        )
@@ -57363,7 +57388,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.receiveMessage = exports.messagesListEnd = exports.messagesListFailure = exports.messagesListSuccess = exports.messagesList = undefined;
+	exports.appendMessage = exports.receiveMessage = exports.messagesListEnd = exports.messagesListFailure = exports.messagesListSuccess = exports.messagesList = undefined;
 	exports.getMessages = getMessages;
 
 	var _axios = __webpack_require__(439);
@@ -57422,11 +57447,17 @@
 	}
 
 	var receiveMessage = exports.receiveMessage = function receiveMessage(message) {
-	  var objDiv = document.getElementById('chat');
-	  objDiv.scrollTop = objDiv.scrollHeight;
 	  return {
 	    type: types.RECEIVE_MESSAGE,
 	    message: message
+	  };
+	};
+
+	var appendMessage = exports.appendMessage = function appendMessage(message) {
+	  return function (dispatch) {
+	    dispatch(receiveMessage(message));
+	    var objDiv = document.getElementById('chat');
+	    objDiv.scrollTop = objDiv.scrollHeight;
 	  };
 	};
 

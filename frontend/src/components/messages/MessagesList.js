@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Avatar from 'material-ui/Avatar'
 import InfiniteScroll from 'react-infinite-scroller'
 import CircularProgress from 'material-ui/CircularProgress'
-import { List, ListItem } from 'material-ui/List'
+import { Card, CardText, CardHeader } from 'material-ui/Card'
 
 export default class MessagesList extends Component {
 
@@ -11,9 +11,9 @@ export default class MessagesList extends Component {
   }
 
   render() {
-    const { getMessages, chatId, messagesList, listEnd } = this.props
+    const { getMessages, chatId, messagesList, listEnd, goToPage } = this.props
     return(
-      <List id="chat">
+      <div id="chat">
         <InfiniteScroll
           pageStart={messagesList.get('messages').count() /20}
           loadMore={page => this.getMessagesList(page)}
@@ -25,13 +25,26 @@ export default class MessagesList extends Component {
           {
             messagesList.get('messages').map((message,n) => (
               <div key={n}>
-                <ListItem
-                  primaryText={message.get('body')}
-                />
+                <Card>
+                  <CardHeader
+                    avatar={
+                      <Avatar
+                        onTouchTap={() => goToPage('users/' + message.getIn(['author', 'id']))}
+                        src={message.getIn(['author', 'avatar'])}
+                        className="author-avatar"
+                      />
+                    }
+                    title={message.getIn(['author', 'name'])}
+                    subtitle={message.get('createdAt')}
+                  />
+                  <CardText>
+                    {message.get('body')}
+                  </CardText>
+                </Card>
               </div>))
           }
         </InfiniteScroll>
-      </List>
+      </div>
     )
   }
 }
