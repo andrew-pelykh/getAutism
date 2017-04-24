@@ -14,8 +14,8 @@ export default class UsersList extends Component {
     return(
       <List>
         <InfiniteScroll
-          pageStart={users.count()/20}
-          loadMore={page => getUsersList(page)}
+          pageStart={Math.round(users.count()/20)}
+          loadMore={page => getUsersList(Math.round(users.count()/20)+1)}
           hasMore={!listEnd && !isFetching}
           threshold={100}
         >

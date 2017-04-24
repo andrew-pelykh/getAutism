@@ -54052,9 +54052,9 @@
 	        _react2.default.createElement(
 	          _reactInfiniteScroller2.default,
 	          {
-	            pageStart: users.count() / 20,
+	            pageStart: Math.round(users.count() / 20),
 	            loadMore: function loadMore(page) {
-	              return getUsersList(page);
+	              return getUsersList(Math.round(users.count() / 20) + 1);
 	            },
 	            hasMore: !listEnd && !isFetching,
 	            threshold: 100
@@ -57137,7 +57137,7 @@
 	        _reactFlexboxGrid.Col,
 	        (_React$createElement = {
 	          xs: 12,
-	          smOffset: 1, sm: 10 }, _defineProperty(_React$createElement, 'smOffset', 1), _defineProperty(_React$createElement, 'mdOffset', 1), _defineProperty(_React$createElement, 'md', 8), _defineProperty(_React$createElement, 'mdOffset', 3), _defineProperty(_React$createElement, 'lgOffset', 2), _defineProperty(_React$createElement, 'lg', 6), _defineProperty(_React$createElement, 'lgOffset', 4), _React$createElement),
+	          smOffset: 1, sm: 10 }, _defineProperty(_React$createElement, 'smOffset', 1), _defineProperty(_React$createElement, 'md', 10), _defineProperty(_React$createElement, 'lg', 8), _React$createElement),
 	        'ChatRoom: ',
 	        chat.get('title'),
 	        _react2.default.createElement(_MessagesList2.default, {
